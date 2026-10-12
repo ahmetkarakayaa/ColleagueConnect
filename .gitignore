@@ -1,0 +1,24 @@
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Build files
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+
+# Local secrets
+Secrets.xcconfig
+.env
+.env.*
+
