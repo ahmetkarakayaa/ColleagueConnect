@@ -15,9 +15,10 @@ final class UserDetailInteractor: UserDetailInteractorInput {
     }
     
     func fetchUser(username: String) async throws -> UserDetailEntity {
-        return try await networkClient.request(
+        let dto: UserDetailDTO = try await networkClient.request(
             endpoint: GitHubEndpoint.userDetail(username: username)
         )
+        return dto.toEntity()
     }
     
     func isFavorite(username: String) -> Bool {

@@ -7,13 +7,13 @@ final class FavoritesInteractor: FavoritesInteractorInput {
     private let networkClient: NetworkClientProtocol
 
     init(
-        favoriteService: FavoriteStorageServiceProtocol =
-            FavoriteStorageService(),
-        networkClient: NetworkClientProtocol = NetworkClient()
+        favoriteService: FavoriteStorageServiceProtocol,
+        networkClient: NetworkClientProtocol
     ) {
         self.favoriteService = favoriteService
         self.networkClient = networkClient
     }
+
 
     func getFavorites() -> [String] {
         favoriteService.getFavorites()
@@ -23,22 +23,35 @@ final class FavoritesInteractor: FavoritesInteractorInput {
         favoriteService.removeFavorite(username: username)
     }
 
+
     func fetchFavoriteUsers() async throws -> [FavoriteUserViewModel] {
         let usernames = favoriteService.getFavorites()
-
         var users: [FavoriteUserViewModel] = []
 
         for username in usernames {
-            let user: GitHubUser = try await networkClient.request(
+            try Task.checkCancellation()
+
+            let dto: UserDetailDTO = try await networkClient.request(
                 endpoint: GitHubEndpoint.userDetail(username: username)
             )
 
-            let viewModel = FavoriteUserViewModel(
-                username: user.login,
-                avatarURL: user.avatarURL
-            )
+            try Task.checkCancellation()
 
-            users.append(viewModel)
+            let detail = dto.toEntity()
+
+            guard let avatarURL = detail.avatarURL
+                ?? URL(string: "https://github.com/\(username).png") else {
+                continue
+            }
+
+            users.append(
+                FavoriteUserViewModel(
+                    username: detail.login,
+                    avatarURL: avatarURL,
+                    name: detail.name,
+                    bio: detail.bio
+                )
+            )
         }
 
         return users

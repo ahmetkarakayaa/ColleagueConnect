@@ -1,4 +1,3 @@
-
 import UIKit
 
 @MainActor
@@ -6,10 +5,11 @@ final class UserDetailRouter: UserDetailRouterInput {
 
     weak var viewController: UIViewController?
 
-    static func createModule(username: String) -> UIViewController {
-        let networkClient = NetworkClient()
-        let favoriteStorage = FavoriteStorageService()
-
+    static func createModule(
+        username: String,
+        networkClient: NetworkClientProtocol,
+        favoriteStorage: FavoriteStorageServiceProtocol
+    ) -> UIViewController {
         let interactor = UserDetailInteractor(
             networkClient: networkClient,
             favoriteStorage: favoriteStorage

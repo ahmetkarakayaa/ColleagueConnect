@@ -1,4 +1,3 @@
-
 import Foundation
 
 @MainActor
@@ -12,6 +11,7 @@ final class FavoritesPresenter: FavoritesViewOutput {
     private var allFavorites: [FavoriteUserViewModel] = []
     private var currentQuery = ""
     private var loadingTask: Task<Void, Never>?
+    private var activeRequestID: UUID?
 
     init(
         interactor: FavoritesInteractorInput,
@@ -30,20 +30,25 @@ final class FavoritesPresenter: FavoritesViewOutput {
     }
 
     func filterFavorites(query: String) {
-        currentQuery = query.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
+        currentQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Do not replace a loading/error state while no profiles are loaded.
+        guard activeRequestID == nil else { return }
         displayFilteredFavorites()
     }
 
     func removeFavorite(username: String) {
         interactor.removeFavorite(username: username)
-
         allFavorites.removeAll {
-            $0.username == username
+            $0.username.caseInsensitiveCompare(username) == .orderedSame
         }
 
-        displayFilteredFavorites()
+        // A pending response may have started before the favorite was removed.
+        // Cancel it and reload the remaining saved users instead of showing stale data.
+        if activeRequestID != nil {
+            loadFavorites()
+        } else {
+            displayFilteredFavorites()
+        }
     }
 
     func didSelectUser(_ user: FavoriteUserViewModel) {
@@ -52,44 +57,54 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
     private func loadFavorites() {
         loadingTask?.cancel()
+        activeRequestID = nil
 
         if interactor.getFavorites().isEmpty {
+            loadingTask = nil
             allFavorites = []
             displayFilteredFavorites()
             return
         }
 
+        let requestID = UUID()
+        activeRequestID = requestID
         view?.displayLoading()
 
-        loadingTask = Task {
+        loadingTask = Task { [weak self] in
+            guard let self else { return }
             do {
                 let users = try await interactor.fetchFavoriteUsers()
+                guard !Task.isCancelled, activeRequestID == requestID else { return }
 
-                guard !Task.isCancelled else { return }
-
+                activeRequestID = nil
+                loadingTask = nil
                 allFavorites = users
                 displayFilteredFavorites()
-
+            } catch is CancellationError {
+                return
             } catch {
-                guard !Task.isCancelled else { return }
-
-                view?.displayError(
-                    "Favoriler yüklenemedi. Lütfen tekrar deneyin."
-                )
+                guard !Task.isCancelled, activeRequestID == requestID else { return }
+                activeRequestID = nil
+                loadingTask = nil
+                view?.displayError("Favoriler yüklenemedi. Lütfen tekrar deneyin.")
             }
         }
     }
 
     private func displayFilteredFavorites() {
+        // Empty saved list and no matching search results are different states.
+        guard !interactor.getFavorites().isEmpty else {
+            view?.displayEmpty()
+            return
+        }
+
         let filteredUsers = allFavorites.filter { user in
             currentQuery.isEmpty ||
-            user.username.localizedCaseInsensitiveContains(
-                currentQuery
-            )
+            user.username.localizedCaseInsensitiveContains(currentQuery)
         }
 
         if filteredUsers.isEmpty {
-            view?.displayEmpty()
+            view?.displayNoResults()
         } else {
             view?.displayFavorites(filteredUsers)
         }
