@@ -1,4 +1,3 @@
-
 import Foundation
 
 @MainActor
@@ -6,6 +5,7 @@ protocol FavoritesViewInput: AnyObject {
     func displayFavorites(_ users: [FavoriteUserViewModel])
     func displayLoading()
     func displayEmpty()
+    func displayNoResults()
     func displayError(_ message: String)
 }
 
@@ -18,13 +18,11 @@ protocol FavoritesViewOutput: AnyObject {
     func didSelectUser(_ user: FavoriteUserViewModel)
 }
 
-
 protocol FavoritesInteractorInput {
     func getFavorites() -> [String]
     func removeFavorite(username: String)
     func fetchFavoriteUsers() async throws -> [FavoriteUserViewModel]
 }
-
 
 @MainActor
 protocol FavoritesRouterInput: AnyObject {
