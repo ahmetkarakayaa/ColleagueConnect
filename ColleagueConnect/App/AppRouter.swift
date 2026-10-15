@@ -4,10 +4,30 @@ import UIKit
 @MainActor
 final class AppRouter {
 
+
+    private let networkClient: NetworkClientProtocol
+    private let favoriteStorage: FavoriteStorageServiceProtocol
+
+    init(
+        networkClient: NetworkClientProtocol = NetworkClient(),
+        favoriteStorage: FavoriteStorageServiceProtocol = FavoriteStorageService()
+    ) {
+        self.networkClient = networkClient
+        self.favoriteStorage = favoriteStorage
+    }
+
+
     func makeInitialViewController() -> UIViewController {
 
-        let searchViewController = SearchRouter.createModule()
-        let favoritesViewController = FavoritesRouter.createModule()
+        let searchViewController = SearchRouter.createModule(
+            networkClient: networkClient,
+            favoriteStorage: favoriteStorage
+        )
+
+        let favoritesViewController = FavoritesRouter.createModule(
+            networkClient: networkClient,
+            favoriteStorage: favoriteStorage
+        )
 
         let searchNavigation = UINavigationController(
             rootViewController: searchViewController
@@ -17,13 +37,12 @@ final class AppRouter {
             rootViewController: favoritesViewController
         )
 
-        
+
         let iconConfig = UIImage.SymbolConfiguration(
             pointSize: 19,
             weight: .regular
         )
 
-        
         searchNavigation.tabBarItem = UITabBarItem(
             title: "Search",
             image: UIImage(
@@ -36,17 +55,18 @@ final class AppRouter {
             )
         )
 
-        let n11Image = UIImage(named: "N11TabIcon")?
-            .withRenderingMode(.alwaysOriginal)
-
         favoritesNavigation.tabBarItem = UITabBarItem(
             title: "Favorites",
             image: UIImage(
                 systemName: "heart",
                 withConfiguration: iconConfig
             ),
-            selectedImage: n11Image
+            selectedImage: UIImage(
+                systemName: "heart",
+                withConfiguration: iconConfig
+            )
         )
+
 
         let tabBarController = UITabBarController()
 
@@ -57,6 +77,7 @@ final class AppRouter {
 
         tabBarController.tabBar.tintColor = AppTheme.Colors.accent
         tabBarController.tabBar.unselectedItemTintColor = .secondaryLabel
+
 
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()

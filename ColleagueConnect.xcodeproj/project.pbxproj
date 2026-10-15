@@ -33,6 +33,7 @@
 		E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */; };
 		E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */; };
 		E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */; };
+		E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75668CF30810BD3007073A2 /* UserDetailDTO.swift */; };
 		E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7617179307CEEE9002C66EB /* AppDelegate.swift */; };
 		E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717B307CEEE9002C66EB /* SceneDelegate.swift */; };
 		E761717E307CEEE9002C66EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717D307CEEE9002C66EB /* ViewController.swift */; };
@@ -94,6 +95,7 @@
 		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
 		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
 		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		E75668CF30810BD3007073A2 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDetailDTO.swift; path = Modules/UserDetail/UserDetailDTO.swift; sourceTree = "<group>"; };
 		E7617176307CEEE9002C66EB /* ColleagueConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7617179307CEEE9002C66EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E761717B307CEEE9002C66EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 		E7617178307CEEE9002C66EB /* ColleagueConnect */ = {
 			isa = PBXGroup;
 			children = (
+				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
 				E718C5B0307E059300F11C12 /* Core */,
 				E76171AD307CFB55002C66EB /* Modules */,
 				E76171A9307CF8CD002C66EB /* App */,
@@ -457,6 +460,7 @@
 				E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */,
 				E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */,
 				E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */,
+				E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */,
 				E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */,
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
 				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
