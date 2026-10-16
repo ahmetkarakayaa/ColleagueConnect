@@ -16,12 +16,13 @@
 		E7526EF23082553200605B11 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EEA3082553200605B11 /* UserDetailViewController.swift */; };
 		E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF33082564900605B11 /* Optional+Extension.swift */; };
 		E7526F0030825E5400605B11 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF530825E5400605B11 /* AppTheme.swift */; };
-		E7526F0130825E5400605B11 /* GitHubUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF730825E5400605B11 /* GitHubUser.swift */; };
 		E7526F0230825E5400605B11 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF930825E5400605B11 /* APIEndpoint.swift */; };
 		E7526F0330825E5400605B11 /* GitHubEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFA30825E5400605B11 /* GitHubEndpoint.swift */; };
 		E7526F0430825E5400605B11 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFB30825E5400605B11 /* NetworkClient.swift */; };
 		E7526F0530825E5400605B11 /* FavoriteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */; };
 		E7526F093082606B00605B11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E7526F083082606B00605B11 /* Kingfisher */; };
+		E7526F0C308267CB00605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */; };
+		E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */; };
 		E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7617179307CEEE9002C66EB /* AppDelegate.swift */; };
 		E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717B307CEEE9002C66EB /* SceneDelegate.swift */; };
 		E761717E307CEEE9002C66EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717D307CEEE9002C66EB /* ViewController.swift */; };
@@ -67,11 +68,12 @@
 		E7526EEA3082553200605B11 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		E7526EF33082564900605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
 		E7526EF530825E5400605B11 /* AppTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
-		E7526EF730825E5400605B11 /* GitHubUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUser.swift; sourceTree = "<group>"; };
 		E7526EF930825E5400605B11 /* APIEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		E7526EFA30825E5400605B11 /* GitHubEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubEndpoint.swift; sourceTree = "<group>"; };
 		E7526EFB30825E5400605B11 /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteStorageService.swift; sourceTree = "<group>"; };
+		E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
+		E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
 		E7617176307CEEE9002C66EB /* ColleagueConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7617179307CEEE9002C66EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E761717B307CEEE9002C66EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,7 +148,8 @@
 		E7526EF830825E5400605B11 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E7526EF730825E5400605B11 /* GitHubUser.swift */,
+				E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */,
+				E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,13 +422,11 @@
 				E7526EF13082553200605B11 /* UserDetailRouter.swift in Sources */,
 				E7526F0230825E5400605B11 /* APIEndpoint.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
-				E7526EDF30824D1300605B11 /* GitHubEndpoint.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
-				E7526F0130825E5400605B11 /* GitHubUser.swift in Sources */,
 				E76171B4307CFCCD002C66EB /* WelcomeInteractor.swift in Sources */,
-				E7526EDE30824D1300605B11 /* APIEndpoint.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
 				E761717E307CEEE9002C66EB /* ViewController.swift in Sources */,
+				E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */,
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */,
 				E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */,
@@ -433,6 +434,7 @@
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
 				E7526EEC3082553200605B11 /* UserDetailContracts.swift in Sources */,
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
+				E7526F0C308267CB00605B11 /* GitHubSearchResponse.swift in Sources */,
 				E7526F0430825E5400605B11 /* NetworkClient.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,
 			);
