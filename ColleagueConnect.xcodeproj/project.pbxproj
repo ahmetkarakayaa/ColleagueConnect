@@ -10,7 +10,6 @@
 		E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B2307E062A00F11C12 /* APIEndpoint.swift */; };
 		E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */; };
 		E718C5B7307E075500F11C12 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B6307E075500F11C12 /* NetworkClient.swift */; };
-		E718C5BA307E091A00F11C12 /* GitHubUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B9307E091A00F11C12 /* GitHubUser.swift */; };
 		E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5BC307E0D5400F11C12 /* SearchViewController.swift */; };
 		E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */; };
 		E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */; };
@@ -33,6 +32,9 @@
 		E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */; };
 		E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */; };
 		E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */; };
+		E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */; };
+		E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */; };
+		E7526F143082703700605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F133082703700605B11 /* Optional+Extension.swift */; };
 		E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75668CF30810BD3007073A2 /* UserDetailDTO.swift */; };
 		E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7617179307CEEE9002C66EB /* AppDelegate.swift */; };
 		E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717B307CEEE9002C66EB /* SceneDelegate.swift */; };
@@ -95,6 +97,9 @@
 		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
 		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
 		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
+		E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
+		E7526F133082703700605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
 		E75668CF30810BD3007073A2 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDetailDTO.swift; path = Modules/UserDetail/UserDetailDTO.swift; sourceTree = "<group>"; };
 		E7617176307CEEE9002C66EB /* ColleagueConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7617179307CEEE9002C66EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +152,7 @@
 		E718C5B0307E059300F11C12 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E7526F1030826EC200605B11 /* Models */,
 				E718C5D0307E1F3300F11C12 /* Services */,
 				E718C5C8307E1AD600F11C12 /* DesignSystem */,
 				E718C5B8307E090100F11C12 /* Models */,
@@ -219,6 +225,7 @@
 		E718C5E0307E368800F11C12 /* UserDetail */ = {
 			isa = PBXGroup;
 			children = (
+				E7526F133082703700605B11 /* Optional+Extension.swift */,
 				E718C5E1307E36A100F11C12 /* UserDetailContracts.swift */,
 				E718C5E3307E36B000F11C12 /* UserDetailEntity.swift */,
 				E718C5E5307E36C200F11C12 /* UserDetailInteractor.swift */,
@@ -227,6 +234,15 @@
 				E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */,
 			);
 			path = UserDetail;
+			sourceTree = "<group>";
+		};
+		E7526F1030826EC200605B11 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */,
+				E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E761716D307CEEE9002C66EB = {
@@ -461,6 +477,7 @@
 				E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */,
 				E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */,
 				E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */,
+				E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */,
 				E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */,
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
 				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
@@ -472,8 +489,8 @@
 				E718C5D5307E28EA00F11C12 /* FavoritesViewController.swift in Sources */,
 				E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
-				E718C5BA307E091A00F11C12 /* GitHubUser.swift in Sources */,
 				E718C5CF307E1D3F00F11C12 /* SearchUserCell.swift in Sources */,
+				E7526F143082703700605B11 /* Optional+Extension.swift in Sources */,
 				E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */,
 				E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */,
 				E718C5DB307E292F00F11C12 /* FavoritesEntity.swift in Sources */,
@@ -487,6 +504,7 @@
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
 				E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */,
 				E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */,
+				E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,
 				E718C5C7307E0DAB00F11C12 /* SearchModuleContracts.swift in Sources */,
 			);
