@@ -326,13 +326,3 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         presenter?.didTapGitHub()
     }
 }
-
-
-private extension Optional where Wrapped == String {
-
-    /// Returns the string only if it is non-nil and not empty.
-    var nonEmpty: String? {
-        guard let self, !self.isEmpty else { return nil }
-        return self
-    }
-}
