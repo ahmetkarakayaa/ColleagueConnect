@@ -1,5 +1,6 @@
 
 import Foundation
+import OSLog
 
 @MainActor
 final class SearchPresenter: SearchViewOutput {
@@ -8,6 +9,11 @@ final class SearchPresenter: SearchViewOutput {
 
     private let interactor: SearchInteractorInput
     private let router: SearchRouterInput
+    private let favoriteService: FavoriteStorageServiceProtocol
+    private let logger = Logger(
+        subsystem: "ColleagueConnect",
+        category: "SearchPresenter"
+    )
 
 
     private var searchTask: Task<Void, Never>?
@@ -22,12 +28,15 @@ final class SearchPresenter: SearchViewOutput {
 
     private var profileCache: [String: CachedProfile] = [:]
 
+    
     init(
         interactor: SearchInteractorInput,
-        router: SearchRouterInput
+        router: SearchRouterInput,
+        favoriteService: FavoriteStorageServiceProtocol
     ) {
         self.interactor = interactor
         self.router = router
+        self.favoriteService = favoriteService
     }
 
 
@@ -56,19 +65,23 @@ final class SearchPresenter: SearchViewOutput {
 
                 view?.displayLoading()
 
-                let users = try await interactor.searchUsers(
+                
+                
+                let response = try await interactor.searchUsers(
                     query: trimmedQuery
                 )
 
                 try Task.checkCancellation()
 
-                let viewModels = users.map { user in
+                let viewModels = response.items.map { user in
                     SearchUserViewModel(
                         id: user.id,
-                        username: user.username,
+                        username: user.login,
                         avatarURL: user.avatarURL
                     )
                 }
+
+
 
                 if viewModels.isEmpty {
                     view?.displayEmpty()
@@ -82,11 +95,13 @@ final class SearchPresenter: SearchViewOutput {
             } catch {
                 guard !Task.isCancelled else { return }
 
-                if isConnectionError(error) {
+                
+                if case NetworkError.offline = error {
                     view?.displayError(.offline)
                 } else {
                     view?.displayError(.general)
                 }
+
             }
         }
     }
@@ -94,7 +109,6 @@ final class SearchPresenter: SearchViewOutput {
 
     func loadUserDetails(username: String) {
 
-        // 1. Daha önce yüklenmişse önbellekten göster.
         if let cached = profileCache[username] {
             view?.displayUserDetails(
                 username: username,
@@ -133,38 +147,19 @@ final class SearchPresenter: SearchViewOutput {
                     bio: detail.bio
                 )
 
+            
             } catch is CancellationError {
                 return
-
             } catch {
+                guard !Task.isCancelled else { return }
 
-                return
+                logger.error(
+                    "Failed to load details for \(username): \(error.localizedDescription)"
+                )
             }
-        }
+
     }
-
-
-    private func isConnectionError(
-        _ error: Error
-    ) -> Bool {
-
-        let nsError = error as NSError
-
-        guard nsError.domain == NSURLErrorDomain else {
-            return false
-        }
-
-        switch nsError.code {
-        case NSURLErrorNotConnectedToInternet,
-             NSURLErrorNetworkConnectionLost,
-             NSURLErrorDataNotAllowed:
-            return true
-
-        default:
-            return false
-        }
-    }
-
+}
 
     func didSelectUser(
         _ user: SearchUserViewModel
@@ -173,17 +168,20 @@ final class SearchPresenter: SearchViewOutput {
             username: user.username
         )
     }
-
-
+    
     func toggleFavorite(username: String) {
-        interactor.toggleFavorite(
-            username: username
-        )
+        if favoriteService.isFavorite(username: username) {
+            favoriteService.removeFavorite(username: username)
+        } else {
+            favoriteService.addFavorite(username: username)
+        }
     }
 
     func isFavorite(username: String) -> Bool {
-        interactor.isFavorite(
-            username: username
-        )
+        favoriteService.isFavorite(username: username)
     }
+
+
+
+    
 }

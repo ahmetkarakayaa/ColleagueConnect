@@ -19,6 +19,7 @@ protocol SearchViewInput: AnyObject {
     )
 }
 
+
 @MainActor
 protocol SearchViewOutput: AnyObject {
     func searchUsers(query: String)
@@ -31,16 +32,16 @@ protocol SearchViewOutput: AnyObject {
 }
 
 
+
+
 protocol SearchInteractorInput {
-    func searchUsers(query: String) async throws -> [SearchUserEntity]
+    func searchUsers(query: String) async throws -> GitHubSearchResponse
 
     func fetchUserDetails(
         username: String
     ) async throws -> UserDetailEntity
-
-    func toggleFavorite(username: String)
-    func isFavorite(username: String) -> Bool
 }
+
 
 @MainActor
 protocol SearchRouterInput: AnyObject {

@@ -6,15 +6,12 @@ final class SearchRouter: SearchRouterInput {
 
     weak var viewController: UIViewController?
 
-    private let networkClient: NetworkClientProtocol
-    private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let makeUserDetail: @MainActor (String) -> UIViewController
 
     init(
-        networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        makeUserDetail: @escaping @MainActor (String) -> UIViewController
     ) {
-        self.networkClient = networkClient
-        self.favoriteStorage = favoriteStorage
+        self.makeUserDetail = makeUserDetail
     }
 
     static func createModule(
@@ -25,18 +22,21 @@ final class SearchRouter: SearchRouterInput {
         let view = SearchViewController()
 
         let interactor = SearchInteractor(
-            networkClient: networkClient,
-            favoriteService: favoriteStorage
+            networkClient: networkClient
         )
 
-        let router = SearchRouter(
-            networkClient: networkClient,
-            favoriteStorage: favoriteStorage
-        )
+        let router = SearchRouter(makeUserDetail: { username in
+            UserDetailRouter.createModule(
+                username: username,
+                networkClient: networkClient,
+                favoriteStorage: favoriteStorage
+            )
+        })
 
         let presenter = SearchPresenter(
             interactor: interactor,
-            router: router
+            router: router,
+            favoriteService: favoriteStorage
         )
 
         view.presenter = presenter
@@ -47,11 +47,7 @@ final class SearchRouter: SearchRouterInput {
     }
 
     func showUserDetail(username: String) {
-        let detailViewController = UserDetailRouter.createModule(
-            username: username,
-            networkClient: networkClient,
-            favoriteStorage: favoriteStorage
-        )
+        let detailViewController = makeUserDetail(username)
 
         viewController?.navigationController?.pushViewController(
             detailViewController,
