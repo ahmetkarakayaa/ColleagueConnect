@@ -4,12 +4,62 @@ import Kingfisher
 final class SearchUserCell: UICollectionViewCell {
     static let reuseIdentifier = "SearchUserCell"
 
-    // MARK: - Interface
-    private let avatarImageView = UIImageView()
-    private let nameLabel = UILabel()
-    private let usernameLabel = UILabel()
-    private let bioLabel = UILabel()
-    private let favoriteButton = UIButton(type: .custom)
+
+    private lazy var avatarImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 32
+        imageView.tintColor = .tertiaryLabel
+        return imageView
+    }()
+
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.textColor = AppTheme.Colors.primaryText
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 1
+        return label
+    }()
+
+    private lazy var usernameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = AppTheme.Colors.accent
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 1
+        return label
+    }()
+
+    private lazy var bioLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 11)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 2
+        label.lineBreakMode = .byTruncatingTail
+        label.isHidden = true
+        return label
+    }()
+
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tintColor = AppTheme.Colors.accent
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.contentEdgeInsets = UIEdgeInsets(
+            top: 4,
+            left: 4,
+            bottom: 4,
+            right: 4
+        )
+        button.addTarget(
+            self,
+            action: #selector(favoriteButtonTapped),
+            for: .touchUpInside
+        )
+        return button
+    }()
     private let burstLayer = CAShapeLayer()
     private var representedUsername: String?
     var onFavoriteTapped: (() -> Void)?
@@ -47,7 +97,6 @@ final class SearchUserCell: UICollectionViewCell {
 
     private func configureProfile(username: String, avatarURL: URL?, isFavorite: Bool) {
         representedUsername = username
-        // Detail isteği tamamlanana kadar kullanıcı adı ana başlıktır.
         nameLabel.text = username
         usernameLabel.text = "@\(username)"
         bioLabel.text = nil
@@ -159,33 +208,6 @@ final class SearchUserCell: UICollectionViewCell {
         layer.shadowRadius = 12
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.masksToBounds = false
-
-        avatarImageView.contentMode = .scaleAspectFill
-        avatarImageView.clipsToBounds = true
-        avatarImageView.layer.cornerRadius = 32
-        avatarImageView.tintColor = .tertiaryLabel
-
-        nameLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        nameLabel.textColor = AppTheme.Colors.primaryText
-        nameLabel.lineBreakMode = .byTruncatingTail
-        nameLabel.numberOfLines = 1
-
-        usernameLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        usernameLabel.textColor = AppTheme.Colors.accent
-        usernameLabel.lineBreakMode = .byTruncatingTail
-        usernameLabel.numberOfLines = 1
-
-        bioLabel.font = .systemFont(ofSize: 11)
-        bioLabel.textColor = .secondaryLabel
-        bioLabel.numberOfLines = 2
-        bioLabel.lineBreakMode = .byTruncatingTail
-        bioLabel.isHidden = true
-
-        favoriteButton.tintColor = AppTheme.Colors.accent
-        favoriteButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        favoriteButton.imageView?.contentMode = .scaleAspectFit
-        favoriteButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
-        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
 
         [avatarImageView, nameLabel, usernameLabel, bioLabel, favoriteButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
