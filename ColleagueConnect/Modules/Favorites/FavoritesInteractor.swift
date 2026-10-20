@@ -24,9 +24,9 @@ final class FavoritesInteractor: FavoritesInteractorInput {
     }
 
 
-    func fetchFavoriteUsers() async throws -> [FavoriteUserViewModel] {
+    func fetchFavoriteUsers() async throws -> [UserDetailDTO] {
         let usernames = favoriteService.getFavorites()
-        var users: [FavoriteUserViewModel] = []
+        var users: [UserDetailDTO] = []
 
         for username in usernames {
             try Task.checkCancellation()
@@ -36,22 +36,7 @@ final class FavoritesInteractor: FavoritesInteractorInput {
             )
 
             try Task.checkCancellation()
-
-            let detail = dto.toEntity()
-
-            guard let avatarURL = detail.avatarURL
-                ?? URL(string: "https://github.com/\(username).png") else {
-                continue
-            }
-
-            users.append(
-                FavoriteUserViewModel(
-                    username: detail.login,
-                    avatarURL: avatarURL,
-                    name: detail.name,
-                    bio: detail.bio
-                )
-            )
+            users.append(dto)
         }
 
         return users

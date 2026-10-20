@@ -31,7 +31,6 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
     func filterFavorites(query: String) {
         currentQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        // Do not replace a loading/error state while no profiles are loaded.
         guard activeRequestID == nil else { return }
         displayFilteredFavorites()
     }
@@ -42,8 +41,6 @@ final class FavoritesPresenter: FavoritesViewOutput {
             $0.username.caseInsensitiveCompare(username) == .orderedSame
         }
 
-        // A pending response may have started before the favorite was removed.
-        // Cancel it and reload the remaining saved users instead of showing stale data.
         if activeRequestID != nil {
             loadFavorites()
         } else {
@@ -78,7 +75,20 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
                 activeRequestID = nil
                 loadingTask = nil
-                allFavorites = users
+                allFavorites = users.compactMap { dto in
+                    let detail = dto.toEntity()
+                    guard let avatarURL = detail.avatarURL
+                        ?? URL(string: "https://github.com/\(detail.login).png") else {
+                        return nil
+                    }
+
+                    return FavoriteUserViewModel(
+                        username: detail.login,
+                        avatarURL: avatarURL,
+                        name: detail.name,
+                        bio: detail.bio
+                    )
+                }
                 displayFilteredFavorites()
             } catch is CancellationError {
                 return
@@ -92,7 +102,6 @@ final class FavoritesPresenter: FavoritesViewOutput {
     }
 
     private func displayFilteredFavorites() {
-        // Empty saved list and no matching search results are different states.
         guard !interactor.getFavorites().isEmpty else {
             view?.displayEmpty()
             return
