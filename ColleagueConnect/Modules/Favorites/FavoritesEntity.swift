@@ -19,3 +19,10 @@ struct FavoriteUserViewModel: Hashable {
         self.bio = bio
     }
 }
+
+struct FavoriteUserProfile {
+    let username: String
+    let avatarURL: URL?
+    let name: String?
+    let bio: String?
+}

@@ -31,12 +31,15 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
     func filterFavorites(query: String) {
         currentQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+
         guard activeRequestID == nil else { return }
+
         displayFilteredFavorites()
     }
 
     func removeFavorite(username: String) {
         interactor.removeFavorite(username: username)
+
         allFavorites.removeAll {
             $0.username.caseInsensitiveCompare(username) == .orderedSame
         }
@@ -54,10 +57,12 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
     private func loadFavorites() {
         loadingTask?.cancel()
+        loadingTask = nil
         activeRequestID = nil
 
-        if interactor.getFavorites().isEmpty {
-            loadingTask = nil
+        let usernames = interactor.getFavorites()
+
+        guard !usernames.isEmpty else {
             allFavorites = []
             displayFilteredFavorites()
             return
@@ -69,34 +74,58 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
         loadingTask = Task { [weak self] in
             guard let self else { return }
+
             do {
-                let users = try await interactor.fetchFavoriteUsers()
-                guard !Task.isCancelled, activeRequestID == requestID else { return }
+                var users: [FavoriteUserViewModel] = []
+
+                for username in usernames {
+                    try Task.checkCancellation()
+
+                    let profile = try await interactor.fetchFavoriteUser(
+                        username: username
+                    )
+
+                    try Task.checkCancellation()
+
+                    guard let avatarURL = profile.avatarURL
+                        ?? URL(string: "https://github.com/\(username).png")
+                    else {
+                        continue
+                    }
+
+                    users.append(
+                        FavoriteUserViewModel(
+                            username: profile.username,
+                            avatarURL: avatarURL,
+                            name: profile.name,
+                            bio: profile.bio
+                        )
+                    )
+                }
+
+                guard !Task.isCancelled,
+                      activeRequestID == requestID else {
+                    return
+                }
 
                 activeRequestID = nil
                 loadingTask = nil
-                allFavorites = users.compactMap { dto in
-                    let detail = dto.toEntity()
-                    guard let avatarURL = detail.avatarURL
-                        ?? URL(string: "https://github.com/\(detail.login).png") else {
-                        return nil
-                    }
-
-                    return FavoriteUserViewModel(
-                        username: detail.login,
-                        avatarURL: avatarURL,
-                        name: detail.name,
-                        bio: detail.bio
-                    )
-                }
+                allFavorites = users
                 displayFilteredFavorites()
+
             } catch is CancellationError {
                 return
             } catch {
-                guard !Task.isCancelled, activeRequestID == requestID else { return }
+                guard !Task.isCancelled,
+                      activeRequestID == requestID else {
+                    return
+                }
+
                 activeRequestID = nil
                 loadingTask = nil
-                view?.displayError("Favoriler yüklenemedi. Lütfen tekrar deneyin.")
+                view?.displayError(
+                    "Favoriler yüklenemedi. Lütfen tekrar deneyin."
+                )
             }
         }
     }

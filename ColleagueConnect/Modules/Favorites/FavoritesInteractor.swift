@@ -14,7 +14,6 @@ final class FavoritesInteractor: FavoritesInteractorInput {
         self.networkClient = networkClient
     }
 
-
     func getFavorites() -> [String] {
         favoriteService.getFavorites()
     }
@@ -23,22 +22,22 @@ final class FavoritesInteractor: FavoritesInteractorInput {
         favoriteService.removeFavorite(username: username)
     }
 
+    func fetchFavoriteUser(username: String) async throws -> FavoriteUserProfile {
+        try Task.checkCancellation()
 
-    func fetchFavoriteUsers() async throws -> [UserDetailDTO] {
-        let usernames = favoriteService.getFavorites()
-        var users: [UserDetailDTO] = []
+        let dto: UserDetailDTO = try await networkClient.request(
+            endpoint: GitHubEndpoint.userDetail(username: username)
+        )
 
-        for username in usernames {
-            try Task.checkCancellation()
+        try Task.checkCancellation()
 
-            let dto: UserDetailDTO = try await networkClient.request(
-                endpoint: GitHubEndpoint.userDetail(username: username)
-            )
+        let detail = dto.toEntity()
 
-            try Task.checkCancellation()
-            users.append(dto)
-        }
-
-        return users
+        return FavoriteUserProfile(
+            username: detail.login,
+            avatarURL: detail.avatarURL,
+            name: detail.name,
+            bio: detail.bio
+        )
     }
 }
