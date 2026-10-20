@@ -9,8 +9,8 @@ final class AppRouter {
     private let favoriteStorage: FavoriteStorageServiceProtocol
 
     init(
-        networkClient: NetworkClientProtocol = NetworkClient(),
-        favoriteStorage: FavoriteStorageServiceProtocol = FavoriteStorageService()
+        networkClient: NetworkClientProtocol,
+        favoriteStorage: FavoriteStorageServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
