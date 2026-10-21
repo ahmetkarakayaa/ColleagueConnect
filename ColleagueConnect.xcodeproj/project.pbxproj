@@ -39,6 +39,9 @@
 		E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */; };
 		E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */; };
 		E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B9307CFCFE002C66EB /* ModuleContracts.swift */; };
+		E7DE6CF13088AF43007EF474 /* TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DE6CF03088AF43007EF474 /* TokenStorageProtocol.swift */; };
+		E7DE6CF33088AFAF007EF474 /* KeychainTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DE6CF23088AFAF007EF474 /* KeychainTokenStorage.swift */; };
+		E7DE6CF53088CCA5007EF474 /* KeychainTokenStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DE6CF43088CCA5007EF474 /* KeychainTokenStorageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +97,9 @@
 		E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeEntity.swift; sourceTree = "<group>"; };
 		E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeRouter.swift; sourceTree = "<group>"; };
 		E76171B9307CFCFE002C66EB /* ModuleContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleContracts.swift; sourceTree = "<group>"; };
+		E7DE6CF03088AF43007EF474 /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		E7DE6CF23088AFAF007EF474 /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTokenStorage.swift; sourceTree = "<group>"; };
+		E7DE6CF43088CCA5007EF474 /* KeychainTokenStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTokenStorageTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +174,8 @@
 			isa = PBXGroup;
 			children = (
 				E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */,
+				E7DE6CF03088AF43007EF474 /* TokenStorageProtocol.swift */,
+				E7DE6CF23088AFAF007EF474 /* KeychainTokenStorage.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -230,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				E7617190307CEEEC002C66EB /* ColleagueConnectTests.swift */,
+				E7DE6CF43088CCA5007EF474 /* KeychainTokenStorageTests.swift */,
 			);
 			path = ColleagueConnectTests;
 			sourceTree = "<group>";
@@ -422,6 +431,7 @@
 				E7526EF13082553200605B11 /* UserDetailRouter.swift in Sources */,
 				E7526F0230825E5400605B11 /* APIEndpoint.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
+				E7DE6CF33088AFAF007EF474 /* KeychainTokenStorage.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
 				E76171B4307CFCCD002C66EB /* WelcomeInteractor.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
@@ -429,6 +439,7 @@
 				E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */,
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */,
+				E7DE6CF13088AF43007EF474 /* TokenStorageProtocol.swift in Sources */,
 				E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */,
 				E7526F0330825E5400605B11 /* GitHubEndpoint.swift in Sources */,
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
@@ -445,6 +456,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7617191307CEEEC002C66EB /* ColleagueConnectTests.swift in Sources */,
+				E7DE6CF53088CCA5007EF474 /* KeychainTokenStorageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
