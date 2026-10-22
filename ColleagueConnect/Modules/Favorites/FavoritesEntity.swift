@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct FavoriteUserViewModel: Hashable {
+struct FavoriteUserViewModel: Hashable, Sendable {
     let username: String
     let avatarURL: URL?
     let name: String?
@@ -20,7 +20,7 @@ struct FavoriteUserViewModel: Hashable {
     }
 }
 
-struct FavoriteUserProfile {
+struct FavoriteUserProfile: Sendable {
     let username: String
     let avatarURL: URL?
     let name: String?
