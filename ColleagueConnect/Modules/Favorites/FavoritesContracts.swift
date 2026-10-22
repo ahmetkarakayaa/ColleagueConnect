@@ -1,4 +1,10 @@
 import Foundation
+enum FavoritesSortOption {
+    case newest
+    case oldest
+    case alphabetical
+    case reverseAlphabetical
+}
 
 @MainActor
 protocol FavoritesViewInput: AnyObject {
@@ -16,6 +22,8 @@ protocol FavoritesViewOutput: AnyObject {
     func filterFavorites(query: String)
     func removeFavorite(username: String)
     func didSelectUser(_ user: FavoriteUserViewModel)
+    func sortFavorites(by option: FavoritesSortOption)
+    func retryFavorites()
 }
 
 protocol FavoritesInteractorInput {

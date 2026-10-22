@@ -5,14 +5,6 @@ final class FavoritesViewController: UIViewController {
     private enum Section {
         case main
     }
-    private enum SortOption {
-        case newest
-        case oldest
-        case alphabetical
-        case reverseAlphabetical
-    }
-    private var sortOption: SortOption = .newest
-    private var currentUsers: [FavoriteUserViewModel] = []
     private var isSearchActive = false
     private lazy var headerContainer = UIView()
     private lazy var searchBar = UISearchBar()
@@ -104,7 +96,7 @@ final class FavoritesViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(
             true,
-            animated: false
+            animated: animated
         )
         presenter.viewWillAppear()
     }
@@ -112,7 +104,7 @@ final class FavoritesViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(
             false,
-            animated: false
+            animated: animated
         )
     }
     private func setupUI() {
@@ -424,62 +416,29 @@ final class FavoritesViewController: UIViewController {
     private func setupSortMenu() {
         sortButton.menu = UIMenu(children: [
             UIAction(title: "Newest added") { [weak self] _ in
-                self?.sortOption = .newest
-                self?.sortButton.setTitle(
-                    "Sort: Recent",
-                    for: .normal
-                )
-                self?.refreshSortedUsers()
+                self?.presenter.sortFavorites(by: .newest)
+                self?.sortButton.setTitle("Sort: Recent", for: .normal)
             },
+
             UIAction(title: "Oldest added") { [weak self] _ in
-                self?.sortOption = .oldest
-                self?.sortButton.setTitle(
-                    "Sort: Oldest",
-                    for: .normal
-                )
-                self?.refreshSortedUsers()
+                self?.presenter.sortFavorites(by: .oldest)
+                self?.sortButton.setTitle("Sort: Oldest", for: .normal)
             },
+
             UIAction(title: "Username A–Z") { [weak self] _ in
-                self?.sortOption = .alphabetical
-                self?.sortButton.setTitle(
-                    "Sort: A–Z",
-                    for: .normal
-                )
-                self?.refreshSortedUsers()
+                self?.presenter.sortFavorites(by: .alphabetical)
+                self?.sortButton.setTitle("Sort: A–Z", for: .normal)
             },
+
             UIAction(title: "Username Z–A") { [weak self] _ in
-                self?.sortOption = .reverseAlphabetical
-                self?.sortButton.setTitle(
-                    "Sort: Z–A",
-                    for: .normal
-                )
-                self?.refreshSortedUsers()
+                self?.presenter.sortFavorites(by: .reverseAlphabetical)
+                self?.sortButton.setTitle("Sort: Z–A", for: .normal)
             }
         ])
+
         sortButton.showsMenuAsPrimaryAction = true
     }
-    private func refreshSortedUsers() {
-        let sorted: [FavoriteUserViewModel]
-        switch sortOption {
-        case .newest:
-            sorted = currentUsers
-        case .oldest:
-            sorted = Array(currentUsers.reversed())
-        case .alphabetical:
-            sorted = currentUsers.sorted {
-                $0.username.localizedCaseInsensitiveCompare(
-                    $1.username
-                ) == .orderedAscending
-            }
-        case .reverseAlphabetical:
-            sorted = currentUsers.sorted {
-                $0.username.localizedCaseInsensitiveCompare(
-                    $1.username
-                ) == .orderedDescending
-            }
-        }
-        updateUsers(sorted)
-    }
+    
     private func updateUsers(_ users: [FavoriteUserViewModel]) {
         var snapshot = NSDiffableDataSourceSnapshot<
             Section,
@@ -493,7 +452,7 @@ final class FavoritesViewController: UIViewController {
         )
     }
     @objc private func retryTapped() {
-        presenter.viewWillAppear()
+        presenter.retryFavorites()
     }
 }
 extension FavoritesViewController: UISearchBarDelegate {
@@ -534,13 +493,11 @@ extension FavoritesViewController: FavoritesViewInput {
     func displayFavorites(_ users: [FavoriteUserViewModel]) {
         emptyStateImageView.isHidden = true
         activityIndicator.stopAnimating()
-        currentUsers = users
         resultsLabel.text = "\(users.count) saved"
         messageLabel.isHidden = true
         retryButton.isHidden = true
         collectionView.isHidden = false
-        refreshSortedUsers()
-    }
+        updateUsers(users)    }
     func displayLoading() {
         messageLabel.isHidden = true
         retryButton.isHidden = true
@@ -550,7 +507,6 @@ extension FavoritesViewController: FavoritesViewInput {
     }
     func displayEmpty() {
         activityIndicator.stopAnimating()
-        currentUsers = []
         updateUsers([])
         resultsLabel.text = "0 saved"
         collectionView.isHidden = true
@@ -560,7 +516,6 @@ extension FavoritesViewController: FavoritesViewInput {
     }
     func displayNoResults() {
         activityIndicator.stopAnimating()
-        currentUsers = []
         updateUsers([])
         resultsLabel.text = "0 matches"
         collectionView.isHidden = true
@@ -571,7 +526,6 @@ extension FavoritesViewController: FavoritesViewInput {
     }
     func displayError(_ message: String) {
         activityIndicator.stopAnimating()
-        currentUsers = []
         updateUsers([])
         collectionView.isHidden = true
         messageLabel.isHidden = false
