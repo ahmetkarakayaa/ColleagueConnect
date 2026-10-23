@@ -1,6 +1,7 @@
 
 import Foundation
 import Security
+import KeychainSwift
 
 enum TokenStorageError: Error {
     case invalidToken
@@ -10,80 +11,51 @@ enum TokenStorageError: Error {
 
 final class KeychainTokenStorage: TokenStorageProtocol {
 
-    private let service: String
-    private let account: String
+    private let keychain: KeychainSwift
+    private let tokenKey: String
 
     init(
         service: String = Bundle.main.bundleIdentifier ?? "ColleagueConnect",
         account: String = "github_access_token"
     ) {
-        self.service = service
-        self.account = account
+        self.keychain = KeychainSwift()
+        self.tokenKey = "\(service).\(account)"
     }
 
     func saveToken(_ token: String) throws {
-        guard !token.isEmpty,
-              let data = token.data(using: .utf8) else {
+        guard !token.isEmpty else {
             throw TokenStorageError.invalidToken
         }
 
-        let query = baseQuery()
-
-        let attributes: [String: Any] = [
-            kSecValueData as String: data,
-            kSecAttrAccessible as String:
-                kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        ]
-
-        let updateStatus = SecItemUpdate(
-            query as CFDictionary,
-            attributes as CFDictionary
+        let saved = keychain.set(
+            token,
+            forKey: tokenKey,
+            withAccess: .accessibleAfterFirstUnlockThisDeviceOnly
         )
 
-        if updateStatus == errSecSuccess {
-            return
-        }
-
-        guard updateStatus == errSecItemNotFound else {
-            throw TokenStorageError.keychainError(updateStatus)
-        }
-
-        var addQuery = query
-        addQuery.merge(attributes) { _, new in new }
-
-        let addStatus = SecItemAdd(
-            addQuery as CFDictionary,
-            nil
-        )
-
-        guard addStatus == errSecSuccess else {
-            throw TokenStorageError.keychainError(addStatus)
+        guard saved else {
+            throw TokenStorageError.keychainError(
+                keychain.lastResultCode
+            )
         }
     }
 
     func getToken() throws -> String? {
-        var query = baseQuery()
+        guard let data = keychain.getData(tokenKey) else {
+            if keychain.lastResultCode == errSecItemNotFound {
+                return nil
+            }
 
-        query[kSecReturnData as String] = true
-        query[kSecMatchLimit as String] = kSecMatchLimitOne
+            guard keychain.lastResultCode == errSecSuccess else {
+                throw TokenStorageError.keychainError(
+                    keychain.lastResultCode
+                )
+            }
 
-        var result: CFTypeRef?
-
-        let status = SecItemCopyMatching(
-            query as CFDictionary,
-            &result
-        )
-
-        if status == errSecItemNotFound {
-            return nil
+            throw TokenStorageError.unexpectedData
         }
 
-        guard status == errSecSuccess else {
-            throw TokenStorageError.keychainError(status)
-        }
-
-        guard let data = result as? Data,
-              let token = String(data: data, encoding: .utf8) else {
+        guard let token = String(data: data, encoding: .utf8) else {
             throw TokenStorageError.unexpectedData
         }
 
@@ -91,21 +63,13 @@ final class KeychainTokenStorage: TokenStorageProtocol {
     }
 
     func deleteToken() throws {
-        let status = SecItemDelete(
-            baseQuery() as CFDictionary
-        )
+        let deleted = keychain.delete(tokenKey)
 
-        guard status == errSecSuccess ||
-              status == errSecItemNotFound else {
-            throw TokenStorageError.keychainError(status)
+        guard deleted ||
+              keychain.lastResultCode == errSecItemNotFound else {
+            throw TokenStorageError.keychainError(
+                keychain.lastResultCode
+            )
         }
-    }
-
-    private func baseQuery() -> [String: Any] {
-        [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account
-        ]
     }
 }
