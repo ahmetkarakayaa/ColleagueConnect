@@ -52,16 +52,16 @@
 		E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */; };
 		E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */; };
 		E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B9307CFCFE002C66EB /* ModuleContracts.swift */; };
-		E7B852C5308B9FFE00D88F0B /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C4308B9FFE00D88F0B /* OAuthConfiguration.swift */; };
-		E7B852C7308BA0C700D88F0B /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C6308BA0C700D88F0B /* AuthService.swift */; };
-		E7B852C9308BA0E700D88F0B /* OAuthCallbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C8308BA0E700D88F0B /* OAuthCallbackParser.swift */; };
-		E7B852CB308BA15300D88F0B /* GitHubAuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852CA308BA15200D88F0B /* GitHubAuthEndpoint.swift */; };
+		E7B852C5308B9FFE00D88F0B /* Core/Services/OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C4308B9FFE00D88F0B /* Core/Services/OAuthConfiguration.swift */; };
+		E7B852C7308BA0C700D88F0B /* Core/Services/AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C6308BA0C700D88F0B /* Core/Services/AuthService.swift */; };
+		E7B852C9308BA0E700D88F0B /* Core/Services/OAuthCallbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852C8308BA0E700D88F0B /* Core/Services/OAuthCallbackParser.swift */; };
+		E7B852CB308BA15300D88F0B /* Core/Network/GitHubAuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852CA308BA15200D88F0B /* Core/Network/GitHubAuthEndpoint.swift */; };
 		E7B852D0308BA28300D88F0B /* OAuthComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852CE308BA22C00D88F0B /* OAuthComponentTests.swift */; };
 		E7B852D1308BA28600D88F0B /* AuthServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852CC308BA1A500D88F0B /* AuthServiceTests.swift */; };
 		E7B852D4308BA3A400D88F0B /* TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852D2308BA3A400D88F0B /* TokenStorageProtocol.swift */; };
 		E7B852D5308BA3A500D88F0B /* KeychainTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852D3308BA3A400D88F0B /* KeychainTokenStorage.swift */; };
-		E7B852D7308BA3D800D88F0B /* KeychainTokenStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852D6308BA3D800D88F0B /* KeychainTokenStorageTests.swift */; };
 		E7B852DA308BA45600D88F0B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E7B852D9308BA45600D88F0B /* KeychainSwift */; };
+		E7B852DB308BA66D00D88F0B /* KeychainTokenStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B852D6308BA3D800D88F0B /* KeychainTokenStorageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,10 +135,10 @@
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E7A29A4A30875FE00091655B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		E7B852C4308B9FFE00D88F0B /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthConfiguration.swift; sourceTree = "<group>"; };
-		E7B852C6308BA0C700D88F0B /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		E7B852C8308BA0E700D88F0B /* OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthCallbackParser.swift; sourceTree = "<group>"; };
-		E7B852CA308BA15200D88F0B /* GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
+		E7B852C4308B9FFE00D88F0B /* Core/Services/OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core/Services/OAuthConfiguration.swift; sourceTree = "<group>"; };
+		E7B852C6308BA0C700D88F0B /* Core/Services/AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core/Services/AuthService.swift; sourceTree = "<group>"; };
+		E7B852C8308BA0E700D88F0B /* Core/Services/OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core/Services/OAuthCallbackParser.swift; sourceTree = "<group>"; };
+		E7B852CA308BA15200D88F0B /* Core/Network/GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core/Network/GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
 		E7B852CC308BA1A500D88F0B /* AuthServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthServiceTests.swift; sourceTree = "<group>"; };
 		E7B852CE308BA22C00D88F0B /* OAuthComponentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthComponentTests.swift; sourceTree = "<group>"; };
 		E7B852D2308BA3A400D88F0B /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenStorageProtocol.swift; sourceTree = "<group>"; };
@@ -295,10 +295,10 @@
 		E7617178307CEEE9002C66EB /* ColleagueConnect */ = {
 			isa = PBXGroup;
 			children = (
-				E7B852CA308BA15200D88F0B /* GitHubAuthEndpoint.swift */,
-				E7B852C8308BA0E700D88F0B /* OAuthCallbackParser.swift */,
-				E7B852C6308BA0C700D88F0B /* AuthService.swift */,
-				E7B852C4308B9FFE00D88F0B /* OAuthConfiguration.swift */,
+				E7B852CA308BA15200D88F0B /* Core/Network/GitHubAuthEndpoint.swift */,
+				E7B852C8308BA0E700D88F0B /* Core/Services/OAuthCallbackParser.swift */,
+				E7B852C6308BA0C700D88F0B /* Core/Services/AuthService.swift */,
+				E7B852C4308B9FFE00D88F0B /* Core/Services/OAuthConfiguration.swift */,
 				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
 				E718C5B0307E059300F11C12 /* Core */,
 				E76171AD307CFB55002C66EB /* Modules */,
@@ -523,16 +523,16 @@
 				E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */,
 				E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */,
 				E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */,
-				E7B852C7308BA0C700D88F0B /* AuthService.swift in Sources */,
+				E7B852C7308BA0C700D88F0B /* Core/Services/AuthService.swift in Sources */,
 				E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */,
 				E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */,
 				E7B852D4308BA3A400D88F0B /* TokenStorageProtocol.swift in Sources */,
 				E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */,
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
-				E7B852C5308B9FFE00D88F0B /* OAuthConfiguration.swift in Sources */,
+				E7B852C5308B9FFE00D88F0B /* Core/Services/OAuthConfiguration.swift in Sources */,
 				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
-				E7B852C9308BA0E700D88F0B /* OAuthCallbackParser.swift in Sources */,
+				E7B852C9308BA0E700D88F0B /* Core/Services/OAuthCallbackParser.swift in Sources */,
 				E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */,
 				E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
@@ -557,7 +557,7 @@
 				E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */,
 				E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */,
 				E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */,
-				E7B852CB308BA15300D88F0B /* GitHubAuthEndpoint.swift in Sources */,
+				E7B852CB308BA15300D88F0B /* Core/Network/GitHubAuthEndpoint.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,
 				E718C5C7307E0DAB00F11C12 /* SearchModuleContracts.swift in Sources */,
 			);
@@ -570,6 +570,7 @@
 				E7617191307CEEEC002C66EB /* ColleagueConnectTests.swift in Sources */,
 				E7B852D0308BA28300D88F0B /* OAuthComponentTests.swift in Sources */,
 				E7B852D1308BA28600D88F0B /* AuthServiceTests.swift in Sources */,
+				E7B852DB308BA66D00D88F0B /* KeychainTokenStorageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +579,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E761719B307CEEEC002C66EB /* ColleagueConnectUITests.swift in Sources */,
-				E7B852D7308BA3D800D88F0B /* KeychainTokenStorageTests.swift in Sources */,
 				E761719D307CEEED002C66EB /* ColleagueConnectUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
