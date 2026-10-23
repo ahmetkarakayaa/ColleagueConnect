@@ -24,7 +24,8 @@ final class AuthService: AuthServiceProtocol {
 
     private let configuration: OAuthConfiguration
     private let tokenStorage: TokenStorageProtocol
-    private let session: URLSession
+    private let networkClient: NetworkClientProtocol
+    private let callbackParser: OAuthCallbackParser
 
     private var pendingState: String?
 
@@ -35,78 +36,34 @@ final class AuthService: AuthServiceProtocol {
     ) {
         self.configuration = configuration
         self.tokenStorage = tokenStorage
-        self.session = session
+        self.networkClient = NetworkClient(session: session)
+        self.callbackParser = OAuthCallbackParser(
+            redirectURI: configuration.redirectURI
+        )
     }
 
     func makeAuthorizationURL() throws -> URL {
         let state = UUID().uuidString
+
+        let endpoint = GitHubAuthEndpoint(
+            configuration: configuration
+        )
+
+        let url = try endpoint.authorizationURL(
+            state: state
+        )
+
         pendingState = state
-
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "github.com"
-        components.path = "/login/oauth/authorize"
-        components.queryItems = [
-            URLQueryItem(
-                name: "client_id",
-                value: configuration.clientID
-            ),
-            URLQueryItem(
-                name: "redirect_uri",
-                value: configuration.redirectURI
-            ),
-            URLQueryItem(
-                name: "state",
-                value: state
-            )
-        ]
-
-        guard let url = components.url else {
-            throw AuthError.invalidAuthorizationURL
-        }
-
         return url
     }
 
     func handleCallback(_ url: URL) async throws {
-        guard let expectedURL = URL(
-            string: configuration.redirectURI
-        ),
-        url.scheme == expectedURL.scheme,
-        url.host == expectedURL.host,
-        url.path == expectedURL.path else {
-            throw AuthError.invalidCallback
-        }
-
-        guard let components = URLComponents(
-            url: url,
-            resolvingAgainstBaseURL: false
-        ) else {
-            throw AuthError.invalidCallback
-        }
-
-        let items = components.queryItems ?? []
-
-        func parameter(_ name: String) -> String? {
-            items.first { $0.name == name }?.value
-        }
-
-        guard let expectedState = pendingState,
-              let receivedState = parameter("state"),
-              receivedState == expectedState else {
-            throw AuthError.invalidState
-        }
+        let code = try callbackParser.authorizationCode(
+            from: url,
+            expectedState: pendingState
+        )
 
         pendingState = nil
-
-        if let error = parameter("error") {
-            throw AuthError.authorizationFailed(error)
-        }
-
-        guard let code = parameter("code"),
-              !code.isEmpty else {
-            throw AuthError.missingAuthorizationCode
-        }
 
         let token = try await exchangeCodeForToken(code)
         try tokenStorage.saveToken(token)
@@ -133,74 +90,26 @@ final class AuthService: AuthServiceProtocol {
         _ code: String
     ) async throws -> String {
 
-        guard let url = URL(
-            string: "https://github.com/login/oauth/access_token"
-        ) else {
-            throw AuthError.invalidAuthorizationURL
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-
-        request.setValue(
-            "application/json",
-            forHTTPHeaderField: "Accept"
+        let endpoint = GitHubAuthEndpoint(
+            configuration: configuration,
+            code: code
         )
-
-        request.setValue(
-            "application/x-www-form-urlencoded",
-            forHTTPHeaderField: "Content-Type"
-        )
-
-        var body = URLComponents()
-        body.queryItems = [
-            URLQueryItem(
-                name: "client_id",
-                value: configuration.clientID
-            ),
-            URLQueryItem(
-                name: "client_secret",
-                value: configuration.clientSecret
-            ),
-            URLQueryItem(
-                name: "code",
-                value: code
-            ),
-            URLQueryItem(
-                name: "redirect_uri",
-                value: configuration.redirectURI
-            )
-        ]
-
-        request.httpBody = body.percentEncodedQuery?
-            .data(using: .utf8)
-
-        let (data, response) = try await session.data(
-            for: request
-        )
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw AuthError.invalidResponse
-        }
-
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw AuthError.httpError(
-                httpResponse.statusCode
-            )
-        }
-
 
         let result: GitHubTokenResponse
 
         do {
-            result = try JSONDecoder().decode(
-                GitHubTokenResponse.self,
-                from: data
+            result = try await networkClient.request(
+                endpoint: endpoint
             )
-        } catch {
+        } catch NetworkError.invalidURL {
+            throw AuthError.invalidAuthorizationURL
+        } catch NetworkError.invalidResponse {
+            throw AuthError.invalidResponse
+        } catch NetworkError.httpError(let statusCode) {
+            throw AuthError.httpError(statusCode)
+        } catch is DecodingError {
             throw AuthError.invalidResponse
         }
-
 
         if let error = result.error {
             throw AuthError.authorizationFailed(error)
@@ -215,7 +124,7 @@ final class AuthService: AuthServiceProtocol {
     }
 }
 
-private struct GitHubTokenResponse: Decodable {
+struct GitHubTokenResponse: Decodable {
     let accessToken: String?
     let error: String?
 
