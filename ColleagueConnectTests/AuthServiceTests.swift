@@ -5,6 +5,92 @@ import Foundation
 
 final class  AuthServiceTests: XCTestCase {
 
+    func testInvalidTokenResponseThrowsInvalidResponse() async throws {
+        let callback = try makeCallbackURL()
+
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(
+                url: try XCTUnwrap(request.url),
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+
+            return (response, Data("invalid-json".utf8))
+        }
+
+        do {
+            try await service.handleCallback(callback)
+            XCTFail("Expected invalidResponse error")
+        } catch AuthError.invalidResponse {
+            XCTAssertNil(storage.token)
+        }
+    }
+
+    func testInvalidCallbackIsRejected() async throws {
+        _ = try service.makeAuthorizationURL()
+
+        let callback = try XCTUnwrap(
+            URL(string: "otherapp://auth?code=test&state=test")
+        )
+
+        do {
+            try await service.handleCallback(callback)
+            XCTFail("Expected invalidCallback")
+        } catch AuthError.invalidCallback {
+            XCTAssertNil(storage.token)
+        }
+    }
+
+    func testMissingAuthorizationCodeIsRejected() async throws {
+        let authorizationURL = try service.makeAuthorizationURL()
+        let components = try XCTUnwrap(
+            URLComponents(url: authorizationURL, resolvingAgainstBaseURL: false)
+        )
+        let state = try XCTUnwrap(
+            components.queryItems?.first(where: { $0.name == "state" })?.value
+        )
+
+        var callback = URLComponents()
+        callback.scheme = "colleagueconnect"
+        callback.host = "auth"
+        callback.queryItems = [URLQueryItem(name: "state", value: state)]
+
+        do {
+            try await service.handleCallback(
+                try XCTUnwrap(callback.url)
+            )
+            XCTFail("Expected missingAuthorizationCode")
+        } catch AuthError.missingAuthorizationCode {
+            XCTAssertNil(storage.token)
+        }
+    }
+
+    func testServerErrorDoesNotSaveToken() async throws {
+        let callback = try makeCallbackURL()
+
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(
+                url: try XCTUnwrap(request.url),
+                statusCode: 500,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+
+            return (response, Data())
+        }
+
+        do {
+            try await service.handleCallback(callback)
+            XCTFail("Expected httpError")
+        } catch AuthError.httpError(let statusCode) {
+            XCTAssertEqual(statusCode, 500)
+            XCTAssertNil(storage.token)
+        }
+    }
+
+
+
     private var storage: MockTokenStorage!
     private var session: URLSession!
     private var service: AuthService!

@@ -97,7 +97,6 @@ final class AuthService: AuthServiceProtocol {
             throw AuthError.invalidState
         }
 
-        // A callback is valid only once.
         pendingState = nil
 
         if let error = parameter("error") {
@@ -190,10 +189,18 @@ final class AuthService: AuthServiceProtocol {
             )
         }
 
-        let result = try JSONDecoder().decode(
-            GitHubTokenResponse.self,
-            from: data
-        )
+
+        let result: GitHubTokenResponse
+
+        do {
+            result = try JSONDecoder().decode(
+                GitHubTokenResponse.self,
+                from: data
+            )
+        } catch {
+            throw AuthError.invalidResponse
+        }
+
 
         if let error = result.error {
             throw AuthError.authorizationFailed(error)
