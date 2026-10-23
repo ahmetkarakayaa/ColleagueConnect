@@ -1,35 +1,71 @@
 # ColleagueConnect
 
-ColleagueConnect is an iOS application built with UIKit and VIPER architecture. It provides GitHub user search, profile details, and favorites management.
+ColleagueConnect is an iOS application built with UIKit and VIPER architecture. It uses the GitHub REST API to provide user search, profile details, and favourites management.
 
 ## Technologies
 
 - Swift
-- UIKit
-- VIPER
-- Async/Await
-- GitHub REST API
+- UIKit with programmatic Auto Layout
+- VIPER architecture
+- URLSession with async/await
+- GitHub REST API and OAuth 2.0
+- KeychainSwift for secure token storage
+- Kingfisher for image loading
+- XCTest for unit testing
+- Swift Package Manager
 
 ## Project Setup
 
 1. Clone the repository and open `ColleagueConnect.xcodeproj` in Xcode.
-2. Register a GitHub OAuth App under GitHub > Settings > Developer settings > OAuth Apps.
+2. Create a GitHub OAuth App under GitHub → Settings → Developer settings → OAuth Apps.
 3. Set the Authorization callback URL to `colleagueconnect://auth`.
 4. Copy `ColleagueConnect/Secrets.example.xcconfig` to `ColleagueConnect/Secrets.xcconfig`.
-5. Set `GITHUB_CLIENT_ID` in `Secrets.xcconfig` using your GitHub OAuth App Client ID.
-6. The `colleagueconnect` URL scheme is already configured in `Info.plist`; no changes are required.
-7. Select an iOS simulator and build the project.
+5. Open `Secrets.xcconfig` and enter your GitHub OAuth App credentials:
 
-OAuth authentication is not yet implemented. Client Secret handling and token exchange will be addressed in the authentication service implementation.
+   ```xcconfig
+   GITHUB_CLIENT_ID = your_client_id
+   GITHUB_CLIENT_SECRET = your_client_secret
+   ```
+
+6. The `colleagueconnect` custom URL scheme is already registered in `Info.plist`.
+7. Open the project in Xcode, select an iPhone simulator and build the application.
+
+The local `Secrets.xcconfig` file is excluded from version control using `.gitignore`. Never commit real credentials or access tokens.
 
 ## OAuth Configuration
 
-The application uses the `colleagueconnect` URL scheme for OAuth callbacks.
+GitHub OAuth uses the `colleagueconnect://auth` callback URL.
 
-The local `Secrets.xcconfig` file is excluded from Git using `.gitignore`. Do not commit credentials or client secrets to the repository.
+The authentication service handles authorization URL generation, callback validation, authorization code exchange, token storage, session checks and sign-out.
 
-GitHub OAuth authentication is planned as a separate feature and is not yet implemented.
+Access tokens are stored in the iOS Keychain through KeychainSwift.
+
+The OAuth service layer has been implemented. Integration with the WKWebView login screen and application navigation is handled separately.
+
+### Security Considerations
+
+The case study uses a local `.xcconfig` file to supply OAuth credentials.
+
+However, client secrets included in an iOS application can potentially be extracted from the compiled application. An `.xcconfig` file prevents accidental source-control exposure but does not make embedded secrets secure at runtime.
+
+In a production application, a secure backend would typically handle confidential token exchange operations. This project follows the case study requirements without implementing a separate backend.
 
 ## Architecture
 
-The project follows VIPER principles to separate presentation, business logic, navigation, and data responsibilities.
+The project follows VIPER principles to separate responsibilities:
+
+- **View:** Displays information and forwards user interactions.
+- **Interactor:** Handles business logic and communicates with services.
+- **Presenter:** Prepares data for presentation.
+- **Entity:** Represents application data.
+- **Router:** Builds modules and manages navigation.
+
+Networking uses URLSession, async/await, endpoint abstractions and Codable models. Protocol-based dependencies support unit testing and separation of concerns.
+
+## Testing
+
+The project includes XCTest coverage for token storage and authentication service behaviour, using mocked dependencies where appropriate.
+
+## Development Notes
+
+The project is being developed incrementally through focused pull requests. OAuth configuration, Keychain token storage and the authentication service are separated into reviewable changes.
