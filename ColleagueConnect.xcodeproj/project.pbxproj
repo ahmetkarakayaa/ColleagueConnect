@@ -85,7 +85,6 @@
 		E718C5B2307E062A00F11C12 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubEndpoint.swift; sourceTree = "<group>"; };
 		E718C5B6307E075500F11C12 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		E718C5B9307E091A00F11C12 /* GitHubUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUser.swift; sourceTree = "<group>"; };
 		E718C5BC307E0D5400F11C12 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
 		E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
@@ -198,7 +197,6 @@
 		E718C5B8307E090100F11C12 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E718C5B9307E091A00F11C12 /* GitHubUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
