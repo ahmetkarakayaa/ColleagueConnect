@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E746DC33309096A8009F71B2 /* OAuthWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E746DC32309096A8009F71B2 /* OAuthWebViewController.swift */; };
 		E7526EEC3082553200605B11 /* UserDetailContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE43082553200605B11 /* UserDetailContracts.swift */; };
 		E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE53082553200605B11 /* UserDetailDTO.swift */; };
 		E7526EEE3082553200605B11 /* UserDetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE63082553200605B11 /* UserDetailEntity.swift */; };
@@ -69,6 +70,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E746DC32309096A8009F71B2 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthWebViewController.swift; sourceTree = "<group>"; };
 		E7526EE43082553200605B11 /* UserDetailContracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailContracts.swift; sourceTree = "<group>"; };
 		E7526EE53082553200605B11 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailDTO.swift; sourceTree = "<group>"; };
 		E7526EE63082553200605B11 /* UserDetailEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailEntity.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 		E76171AE307CFB6C002C66EB /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
+				E746DC32309096A8009F71B2 /* OAuthWebViewController.swift */,
 				E76171AF307CFC53002C66EB /* WelcomeViewController.swift */,
 				E76171B1307CFCBC002C66EB /* WelcomePresenter.swift */,
 				E76171B3307CFCCD002C66EB /* WelcomeInteractor.swift */,
@@ -472,6 +475,7 @@
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
 				E761717E307CEEE9002C66EB /* ViewController.swift in Sources */,
 				E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */,
+				E746DC33309096A8009F71B2 /* OAuthWebViewController.swift in Sources */,
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */,
 				E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */,
