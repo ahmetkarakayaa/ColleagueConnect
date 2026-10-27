@@ -32,6 +32,7 @@
 		E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */; };
 		E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */; };
 		E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */; };
+		E7447B1E308FA2CD0055DE57 /* OAuthWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7447B1D308FA2CD0055DE57 /* OAuthWebViewController.swift */; };
 		E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */; };
 		E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */; };
 		E7526F143082703700605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F133082703700605B11 /* Optional+Extension.swift */; };
@@ -106,6 +107,7 @@
 		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
 		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
 		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		E7447B1D308FA2CD0055DE57 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthWebViewController.swift; sourceTree = "<group>"; };
 		E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
 		E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
 		E7526F133082703700605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */,
 				E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */,
 				E76171B9307CFCFE002C66EB /* ModuleContracts.swift */,
+				E7447B1D308FA2CD0055DE57 /* OAuthWebViewController.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
+				E7447B1E308FA2CD0055DE57 /* OAuthWebViewController.swift in Sources */,
 				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
 				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,

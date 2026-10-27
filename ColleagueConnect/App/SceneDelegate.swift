@@ -1,3 +1,4 @@
+
 import UIKit
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -15,9 +16,29 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
+        let networkClient = NetworkClient()
+        let tokenStorage = KeychainTokenStorage()
+
+        let configuration = OAuthConfiguration(
+            clientID: Bundle.main.object(
+                forInfoDictionaryKey: "GITHUB_CLIENT_ID"
+            ) as? String ?? "",
+            clientSecret: Bundle.main.object(
+                forInfoDictionaryKey: "GITHUB_CLIENT_SECRET"
+            ) as? String ?? "",
+            redirectURI: "colleagueconnect://auth"
+        )
+
+        let authService = AuthService(
+            configuration: configuration,
+            tokenStorage: tokenStorage,
+            networkClient: networkClient
+        )
+
         let appRouter = AppRouter(
-            networkClient: NetworkClient(),
-            favoriteStorage: FavoriteStorageService()
+            networkClient: networkClient,
+            favoriteStorage: FavoriteStorageService(),
+            authService: authService
         )
 
         window.rootViewController = appRouter.makeInitialViewController()

@@ -6,18 +6,22 @@ final class AppRouter {
 
     private let networkClient: NetworkClientProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let authService: AuthServiceProtocol
 
     init(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
+        self.authService = authService
     }
-
     func makeInitialViewController() -> UIViewController {
         if ProcessInfo.processInfo.arguments.contains("-showLoginUI") {
-            return WelcomeRouter.createModule()
+            return WelcomeRouter.createModule(
+                authService: authService
+            )
         }
 
         let searchViewController = SearchRouter.createModule(
