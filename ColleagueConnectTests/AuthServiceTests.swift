@@ -113,7 +113,7 @@ final class  AuthServiceTests: XCTestCase {
         service = AuthService(
             configuration: oauthConfiguration,
             tokenStorage: storage,
-            session: session
+            networkClient: NetworkClient(session: session)
         )
     }
 
