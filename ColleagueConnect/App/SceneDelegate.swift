@@ -41,7 +41,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             authService: authService
         )
 
-        window.rootViewController = appRouter.makeInitialViewController()
+        window.rootViewController = appRouter.makeInitialViewController(
+            onSignInSucceeded: { [weak window] in
+                window?.rootViewController = appRouter.makeMainViewController()
+            }
+        )
 
         self.window = window
         window.makeKeyAndVisible()

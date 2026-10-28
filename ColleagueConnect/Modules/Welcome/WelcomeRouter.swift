@@ -5,7 +5,8 @@ import UIKit
 enum WelcomeRouter {
 
     static func createModule(
-        authService: AuthServiceProtocol
+        authService: AuthServiceProtocol,
+        onSignInSucceeded: @escaping () -> Void
     ) -> UIViewController {
         let view = WelcomeViewController()
 
@@ -19,6 +20,7 @@ enum WelcomeRouter {
 
         view.presenter = presenter
         presenter.view = view
+        presenter.onSignInSucceeded = onSignInSucceeded
 
         presenter.onAuthorizationRequested = {
             [weak view, weak presenter] url in

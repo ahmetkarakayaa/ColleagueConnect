@@ -17,13 +17,16 @@ final class AppRouter {
         self.favoriteStorage = favoriteStorage
         self.authService = authService
     }
-    func makeInitialViewController() -> UIViewController {
-        if ProcessInfo.processInfo.arguments.contains("-showLoginUI") {
-            return WelcomeRouter.createModule(
-                authService: authService
-            )
-        }
+    func makeInitialViewController(
+        onSignInSucceeded: @escaping () -> Void
+    ) -> UIViewController {
+        return WelcomeRouter.createModule(
+            authService: authService,
+            onSignInSucceeded: onSignInSucceeded
+        )
+    }
 
+    func makeMainViewController() -> UIViewController {
         let searchViewController = SearchRouter.createModule(
             networkClient: networkClient,
             favoriteStorage: favoriteStorage
