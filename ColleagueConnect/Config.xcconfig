@@ -1,0 +1,4 @@
+GITHUB_CLIENT_ID =
+GITHUB_REDIRECT_SCHEME = colleagueconnect
+
+#include? "Secrets.xcconfig"
