@@ -7,22 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E7526EEC3082553200605B11 /* UserDetailContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE43082553200605B11 /* UserDetailContracts.swift */; };
-		E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE53082553200605B11 /* UserDetailDTO.swift */; };
-		E7526EEE3082553200605B11 /* UserDetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE63082553200605B11 /* UserDetailEntity.swift */; };
-		E7526EEF3082553200605B11 /* UserDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE73082553200605B11 /* UserDetailInteractor.swift */; };
-		E7526EF03082553200605B11 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE83082553200605B11 /* UserDetailPresenter.swift */; };
-		E7526EF13082553200605B11 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EE93082553200605B11 /* UserDetailRouter.swift */; };
-		E7526EF23082553200605B11 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EEA3082553200605B11 /* UserDetailViewController.swift */; };
-		E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF33082564900605B11 /* Optional+Extension.swift */; };
-		E7526F0030825E5400605B11 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF530825E5400605B11 /* AppTheme.swift */; };
-		E7526F0230825E5400605B11 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EF930825E5400605B11 /* APIEndpoint.swift */; };
-		E7526F0330825E5400605B11 /* GitHubEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFA30825E5400605B11 /* GitHubEndpoint.swift */; };
-		E7526F0430825E5400605B11 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFB30825E5400605B11 /* NetworkClient.swift */; };
-		E7526F0530825E5400605B11 /* FavoriteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */; };
-		E7526F093082606B00605B11 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E7526F083082606B00605B11 /* Kingfisher */; };
-		E7526F0C308267CB00605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */; };
-		E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */; };
+		E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B2307E062A00F11C12 /* APIEndpoint.swift */; };
+		E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */; };
+		E718C5B7307E075500F11C12 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5B6307E075500F11C12 /* NetworkClient.swift */; };
+		E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5BC307E0D5400F11C12 /* SearchViewController.swift */; };
+		E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */; };
+		E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */; };
+		E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C2307E0D8700F11C12 /* SearchEntity.swift */; };
+		E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C4307E0D9A00F11C12 /* SearchRouter.swift */; };
+		E718C5C7307E0DAB00F11C12 /* SearchModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C6307E0DAB00F11C12 /* SearchModuleContracts.swift */; };
+		E718C5CA307E1AF600F11C12 /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5C9307E1AF600F11C12 /* AppTheme.swift */; };
+		E718C5CD307E1CEB00F11C12 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E718C5CC307E1CEB00F11C12 /* Kingfisher */; };
+		E718C5CF307E1D3F00F11C12 /* SearchUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5CE307E1D3F00F11C12 /* SearchUserCell.swift */; };
+		E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5D1307E1F6000F11C12 /* FavoriteStorageService.swift */; };
+		E718C5D5307E28EA00F11C12 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5D4307E28EA00F11C12 /* FavoritesViewController.swift */; };
+		E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5D6307E28FB00F11C12 /* FavoritesPresenter.swift */; };
+		E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5D8307E292300F11C12 /* FavoritesInteractor.swift */; };
+		E718C5DB307E292F00F11C12 /* FavoritesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5DA307E292F00F11C12 /* FavoritesEntity.swift */; };
+		E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5DC307E293E00F11C12 /* FavoritesRouter.swift */; };
+		E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5DE307E294D00F11C12 /* FavoritesContracts.swift */; };
+		E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E1307E36A100F11C12 /* UserDetailContracts.swift */; };
+		E718C5E4307E36B000F11C12 /* UserDetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E3307E36B000F11C12 /* UserDetailEntity.swift */; };
+		E718C5E6307E36C200F11C12 /* UserDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E5307E36C200F11C12 /* UserDetailInteractor.swift */; };
+		E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */; };
+		E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */; };
+		E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */; };
+		E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */; };
+		E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */; };
+		E74B69AD3094C48D006065AF /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E74B69AC3094C48D006065AF /* KeychainSwift */; };
+		E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */; };
+		E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */; };
+		E7526F143082703700605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F133082703700605B11 /* Optional+Extension.swift */; };
+		E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75668CF30810BD3007073A2 /* UserDetailDTO.swift */; };
 		E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7617179307CEEE9002C66EB /* AppDelegate.swift */; };
 		E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717B307CEEE9002C66EB /* SceneDelegate.swift */; };
 		E761717E307CEEE9002C66EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717D307CEEE9002C66EB /* ViewController.swift */; };
@@ -39,10 +55,6 @@
 		E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */; };
 		E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */; };
 		E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B9307CFCFE002C66EB /* ModuleContracts.swift */; };
-		E7B852B6308B416700D88F0B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E7B852B5308B416700D88F0B /* KeychainSwift */; };
-		E7F3F1E8308A4F5A000FD35E /* KeychainTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F3F1E6308A4F5A000FD35E /* KeychainTokenStorage.swift */; };
-		E7F3F1E9308A4F5A000FD35E /* TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F3F1E7308A4F5A000FD35E /* TokenStorageProtocol.swift */; };
-		E7F3F1EB308A4F93000FD35E /* KeychainTokenStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F3F1EA308A4F93000FD35E /* KeychainTokenStorageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,21 +75,37 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E7526EE43082553200605B11 /* UserDetailContracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailContracts.swift; sourceTree = "<group>"; };
-		E7526EE53082553200605B11 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailDTO.swift; sourceTree = "<group>"; };
-		E7526EE63082553200605B11 /* UserDetailEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailEntity.swift; sourceTree = "<group>"; };
-		E7526EE73082553200605B11 /* UserDetailInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailInteractor.swift; sourceTree = "<group>"; };
-		E7526EE83082553200605B11 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
-		E7526EE93082553200605B11 /* UserDetailRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
-		E7526EEA3082553200605B11 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
-		E7526EF33082564900605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
-		E7526EF530825E5400605B11 /* AppTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
-		E7526EF930825E5400605B11 /* APIEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
-		E7526EFA30825E5400605B11 /* GitHubEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubEndpoint.swift; sourceTree = "<group>"; };
-		E7526EFB30825E5400605B11 /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteStorageService.swift; sourceTree = "<group>"; };
-		E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
-		E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
+		E718C5B2307E062A00F11C12 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
+		E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubEndpoint.swift; sourceTree = "<group>"; };
+		E718C5B6307E075500F11C12 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		E718C5B9307E091A00F11C12 /* GitHubUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUser.swift; sourceTree = "<group>"; };
+		E718C5BC307E0D5400F11C12 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
+		E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
+		E718C5C2307E0D8700F11C12 /* SearchEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEntity.swift; sourceTree = "<group>"; };
+		E718C5C4307E0D9A00F11C12 /* SearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRouter.swift; sourceTree = "<group>"; };
+		E718C5C6307E0DAB00F11C12 /* SearchModuleContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModuleContracts.swift; sourceTree = "<group>"; };
+		E718C5C9307E1AF600F11C12 /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		E718C5CE307E1D3F00F11C12 /* SearchUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCell.swift; sourceTree = "<group>"; };
+		E718C5D1307E1F6000F11C12 /* FavoriteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteStorageService.swift; sourceTree = "<group>"; };
+		E718C5D4307E28EA00F11C12 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		E718C5D6307E28FB00F11C12 /* FavoritesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPresenter.swift; sourceTree = "<group>"; };
+		E718C5D8307E292300F11C12 /* FavoritesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesInteractor.swift; sourceTree = "<group>"; };
+		E718C5DA307E292F00F11C12 /* FavoritesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesEntity.swift; sourceTree = "<group>"; };
+		E718C5DC307E293E00F11C12 /* FavoritesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRouter.swift; sourceTree = "<group>"; };
+		E718C5DE307E294D00F11C12 /* FavoritesContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesContracts.swift; sourceTree = "<group>"; };
+		E718C5E1307E36A100F11C12 /* UserDetailContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailContracts.swift; sourceTree = "<group>"; };
+		E718C5E3307E36B000F11C12 /* UserDetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailEntity.swift; sourceTree = "<group>"; };
+		E718C5E5307E36C200F11C12 /* UserDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailInteractor.swift; sourceTree = "<group>"; };
+		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
+		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
+		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenStorageProtocol.swift; path = Core/Services/TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainTokenStorage.swift; path = Core/Services/KeychainTokenStorage.swift; sourceTree = "<group>"; };
+		E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
+		E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
+		E7526F133082703700605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
+		E75668CF30810BD3007073A2 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDetailDTO.swift; path = Modules/UserDetail/UserDetailDTO.swift; sourceTree = "<group>"; };
 		E7617176307CEEE9002C66EB /* ColleagueConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7617179307CEEE9002C66EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E761717B307CEEE9002C66EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,9 +130,6 @@
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E7A29A4A30875FE00091655B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		E7F3F1E6308A4F5A000FD35E /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTokenStorage.swift; sourceTree = "<group>"; };
-		E7F3F1E7308A4F5A000FD35E /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenStorageProtocol.swift; sourceTree = "<group>"; };
-		E7F3F1EA308A4F93000FD35E /* KeychainTokenStorageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTokenStorageTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,8 +137,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7B852B6308B416700D88F0B /* KeychainSwift in Frameworks */,
-				E7526F093082606B00605B11 /* Kingfisher in Frameworks */,
+				E74B69AD3094C48D006065AF /* KeychainSwift in Frameworks */,
+				E718C5CD307E1CEB00F11C12 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,74 +159,107 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E7526EEB3082553200605B11 /* UserDetail */ = {
+		E718C5B0307E059300F11C12 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E7526EE43082553200605B11 /* UserDetailContracts.swift */,
-				E7526EE53082553200605B11 /* UserDetailDTO.swift */,
-				E7526EE63082553200605B11 /* UserDetailEntity.swift */,
-				E7526EE73082553200605B11 /* UserDetailInteractor.swift */,
-				E7526EE83082553200605B11 /* UserDetailPresenter.swift */,
-				E7526EE93082553200605B11 /* UserDetailRouter.swift */,
-				E7526EEA3082553200605B11 /* UserDetailViewController.swift */,
-				E7526EF33082564900605B11 /* Optional+Extension.swift */,
-			);
-			path = UserDetail;
-			sourceTree = "<group>";
-		};
-		E7526EF630825E5400605B11 /* DesignSystem */ = {
-			isa = PBXGroup;
-			children = (
-				E7526EF530825E5400605B11 /* AppTheme.swift */,
-			);
-			path = DesignSystem;
-			sourceTree = "<group>";
-		};
-		E7526EF830825E5400605B11 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				E7526F0A308267CB00605B11 /* GitHubSearchResponse.swift */,
-				E7526F0B308267CB00605B11 /* GitHubUserResponse.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		E7526EFC30825E5400605B11 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				E7526EF930825E5400605B11 /* APIEndpoint.swift */,
-				E7526EFA30825E5400605B11 /* GitHubEndpoint.swift */,
-				E7526EFB30825E5400605B11 /* NetworkClient.swift */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		E7526EFE30825E5400605B11 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				E7F3F1E6308A4F5A000FD35E /* KeychainTokenStorage.swift */,
-				E7F3F1E7308A4F5A000FD35E /* TokenStorageProtocol.swift */,
-				E7526EFD30825E5400605B11 /* FavoriteStorageService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		E7526EFF30825E5400605B11 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				E7526EF630825E5400605B11 /* DesignSystem */,
-				E7526EF830825E5400605B11 /* Models */,
-				E7526EFC30825E5400605B11 /* Network */,
-				E7526EFE30825E5400605B11 /* Services */,
+				E7526F1030826EC200605B11 /* Models */,
+				E718C5D0307E1F3300F11C12 /* Services */,
+				E718C5C8307E1AD600F11C12 /* DesignSystem */,
+				E718C5B8307E090100F11C12 /* Models */,
+				E718C5B1307E05AD00F11C12 /* Network */,
 			);
 			path = Core;
 			sourceTree = "<group>";
 		};
-		E7526F073082606B00605B11 /* Frameworks */ = {
+		E718C5B1307E05AD00F11C12 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5B2307E062A00F11C12 /* APIEndpoint.swift */,
+				E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */,
+				E718C5B6307E075500F11C12 /* NetworkClient.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		E718C5B8307E090100F11C12 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5B9307E091A00F11C12 /* GitHubUser.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E718C5BB307E0D3300F11C12 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5BC307E0D5400F11C12 /* SearchViewController.swift */,
+				E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */,
+				E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */,
+				E718C5C2307E0D8700F11C12 /* SearchEntity.swift */,
+				E718C5C4307E0D9A00F11C12 /* SearchRouter.swift */,
+				E718C5C6307E0DAB00F11C12 /* SearchModuleContracts.swift */,
+				E718C5CE307E1D3F00F11C12 /* SearchUserCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		E718C5C8307E1AD600F11C12 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5C9307E1AF600F11C12 /* AppTheme.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		E718C5D0307E1F3300F11C12 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5D1307E1F6000F11C12 /* FavoriteStorageService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E718C5D3307E28BC00F11C12 /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				E718C5D4307E28EA00F11C12 /* FavoritesViewController.swift */,
+				E718C5D6307E28FB00F11C12 /* FavoritesPresenter.swift */,
+				E718C5D8307E292300F11C12 /* FavoritesInteractor.swift */,
+				E718C5DA307E292F00F11C12 /* FavoritesEntity.swift */,
+				E718C5DC307E293E00F11C12 /* FavoritesRouter.swift */,
+				E718C5DE307E294D00F11C12 /* FavoritesContracts.swift */,
+			);
+			path = Favorites;
+			sourceTree = "<group>";
+		};
+		E718C5E0307E368800F11C12 /* UserDetail */ = {
+			isa = PBXGroup;
+			children = (
+				E7526F133082703700605B11 /* Optional+Extension.swift */,
+				E718C5E1307E36A100F11C12 /* UserDetailContracts.swift */,
+				E718C5E3307E36B000F11C12 /* UserDetailEntity.swift */,
+				E718C5E5307E36C200F11C12 /* UserDetailInteractor.swift */,
+				E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */,
+				E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */,
+				E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */,
+			);
+			path = UserDetail;
+			sourceTree = "<group>";
+		};
+		E74B69AB3094C48D006065AF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E7526F1030826EC200605B11 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */,
+				E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E761716D307CEEE9002C66EB = {
@@ -211,7 +269,7 @@
 				E761718F307CEEEC002C66EB /* ColleagueConnectTests */,
 				E7617199307CEEEC002C66EB /* ColleagueConnectUITests */,
 				E7617177307CEEE9002C66EB /* Products */,
-				E7526F073082606B00605B11 /* Frameworks */,
+				E74B69AB3094C48D006065AF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -228,7 +286,10 @@
 		E7617178307CEEE9002C66EB /* ColleagueConnect */ = {
 			isa = PBXGroup;
 			children = (
-				E7526EFF30825E5400605B11 /* Core */,
+				E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */,
+				E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */,
+				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
+				E718C5B0307E059300F11C12 /* Core */,
 				E76171AD307CFB55002C66EB /* Modules */,
 				E76171A9307CF8CD002C66EB /* App */,
 				E761717D307CEEE9002C66EB /* ViewController.swift */,
@@ -247,7 +308,6 @@
 		E761718F307CEEEC002C66EB /* ColleagueConnectTests */ = {
 			isa = PBXGroup;
 			children = (
-				E7F3F1EA308A4F93000FD35E /* KeychainTokenStorageTests.swift */,
 				E7617190307CEEEC002C66EB /* ColleagueConnectTests.swift */,
 			);
 			path = ColleagueConnectTests;
@@ -275,7 +335,9 @@
 		E76171AD307CFB55002C66EB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E7526EEB3082553200605B11 /* UserDetail */,
+				E718C5E0307E368800F11C12 /* UserDetail */,
+				E718C5D3307E28BC00F11C12 /* Favorites */,
+				E718C5BB307E0D3300F11C12 /* Search */,
 				E76171AE307CFB6C002C66EB /* Welcome */,
 			);
 			path = Modules;
@@ -311,8 +373,8 @@
 			);
 			name = ColleagueConnect;
 			packageProductDependencies = (
-				E7526F083082606B00605B11 /* Kingfisher */,
-				E7B852B5308B416700D88F0B /* KeychainSwift */,
+				E718C5CC307E1CEB00F11C12 /* Kingfisher */,
+				E74B69AC3094C48D006065AF /* KeychainSwift */,
 			);
 			productName = ColleagueConnect;
 			productReference = E7617176307CEEE9002C66EB /* ColleagueConnect.app */;
@@ -387,8 +449,8 @@
 			);
 			mainGroup = E761716D307CEEE9002C66EB;
 			packageReferences = (
-				E7526F0630825EEC00605B11 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				E7B852B4308B408800D88F0B /* XCRemoteSwiftPackageReference "keychain-swift" */,
+				E718C5CB307E1CEB00F11C12 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = E7617177307CEEE9002C66EB /* Products */;
 			projectDirPath = "";
@@ -433,33 +495,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7526EF23082553200605B11 /* UserDetailViewController.swift in Sources */,
-				E7526EF03082553200605B11 /* UserDetailPresenter.swift in Sources */,
-				E7526F0030825E5400605B11 /* AppTheme.swift in Sources */,
-				E7526EEE3082553200605B11 /* UserDetailEntity.swift in Sources */,
+				E718C5E4307E36B000F11C12 /* UserDetailEntity.swift in Sources */,
+				E718C5CA307E1AF600F11C12 /* AppTheme.swift in Sources */,
+				E718C5E6307E36C200F11C12 /* UserDetailInteractor.swift in Sources */,
+				E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */,
+				E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */,
+				E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */,
 				E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */,
-				E7526F0530825E5400605B11 /* FavoriteStorageService.swift in Sources */,
-				E7F3F1E9308A4F5A000FD35E /* TokenStorageProtocol.swift in Sources */,
-				E7526EEF3082553200605B11 /* UserDetailInteractor.swift in Sources */,
-				E7526EF13082553200605B11 /* UserDetailRouter.swift in Sources */,
-				E7526F0230825E5400605B11 /* APIEndpoint.swift in Sources */,
+				E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */,
+				E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */,
+				E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */,
+				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
+				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
+				E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */,
+				E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
-				E7F3F1E8308A4F5A000FD35E /* KeychainTokenStorage.swift in Sources */,
 				E76171B4307CFCCD002C66EB /* WelcomeInteractor.swift in Sources */,
+				E718C5D5307E28EA00F11C12 /* FavoritesViewController.swift in Sources */,
+				E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
+				E718C5CF307E1D3F00F11C12 /* SearchUserCell.swift in Sources */,
+				E7526F143082703700605B11 /* Optional+Extension.swift in Sources */,
+				E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */,
+				E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */,
+				E718C5DB307E292F00F11C12 /* FavoritesEntity.swift in Sources */,
 				E761717E307CEEE9002C66EB /* ViewController.swift in Sources */,
-				E7526F0D308267CB00605B11 /* GitHubUserResponse.swift in Sources */,
+				E718C5B7307E075500F11C12 /* NetworkClient.swift in Sources */,
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
-				E7526EED3082553200605B11 /* UserDetailDTO.swift in Sources */,
-				E7526EF43082564900605B11 /* Optional+Extension.swift in Sources */,
-				E7526F0330825E5400605B11 /* GitHubEndpoint.swift in Sources */,
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
-				E7526EEC3082553200605B11 /* UserDetailContracts.swift in Sources */,
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
-				E7526F0C308267CB00605B11 /* GitHubSearchResponse.swift in Sources */,
-				E7526F0430825E5400605B11 /* NetworkClient.swift in Sources */,
+				E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */,
+				E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */,
+				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
+				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
+				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
+				E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */,
+				E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */,
+				E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,
+				E718C5C7307E0DAB00F11C12 /* SearchModuleContracts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,7 +543,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7617191307CEEEC002C66EB /* ColleagueConnectTests.swift in Sources */,
-				E7F3F1EB308A4F93000FD35E /* KeychainTokenStorageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -813,7 +887,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E7526F0630825EEC00605B11 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		E718C5CB307E1CEB00F11C12 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
@@ -821,7 +895,7 @@
 				minimumVersion = 7.12.0;
 			};
 		};
-		E7B852B4308B408800D88F0B /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+		E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
 			requirement = {
@@ -832,14 +906,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E7526F083082606B00605B11 /* Kingfisher */ = {
+		E718C5CC307E1CEB00F11C12 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E7526F0630825EEC00605B11 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = E718C5CB307E1CEB00F11C12 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		E7B852B5308B416700D88F0B /* KeychainSwift */ = {
+		E74B69AC3094C48D006065AF /* KeychainSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E7B852B4308B408800D88F0B /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			package = E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */;
 			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
