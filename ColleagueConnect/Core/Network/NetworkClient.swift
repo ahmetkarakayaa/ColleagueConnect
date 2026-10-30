@@ -1,11 +1,14 @@
 
 import Foundation
 
+
 enum NetworkError: Error {
     case invalidURL
     case invalidResponse
     case httpError(statusCode: Int)
+    case offline
 }
+
 
 protocol NetworkClientProtocol {
     func request<T: Decodable>(
@@ -27,9 +30,26 @@ final class NetworkClient: NetworkClientProtocol {
 
         let request = try endpoint.makeURLRequest()
 
-        let (data, response) = try await session.data(
-            for: request
-        )
+        
+        let (data, response): (Data, URLResponse)
+
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch let error as URLError {
+            switch error.code {
+            case .notConnectedToInternet,
+                 .networkConnectionLost,
+                 .dataNotAllowed:
+                throw NetworkError.offline
+
+            case .cancelled:
+                throw CancellationError()
+
+            default:
+                throw error
+            }
+        }
+
 
         guard let response = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse
