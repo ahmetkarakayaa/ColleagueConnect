@@ -28,28 +28,7 @@ final class NetworkClient: NetworkClientProtocol {
         endpoint: APIEndpoint
     ) async throws -> T {
 
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "api.github.com"
-        components.path = endpoint.path
-        components.queryItems = endpoint.queryItems.isEmpty
-            ? nil
-            : endpoint.queryItems
-
-        guard let url = components.url else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = endpoint.method
-        request.setValue(
-            "application/vnd.github+json",
-            forHTTPHeaderField: "Accept"
-        )
-        request.setValue(
-            "2022-11-28",
-            forHTTPHeaderField: "X-GitHub-Api-Version"
-        )
+        let request = try endpoint.makeURLRequest()
 
         
         let (data, response): (Data, URLResponse)
@@ -82,10 +61,9 @@ final class NetworkClient: NetworkClientProtocol {
             )
         }
 
-       
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(T.self, from: data)
 
+        return try decoder.decode(T.self, from: data)
     }
 }
