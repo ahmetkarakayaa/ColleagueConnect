@@ -32,6 +32,9 @@
 		E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */; };
 		E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */; };
 		E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */; };
+		E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */; };
+		E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */; };
+		E74B69AD3094C48D006065AF /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E74B69AC3094C48D006065AF /* KeychainSwift */; };
 		E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */; };
 		E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */; };
 		E7526F143082703700605B11 /* Optional+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7526F133082703700605B11 /* Optional+Extension.swift */; };
@@ -97,6 +100,8 @@
 		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
 		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
 		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
+		E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenStorageProtocol.swift; path = Core/Services/TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainTokenStorage.swift; path = Core/Services/KeychainTokenStorage.swift; sourceTree = "<group>"; };
 		E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
 		E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
 		E7526F133082703700605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
@@ -132,6 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E74B69AD3094C48D006065AF /* KeychainSwift in Frameworks */,
 				E718C5CD307E1CEB00F11C12 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,6 +246,13 @@
 			path = UserDetail;
 			sourceTree = "<group>";
 		};
+		E74B69AB3094C48D006065AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E7526F1030826EC200605B11 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +269,7 @@
 				E761718F307CEEEC002C66EB /* ColleagueConnectTests */,
 				E7617199307CEEEC002C66EB /* ColleagueConnectUITests */,
 				E7617177307CEEE9002C66EB /* Products */,
+				E74B69AB3094C48D006065AF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -272,6 +286,8 @@
 		E7617178307CEEE9002C66EB /* ColleagueConnect */ = {
 			isa = PBXGroup;
 			children = (
+				E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */,
+				E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */,
 				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
 				E718C5B0307E059300F11C12 /* Core */,
 				E76171AD307CFB55002C66EB /* Modules */,
@@ -358,6 +374,7 @@
 			name = ColleagueConnect;
 			packageProductDependencies = (
 				E718C5CC307E1CEB00F11C12 /* Kingfisher */,
+				E74B69AC3094C48D006065AF /* KeychainSwift */,
 			);
 			productName = ColleagueConnect;
 			productReference = E7617176307CEEE9002C66EB /* ColleagueConnect.app */;
@@ -433,6 +450,7 @@
 			mainGroup = E761716D307CEEE9002C66EB;
 			packageReferences = (
 				E718C5CB307E1CEB00F11C12 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = E7617177307CEEE9002C66EB /* Products */;
 			projectDirPath = "";
@@ -507,6 +525,8 @@
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
+				E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */,
+				E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */,
 				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
 				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
@@ -875,6 +895,14 @@
 				minimumVersion = 7.12.0;
 			};
 		};
+		E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -882,6 +910,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E718C5CB307E1CEB00F11C12 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		E74B69AC3094C48D006065AF /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E74B69A63094C229006065AF /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
