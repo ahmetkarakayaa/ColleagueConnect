@@ -15,6 +15,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         let window = UIWindow(windowScene: windowScene)
+
         let networkClient = NetworkClient()
         let tokenStorage = KeychainTokenStorage()
 
@@ -35,6 +36,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
 
         let appRouter = AppRouter(
+            networkClient: networkClient,
+            favoriteStorage: FavoriteStorageService(),
             authService: authService
         )
 
