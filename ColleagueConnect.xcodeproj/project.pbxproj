@@ -60,6 +60,12 @@
 		E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242930986780006552E5 /* OAuthCallbackParser.swift */; };
 		E795242E3098681F006552E5 /* OAuthWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242D3098681F006552E5 /* OAuthWebViewController.swift */; };
 		E795243030986964006552E5 /* GitHubAuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */; };
+		E79524333098CB58006552E5 /* HomeContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524323098CB58006552E5 /* HomeContracts.swift */; };
+		E79524363098CB7E006552E5 /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524353098CB7E006552E5 /* HomeInteractor.swift */; };
+		E79524383098CCB3006552E5 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524373098CCB3006552E5 /* HomeViewModel.swift */; };
+		E795243A3098CCE4006552E5 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524393098CCE4006552E5 /* HomePresenter.swift */; };
+		E795243C3098D7E5006552E5 /* HomePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243B3098D7E5006552E5 /* HomePresenterTests.swift */; };
+		E795243E3098D86A006552E5 /* HomeInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243D3098D86A006552E5 /* HomeInteractorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,7 +89,6 @@
 		E718C5B2307E062A00F11C12 /* APIEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoint.swift; sourceTree = "<group>"; };
 		E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubEndpoint.swift; sourceTree = "<group>"; };
 		E718C5B6307E075500F11C12 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		E718C5B9307E091A00F11C12 /* GitHubUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUser.swift; sourceTree = "<group>"; };
 		E718C5BC307E0D5400F11C12 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		E718C5BE307E0D6400F11C12 /* SearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPresenter.swift; sourceTree = "<group>"; };
 		E718C5C0307E0D7600F11C12 /* SearchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInteractor.swift; sourceTree = "<group>"; };
@@ -136,6 +141,12 @@
 		E795242930986780006552E5 /* OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthCallbackParser.swift; path = ColleagueConnect/Core/Services/OAuthCallbackParser.swift; sourceTree = SOURCE_ROOT; };
 		E795242D3098681F006552E5 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthWebViewController.swift; path = ColleagueConnect/Modules/Welcome/OAuthWebViewController.swift; sourceTree = "<group>"; };
 		E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GitHubAuthEndpoint.swift; path = ColleagueConnect/Core/Network/GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
+		E79524323098CB58006552E5 /* HomeContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContracts.swift; sourceTree = "<group>"; };
+		E79524353098CB7E006552E5 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
+		E79524373098CCB3006552E5 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		E79524393098CCE4006552E5 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
+		E795243B3098D7E5006552E5 /* HomePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenterTests.swift; sourceTree = "<group>"; };
+		E795243D3098D86A006552E5 /* HomeInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractorTests.swift; sourceTree = "<group>"; };
 		E7A29A47308754FC0091655B /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -194,7 +205,6 @@
 		E718C5B8307E090100F11C12 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E718C5B9307E091A00F11C12 /* GitHubUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -321,6 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				E7617190307CEEEC002C66EB /* ColleagueConnectTests.swift */,
+				E795243B3098D7E5006552E5 /* HomePresenterTests.swift */,
+				E795243D3098D86A006552E5 /* HomeInteractorTests.swift */,
 			);
 			path = ColleagueConnectTests;
 			sourceTree = "<group>";
@@ -347,6 +359,7 @@
 		E76171AD307CFB55002C66EB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E79524313098CB40006552E5 /* Home */,
 				E795242730986780006552E5 /* AuthService.swift */,
 				E795242930986780006552E5 /* OAuthCallbackParser.swift */,
 				E795242830986780006552E5 /* OAuthConfiguration.swift */,
@@ -369,6 +382,17 @@
 				E76171B9307CFCFE002C66EB /* ModuleContracts.swift */,
 			);
 			path = Welcome;
+			sourceTree = "<group>";
+		};
+		E79524313098CB40006552E5 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E79524323098CB58006552E5 /* HomeContracts.swift */,
+				E79524353098CB7E006552E5 /* HomeInteractor.swift */,
+				E79524373098CCB3006552E5 /* HomeViewModel.swift */,
+				E79524393098CCE4006552E5 /* HomePresenter.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -512,6 +536,7 @@
 			files = (
 				E718C5E4307E36B000F11C12 /* UserDetailEntity.swift in Sources */,
 				E718C5CA307E1AF600F11C12 /* AppTheme.swift in Sources */,
+				E79524333098CB58006552E5 /* HomeContracts.swift in Sources */,
 				E718C5E6307E36C200F11C12 /* UserDetailInteractor.swift in Sources */,
 				E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */,
 				E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */,
@@ -528,6 +553,7 @@
 				E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
 				E76171B4307CFCCD002C66EB /* WelcomeInteractor.swift in Sources */,
+				E79524383098CCB3006552E5 /* HomeViewModel.swift in Sources */,
 				E718C5D5307E28EA00F11C12 /* FavoritesViewController.swift in Sources */,
 				E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
@@ -545,9 +571,11 @@
 				E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */,
 				E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */,
 				E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */,
+				E795243A3098CCE4006552E5 /* HomePresenter.swift in Sources */,
 				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
 				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
+				E79524363098CB7E006552E5 /* HomeInteractor.swift in Sources */,
 				E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */,
 				E795242A30986780006552E5 /* AuthService.swift in Sources */,
 				E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */,
@@ -562,7 +590,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E795243E3098D86A006552E5 /* HomeInteractorTests.swift in Sources */,
 				E7617191307CEEEC002C66EB /* ColleagueConnectTests.swift in Sources */,
+				E795243C3098D7E5006552E5 /* HomePresenterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
