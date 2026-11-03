@@ -184,15 +184,15 @@ final class HomeRecentFavoritesView: UIView {
         textStack.spacing = 4
 
         let heartImageView = UIImageView(
-            image: UIImage(systemName: "heart.fill")
+            image: UIImage(named: "n11HeartFilled")?
+                .withRenderingMode(.alwaysOriginal)
         )
-        heartImageView.tintColor = AppTheme.Colors.accent
         heartImageView.contentMode = .scaleAspectFit
         heartImageView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            heartImageView.widthAnchor.constraint(equalToConstant: 18),
-            heartImageView.heightAnchor.constraint(equalToConstant: 18)
+            heartImageView.widthAnchor.constraint(equalToConstant: 30),
+            heartImageView.heightAnchor.constraint(equalToConstant: 30)
         ])
 
         let row = UIStackView(arrangedSubviews: [

@@ -7,30 +7,36 @@ final class FavoritesRouter: FavoritesRouterInput {
 
     private let networkClient: NetworkClientProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let authService: AuthServiceProtocol
 
     init(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
+        self.authService = authService
     }
+
 
     static func createModule(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol
     ) -> UIViewController {
-
         let view = FavoritesViewController()
 
         let interactor = FavoritesInteractor(
             favoriteService: favoriteStorage,
-            networkClient: networkClient
+            networkClient: networkClient,
+            authService: authService
         )
 
         let router = FavoritesRouter(
             networkClient: networkClient,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            authService: authService
         )
 
         let presenter = FavoritesPresenter(
@@ -44,6 +50,7 @@ final class FavoritesRouter: FavoritesRouterInput {
 
         return view
     }
+
 
     func showUserDetail(username: String) {
         let detailViewController = UserDetailRouter.createModule(

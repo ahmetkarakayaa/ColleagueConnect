@@ -36,6 +36,7 @@ final class HomeInteractorTests: XCTestCase {
 
     func testMissingTokenDoesNotSendRequest() async throws {
         let authService = HomeAuthServiceMock()
+        authService.token = "test-access-token"
         let networkClient = HomeNetworkClientSpy()
         let favoriteStorage = HomeFavoriteStorageMock()
 

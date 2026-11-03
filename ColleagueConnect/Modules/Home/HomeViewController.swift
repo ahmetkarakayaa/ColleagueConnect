@@ -45,7 +45,6 @@ final class HomeViewController: UIViewController, HomeViewInput {
 
         presenter?.viewDidLoad()
     }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -190,12 +189,13 @@ final class HomeViewController: UIViewController, HomeViewInput {
         return headerStack
     }
 
+
     private func makeProfileCard() -> UIView {
         let card = UIView()
-        card.backgroundColor = AppTheme.Colors.surface
+        card.backgroundColor = .white
         card.layer.cornerRadius = Layout.cornerRadius
         card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.separator.withAlphaComponent(0.25).cgColor
+        card.layer.borderColor = UIColor.systemGray5.cgColor
 
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.clipsToBounds = true
@@ -264,6 +264,8 @@ final class HomeViewController: UIViewController, HomeViewInput {
     }
 
 
+
+
     private func makeStatsStack() -> UIView {
         let followersCard = makeStatCard(
             title: "Followers",
@@ -299,9 +301,10 @@ final class HomeViewController: UIViewController, HomeViewInput {
         valueLabel: UILabel
     ) -> UIView {
         let card = UIView()
-        card.backgroundColor = AppTheme.Colors.surface
+        card.backgroundColor = .white
         card.layer.cornerRadius = 16
-
+        card.layer.borderWidth = 1
+        card.layer.borderColor = UIColor.systemGray5.cgColor
         valueLabel.font = .systemFont(ofSize: 22, weight: .bold)
         valueLabel.textColor = AppTheme.Colors.primaryText
         valueLabel.textAlignment = .center
