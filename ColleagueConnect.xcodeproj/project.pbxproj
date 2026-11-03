@@ -68,6 +68,10 @@
 		E795243E3098D86A006552E5 /* HomeInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243D3098D86A006552E5 /* HomeInteractorTests.swift */; };
 		E79524403098DC1A006552E5 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243F3098DC1A006552E5 /* HomeRouter.swift */; };
 		E79524423098DCA0006552E5 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524413098DCA0006552E5 /* HomeViewController.swift */; };
+		E7F03D733099B19400CE69F4 /* FavoriteStorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D723099B19400CE69F4 /* FavoriteStorageServiceTests.swift */; };
+		E7F03D753099B2C100CE69F4 /* HomeFavoritesSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */; };
+		E7F03D773099B57500CE69F4 /* HomeFavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */; };
+		E7F03D793099B8CB00CE69F4 /* HomeRecentFavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +159,10 @@
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E7A29A4A30875FE00091655B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		E7F03D723099B19400CE69F4 /* FavoriteStorageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteStorageServiceTests.swift; sourceTree = "<group>"; };
+		E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFavoritesSnapshot.swift; sourceTree = "<group>"; };
+		E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFavoritesViewModel.swift; sourceTree = "<group>"; };
+		E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRecentFavoritesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,6 +345,7 @@
 				E7617190307CEEEC002C66EB /* ColleagueConnectTests.swift */,
 				E795243B3098D7E5006552E5 /* HomePresenterTests.swift */,
 				E795243D3098D86A006552E5 /* HomeInteractorTests.swift */,
+				E7F03D723099B19400CE69F4 /* FavoriteStorageServiceTests.swift */,
 			);
 			path = ColleagueConnectTests;
 			sourceTree = "<group>";
@@ -397,6 +406,9 @@
 				E79524393098CCE4006552E5 /* HomePresenter.swift */,
 				E795243F3098DC1A006552E5 /* HomeRouter.swift */,
 				E79524413098DCA0006552E5 /* HomeViewController.swift */,
+				E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */,
+				E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */,
+				E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -549,6 +561,7 @@
 				E718C5DF307E294D00F11C12 /* FavoritesContracts.swift in Sources */,
 				E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */,
 				E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */,
+				E7F03D773099B57500CE69F4 /* HomeFavoritesViewModel.swift in Sources */,
 				E7526F1230826EC200605B11 /* GitHubUserResponse.swift in Sources */,
 				E718C5B3307E062A00F11C12 /* APIEndpoint.swift in Sources */,
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
@@ -565,7 +578,9 @@
 				E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
 				E718C5CF307E1D3F00F11C12 /* SearchUserCell.swift in Sources */,
+				E7F03D793099B8CB00CE69F4 /* HomeRecentFavoritesView.swift in Sources */,
 				E7526F143082703700605B11 /* Optional+Extension.swift in Sources */,
+				E7F03D753099B2C100CE69F4 /* HomeFavoritesSnapshot.swift in Sources */,
 				E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */,
 				E795243030986964006552E5 /* GitHubAuthEndpoint.swift in Sources */,
 				E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */,
@@ -601,6 +616,7 @@
 				E795243E3098D86A006552E5 /* HomeInteractorTests.swift in Sources */,
 				E7617191307CEEEC002C66EB /* ColleagueConnectTests.swift in Sources */,
 				E795243C3098D7E5006552E5 /* HomePresenterTests.swift in Sources */,
+				E7F03D733099B19400CE69F4 /* FavoriteStorageServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
