@@ -34,7 +34,8 @@ final class AppRouter {
 
         let favoritesViewController = FavoritesRouter.createModule(
             networkClient: networkClient,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            authService: authService
         )
 
         let searchNavigation = UINavigationController(
@@ -45,10 +46,35 @@ final class AppRouter {
             rootViewController: favoritesViewController
         )
 
+
+        let homeViewController = HomeRouter.createModule(
+            networkClient: networkClient,
+            authService: authService,
+            favoriteStorage: favoriteStorage
+        )
+
+        let homeNavigation = UINavigationController(
+            rootViewController: homeViewController
+        )
+
+
         let iconConfig = UIImage.SymbolConfiguration(
             pointSize: 19,
             weight: .regular
         )
+
+        homeNavigation.tabBarItem = UITabBarItem(
+            title: "Home",
+            image: UIImage(
+                systemName: "house",
+                withConfiguration: iconConfig
+            ),
+            selectedImage: UIImage(
+                systemName: "house.fill",
+                withConfiguration: iconConfig
+            )
+        )
+
 
         searchNavigation.tabBarItem = UITabBarItem(
             title: "Search",
@@ -76,10 +102,21 @@ final class AppRouter {
 
         let tabBarController = UITabBarController()
 
+
         tabBarController.viewControllers = [
+            homeNavigation,
             searchNavigation,
             favoritesNavigation
         ]
+
+        tabBarController.selectedIndex = 0
+
+
+        homeViewController.onSeeAllFavorites = { [weak tabBarController] in
+            tabBarController?.selectedIndex = 2
+        }
+
+
 
         tabBarController.tabBar.tintColor = AppTheme.Colors.accent
         tabBarController.tabBar.unselectedItemTintColor = .secondaryLabel

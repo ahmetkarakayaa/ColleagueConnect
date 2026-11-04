@@ -5,13 +5,16 @@ final class FavoritesInteractor: FavoritesInteractorInput {
 
     private let favoriteService: FavoriteStorageServiceProtocol
     private let networkClient: NetworkClientProtocol
+    private let authService: AuthServiceProtocol
 
     init(
         favoriteService: FavoriteStorageServiceProtocol,
-        networkClient: NetworkClientProtocol
+        networkClient: NetworkClientProtocol,
+        authService: AuthServiceProtocol
     ) {
         self.favoriteService = favoriteService
         self.networkClient = networkClient
+        self.authService = authService
     }
 
     func getFavorites() -> [String] {
@@ -25,8 +28,16 @@ final class FavoritesInteractor: FavoritesInteractorInput {
     func fetchFavoriteUser(username: String) async throws -> FavoriteUserProfile {
         try Task.checkCancellation()
 
+        guard let token = try authService.accessToken(),
+              !token.isEmpty else {
+            throw AuthError.missingAccessToken
+        }
+
         let dto: UserDetailDTO = try await networkClient.request(
-            endpoint: GitHubEndpoint.userDetail(username: username)
+            endpoint: GitHubEndpoint.authenticatedUserDetail(
+                username: username,
+                token: token
+            )
         )
 
         try Task.checkCancellation()

@@ -9,7 +9,7 @@ final class HomeRouter {
         networkClient: NetworkClientProtocol,
         authService: AuthServiceProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol
-    ) -> UIViewController {
+    ) -> HomeViewController {
         let interactor = HomeInteractor(
             networkClient: networkClient,
             authService: authService,

@@ -166,10 +166,12 @@ final class FavoritesPresenter: FavoritesViewOutput {
                                     name: profile.name,
                                     bio: profile.bio
                                 )
-                            } catch {
+                            } catch is CancellationError {
                                 return nil
-                            }
-                        }
+                            } catch {
+
+                                return nil
+                            }                        }
                     }
 
                     var successfulUsers: [FavoriteUserViewModel] = []

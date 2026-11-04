@@ -34,7 +34,7 @@ final class HomeInteractor: HomeInteractorInput {
 
     func fetchFavorites() async throws -> HomeFavoritesSnapshot {
         let favorites = favoriteStorage.getFavorites()
-        let usernames = favoriteStorage.getRecentFavorites(limit: 5)
+        let usernames = favoriteStorage.getRecentFavorites(limit: 3)
 
         await profileCache.retain(favorites)
 
@@ -49,8 +49,16 @@ final class HomeInteractor: HomeInteractorInput {
             }
 
             do {
+                guard let token = try authService.accessToken(),
+                      !token.isEmpty else {
+                    throw AuthError.missingAccessToken
+                }
+
                 let dto: UserDetailDTO = try await networkClient.request(
-                    endpoint: GitHubEndpoint.userDetail(username: username)
+                    endpoint: GitHubEndpoint.authenticatedUserDetail(
+                        username: username,
+                        token: token
+                    )
                 )
 
                 try Task.checkCancellation()
