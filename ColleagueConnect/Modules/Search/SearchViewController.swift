@@ -22,6 +22,12 @@ final class SearchViewController: UIViewController {
 
     private var sortOption: SortOption = .defaultOrder
     private var currentUsers: [SearchUserViewModel] = []
+    private struct CachedUserDetails {
+        let name: String?
+        let bio: String?
+    }
+
+    private var cachedUserDetails: [String: CachedUserDetails] = [:]
     private var isSearchActive = false
 
 
@@ -177,6 +183,13 @@ final class SearchViewController: UIViewController {
                 with: user,
                 isFavorite: self.presenter?.isFavorite(username: user.username) ?? false
             )
+            if let details = self.cachedUserDetails[user.username] {
+                cell.configureDetails(
+                    username: user.username,
+                    name: details.name,
+                    bio: details.bio
+                )
+            }
 
             cell.onFavoriteTapped = { [weak self, weak cell] in
                 guard let self, let presenter = self.presenter else { return }
@@ -621,13 +634,24 @@ extension SearchViewController: SearchViewInput {
     }
 
     func displayUserDetails(username: String, name: String?, bio: String?) {
+        cachedUserDetails[username] = CachedUserDetails(
+            name: name,
+            bio: bio
+        )
+
         for indexPath in collectionView.indexPathsForVisibleItems {
             guard let user = dataSource.itemIdentifier(for: indexPath),
                   user.username == username,
                   let cell = collectionView.cellForItem(at: indexPath) as? SearchUserCell
-            else { continue }
+            else {
+                continue
+            }
 
-            cell.configureDetails(username: username, name: name, bio: bio)
+            cell.configureDetails(
+                username: username,
+                name: name,
+                bio: bio
+            )
         }
     }
 }

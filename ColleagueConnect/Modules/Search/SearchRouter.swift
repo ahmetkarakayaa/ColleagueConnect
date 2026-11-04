@@ -24,7 +24,8 @@ final class SearchRouter: SearchRouterInput {
         let view = SearchViewController()
 
         let interactor = SearchInteractor(
-            networkClient: networkClient
+            networkClient: networkClient,
+            authService: authService
         )
 
         let router = SearchRouter(makeUserDetail: { username in
