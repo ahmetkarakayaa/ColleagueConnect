@@ -10,6 +10,7 @@ final class WelcomePresenter: WelcomeViewOutput {
     private var isSigningIn = false
 
     var onAuthorizationRequested: ((URL) -> Void)?
+    var onSignInSucceeded: (() -> Void)?
 
     init(interactor: WelcomeInteractorInput) {
         self.interactor = interactor
@@ -57,11 +58,7 @@ final class WelcomePresenter: WelcomeViewOutput {
 
             do {
                 try await self.interactor.handleCallback(url)
-
-                self.view?.displayWelcomeMessage(
-                    "GitHub sign-in successful."
-                )
-            } catch is CancellationError {
+                self.onSignInSucceeded?()            } catch is CancellationError {
                 return
             } catch {
                 self.view?.displayError(
