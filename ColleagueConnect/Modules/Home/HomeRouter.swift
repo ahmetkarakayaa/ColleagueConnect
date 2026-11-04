@@ -1,4 +1,5 @@
 
+
 import UIKit
 
 @MainActor
@@ -6,11 +7,13 @@ final class HomeRouter {
 
     static func createModule(
         networkClient: NetworkClientProtocol,
-        authService: AuthServiceProtocol
+        authService: AuthServiceProtocol,
+        favoriteStorage: FavoriteStorageServiceProtocol
     ) -> UIViewController {
         let interactor = HomeInteractor(
             networkClient: networkClient,
-            authService: authService
+            authService: authService,
+            favoriteStorage: favoriteStorage
         )
 
         let presenter = HomePresenter(interactor: interactor)

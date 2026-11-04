@@ -15,6 +15,27 @@ final class HomePresenterTests: XCTestCase {
         presenter.viewDidLoad()
 
         XCTAssertEqual(view.loadingCount, 1)
+        @MainActor
+        func testViewWillAppearFetchesFavorites() async {
+            let interactor = HomeInteractorMock(user: makeUser())
+            let presenter = HomePresenter(interactor: interactor)
+            let view = HomeViewSpy()
+
+            let completed = expectation(
+                description: "Favorites loaded"
+            )
+
+            view.onFavorites = {
+                completed.fulfill()
+            }
+
+            presenter.view = view
+            presenter.viewWillAppear()
+
+            await fulfillment(of: [completed], timeout: 2)
+
+            XCTAssertEqual(view.favoritesModel?.totalCount, "0")
+        }
     }
 
     @MainActor
@@ -120,6 +141,12 @@ private final class HomeInteractorMock: HomeInteractorInput {
     init(user: UserDetailEntity) {
         self.user = user
     }
+    func fetchFavorites() async throws -> HomeFavoritesSnapshot {
+        HomeFavoritesSnapshot(
+            totalCount: 0,
+            recentUsers: []
+        )
+    }
 
     func fetchCurrentUser() async throws -> UserDetailEntity {
         callCount += 1
@@ -138,9 +165,17 @@ private final class HomeViewSpy: HomeViewInput {
     private(set) var loadingCount = 0
     private(set) var model: HomeViewModel?
     private(set) var errorMessage: String?
+    private(set) var favoritesModel: HomeFavoritesViewModel?
+    var onFavorites: (() -> Void)?
 
     var onProfile: (() -> Void)?
     var onError: (() -> Void)?
+
+    func displayFavorites(_ model: HomeFavoritesViewModel) {
+        favoritesModel = model
+        onFavorites?()
+    }
+
 
     func displayLoading() {
         loadingCount += 1
@@ -155,4 +190,7 @@ private final class HomeViewSpy: HomeViewInput {
         errorMessage = message
         onError?()
     }
+
+
+
 }

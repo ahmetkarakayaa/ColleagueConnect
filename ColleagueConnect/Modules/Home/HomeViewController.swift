@@ -22,10 +22,18 @@ final class HomeViewController: UIViewController, HomeViewInput {
     private let bioLabel = UILabel()
     private let followersLabel = UILabel()
     private let followingLabel = UILabel()
+    private let favoritesLabel = UILabel()
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private let errorStack = UIStackView()
     private let errorLabel = UILabel()
     private let retryButton = UIButton(type: .system)
+    private let recentFavoritesView = HomeRecentFavoritesView()
+
+    var onSeeAllFavorites: (() -> Void)? {
+        didSet {
+            recentFavoritesView.onSeeAllTapped = onSeeAllFavorites
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +45,27 @@ final class HomeViewController: UIViewController, HomeViewInput {
 
         presenter?.viewDidLoad()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(
+            true,
+            animated: false
+        )
+
+        presenter?.viewWillAppear()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        navigationController?.setNavigationBarHidden(
+            false,
+            animated: false
+        )
+    }
+
 
     private func setupContent() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +87,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
         contentStack.addArrangedSubview(header)
         contentStack.addArrangedSubview(profileCard)
         contentStack.addArrangedSubview(statsStack)
+        contentStack.addArrangedSubview(recentFavoritesView)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(
@@ -233,6 +263,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
         return card
     }
 
+
     private func makeStatsStack() -> UIView {
         let followersCard = makeStatCard(
             title: "Followers",
@@ -244,17 +275,24 @@ final class HomeViewController: UIViewController, HomeViewInput {
             valueLabel: followingLabel
         )
 
+        let favoritesCard = makeStatCard(
+            title: "Favorites",
+            valueLabel: favoritesLabel
+        )
+
         let stack = UIStackView(arrangedSubviews: [
             followersCard,
-            followingCard
+            followingCard,
+            favoritesCard
         ])
 
         stack.axis = .horizontal
         stack.distribution = .fillEqually
-        stack.spacing = 12
+        stack.spacing = 10
 
         return stack
     }
+
 
     private func makeStatCard(
         title: String,
@@ -388,7 +426,13 @@ final class HomeViewController: UIViewController, HomeViewInput {
         errorLabel.text = message
         errorStack.isHidden = false
     }
+    func displayFavorites(_ model: HomeFavoritesViewModel) {
+        favoritesLabel.text = model.totalCount
 
+        recentFavoritesView.configure(
+            users: model.recentUsers
+        )
+    }
     @objc private func retryTapped() {
         presenter?.didTapRetry()
     }
