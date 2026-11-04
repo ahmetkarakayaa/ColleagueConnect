@@ -66,6 +66,8 @@
 		E795243A3098CCE4006552E5 /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524393098CCE4006552E5 /* HomePresenter.swift */; };
 		E795243C3098D7E5006552E5 /* HomePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243B3098D7E5006552E5 /* HomePresenterTests.swift */; };
 		E795243E3098D86A006552E5 /* HomeInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243D3098D86A006552E5 /* HomeInteractorTests.swift */; };
+		E79524403098DC1A006552E5 /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795243F3098DC1A006552E5 /* HomeRouter.swift */; };
+		E79524423098DCA0006552E5 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79524413098DCA0006552E5 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +149,8 @@
 		E79524393098CCE4006552E5 /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		E795243B3098D7E5006552E5 /* HomePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenterTests.swift; sourceTree = "<group>"; };
 		E795243D3098D86A006552E5 /* HomeInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractorTests.swift; sourceTree = "<group>"; };
+		E795243F3098DC1A006552E5 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
+		E79524413098DCA0006552E5 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E7A29A47308754FC0091655B /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -391,6 +395,8 @@
 				E79524353098CB7E006552E5 /* HomeInteractor.swift */,
 				E79524373098CCB3006552E5 /* HomeViewModel.swift */,
 				E79524393098CCE4006552E5 /* HomePresenter.swift */,
+				E795243F3098DC1A006552E5 /* HomeRouter.swift */,
+				E79524413098DCA0006552E5 /* HomeViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -554,6 +560,7 @@
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
 				E76171B4307CFCCD002C66EB /* WelcomeInteractor.swift in Sources */,
 				E79524383098CCB3006552E5 /* HomeViewModel.swift in Sources */,
+				E79524423098DCA0006552E5 /* HomeViewController.swift in Sources */,
 				E718C5D5307E28EA00F11C12 /* FavoritesViewController.swift in Sources */,
 				E718C5D2307E1F6000F11C12 /* FavoriteStorageService.swift in Sources */,
 				E76171B0307CFC53002C66EB /* WelcomeViewController.swift in Sources */,
@@ -573,6 +580,7 @@
 				E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */,
 				E795243A3098CCE4006552E5 /* HomePresenter.swift in Sources */,
 				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
+				E79524403098DC1A006552E5 /* HomeRouter.swift in Sources */,
 				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
 				E79524363098CB7E006552E5 /* HomeInteractor.swift in Sources */,
