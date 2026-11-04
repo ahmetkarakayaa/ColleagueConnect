@@ -72,6 +72,10 @@
 		E7F03D753099B2C100CE69F4 /* HomeFavoritesSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */; };
 		E7F03D773099B57500CE69F4 /* HomeFavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */; };
 		E7F03D793099B8CB00CE69F4 /* HomeRecentFavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */; };
+		E7F03D7E3099FC3F00CE69F4 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D7D3099FC3F00CE69F4 /* MyProfileViewController.swift */; };
+		E7F03D80309A02B500CE69F4 /* RecentlyViewedStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D7F309A02B500CE69F4 /* RecentlyViewedStorageService.swift */; };
+		E7F03D82309A0C5600CE69F4 /* HomeRecentlyViewedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F03D81309A0C5600CE69F4 /* HomeRecentlyViewedView.swift */; };
+		E7F946AE309B4D8D00C43D93 /* RecentlyViewedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F946AD309B4D8D00C43D93 /* RecentlyViewedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,6 +167,10 @@
 		E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFavoritesSnapshot.swift; sourceTree = "<group>"; };
 		E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFavoritesViewModel.swift; sourceTree = "<group>"; };
 		E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRecentFavoritesView.swift; sourceTree = "<group>"; };
+		E7F03D7D3099FC3F00CE69F4 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		E7F03D7F309A02B500CE69F4 /* RecentlyViewedStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyViewedStorageService.swift; sourceTree = "<group>"; };
+		E7F03D81309A0C5600CE69F4 /* HomeRecentlyViewedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRecentlyViewedView.swift; sourceTree = "<group>"; };
+		E7F946AD309B4D8D00C43D93 /* RecentlyViewedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyViewedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				E718C5D1307E1F6000F11C12 /* FavoriteStorageService.swift */,
+				E7F03D7F309A02B500CE69F4 /* RecentlyViewedStorageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -372,6 +381,8 @@
 		E76171AD307CFB55002C66EB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E7F946AC309B4D7300C43D93 /* RecentlyViewed */,
+				E7F03D7C3099FC1C00CE69F4 /* MyProfile */,
 				E79524313098CB40006552E5 /* Home */,
 				E795242730986780006552E5 /* AuthService.swift */,
 				E795242930986780006552E5 /* OAuthCallbackParser.swift */,
@@ -409,8 +420,25 @@
 				E7F03D743099B2C100CE69F4 /* HomeFavoritesSnapshot.swift */,
 				E7F03D763099B57500CE69F4 /* HomeFavoritesViewModel.swift */,
 				E7F03D783099B8CB00CE69F4 /* HomeRecentFavoritesView.swift */,
+				E7F03D81309A0C5600CE69F4 /* HomeRecentlyViewedView.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		E7F03D7C3099FC1C00CE69F4 /* MyProfile */ = {
+			isa = PBXGroup;
+			children = (
+				E7F03D7D3099FC3F00CE69F4 /* MyProfileViewController.swift */,
+			);
+			path = MyProfile;
+			sourceTree = "<group>";
+		};
+		E7F946AC309B4D7300C43D93 /* RecentlyViewed */ = {
+			isa = PBXGroup;
+			children = (
+				E7F946AD309B4D8D00C43D93 /* RecentlyViewedViewController.swift */,
+			);
+			path = RecentlyViewed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -554,6 +582,7 @@
 			files = (
 				E718C5E4307E36B000F11C12 /* UserDetailEntity.swift in Sources */,
 				E718C5CA307E1AF600F11C12 /* AppTheme.swift in Sources */,
+				E7F946AE309B4D8D00C43D93 /* RecentlyViewedViewController.swift in Sources */,
 				E79524333098CB58006552E5 /* HomeContracts.swift in Sources */,
 				E718C5E6307E36C200F11C12 /* UserDetailInteractor.swift in Sources */,
 				E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */,
@@ -567,7 +596,9 @@
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
 				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
+				E7F03D7E3099FC3F00CE69F4 /* MyProfileViewController.swift in Sources */,
 				E795242E3098681F006552E5 /* OAuthWebViewController.swift in Sources */,
+				E7F03D80309A02B500CE69F4 /* RecentlyViewedStorageService.swift in Sources */,
 				E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */,
 				E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
@@ -591,6 +622,7 @@
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
 				E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */,
+				E7F03D82309A0C5600CE69F4 /* HomeRecentlyViewedView.swift in Sources */,
 				E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */,
 				E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */,
 				E795243A3098CCE4006552E5 /* HomePresenter.swift in Sources */,

@@ -141,11 +141,15 @@ private final class HomeInteractorMock: HomeInteractorInput {
     init(user: UserDetailEntity) {
         self.user = user
     }
-    func fetchFavorites() async throws -> HomeFavoritesSnapshot {
+    func fetchFavorites() async throws ->
+    HomeFavoritesSnapshot {
         HomeFavoritesSnapshot(
             totalCount: 0,
             recentUsers: []
         )
+    }
+    func fetchRecentlyViewed() async throws -> [FavoriteUserProfile] {
+        []
     }
 
     func fetchCurrentUser() async throws -> UserDetailEntity {
@@ -174,6 +178,8 @@ private final class HomeViewSpy: HomeViewInput {
     func displayFavorites(_ model: HomeFavoritesViewModel) {
         favoritesModel = model
         onFavorites?()
+    }
+    func displayRecentlyViewed(_ users: [HomeRecentFavoriteViewModel]) {
     }
 
 

@@ -5,19 +5,31 @@ final class UserDetailInteractor: UserDetailInteractorInput {
     
     private let networkClient: NetworkClientProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let authService: AuthServiceProtocol
     
     init(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
+        self.authService = authService
     }
     
     func fetchUser(username: String) async throws -> UserDetailEntity {
+        guard let token = try authService.accessToken(),
+              !token.isEmpty else {
+            throw AuthError.missingAccessToken
+        }
+
         let dto: UserDetailDTO = try await networkClient.request(
-            endpoint: GitHubEndpoint.userDetail(username: username)
+            endpoint: GitHubEndpoint.authenticatedUserDetail(
+                username: username,
+                token: token
+            )
         )
+
         return dto.toEntity()
     }
     

@@ -9,6 +9,7 @@ final class HomePresenter: HomeViewOutput {
     private let interactor: HomeInteractorInput
     private var loadTask: Task<Void, Never>?
     private var favoritesTask: Task<Void, Never>?
+    private var recentlyViewedTask: Task<Void, Never>?
 
     init(interactor: HomeInteractorInput) {
         self.interactor = interactor
@@ -21,8 +22,8 @@ final class HomePresenter: HomeViewOutput {
 
     func viewWillAppear() {
         loadFavorites()
+        loadRecentlyViewed()
     }
-
     func didTapRetry() {
         loadProfile()
     }
@@ -68,7 +69,35 @@ final class HomePresenter: HomeViewOutput {
             }
         }
     }
+    private func loadRecentlyViewed() {
+        recentlyViewedTask?.cancel()
 
+        recentlyViewedTask = Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                let profiles = try await interactor.fetchRecentlyViewed()
+                guard !Task.isCancelled else { return }
+
+                let users = profiles.map { user in
+                    HomeRecentFavoriteViewModel(
+                        username: user.username,
+                        name: user.name?.isEmpty == false
+                            ? user.name!
+                            : user.username,
+                        avatarURL: user.avatarURL
+                    )
+                }
+
+                view?.displayRecentlyViewed(users)
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                view?.displayRecentlyViewed([])
+            }
+        }
+    }
 
     private func loadProfile() {
         loadTask?.cancel()
@@ -106,5 +135,6 @@ final class HomePresenter: HomeViewOutput {
     deinit {
         loadTask?.cancel()
         favoritesTask?.cancel()
+        recentlyViewedTask?.cancel()
     }
 }

@@ -1,3 +1,4 @@
+
 import UIKit
 
 @MainActor
@@ -8,22 +9,25 @@ final class FavoritesRouter: FavoritesRouterInput {
     private let networkClient: NetworkClientProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
     private let authService: AuthServiceProtocol
+    private let recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
 
     init(
         networkClient: NetworkClientProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol,
-        authService: AuthServiceProtocol
+        authService: AuthServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
         self.authService = authService
+        self.recentlyViewedStorage = recentlyViewedStorage
     }
-
 
     static func createModule(
         networkClient: NetworkClientProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol,
-        authService: AuthServiceProtocol
+        authService: AuthServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) -> UIViewController {
         let view = FavoritesViewController()
 
@@ -36,7 +40,8 @@ final class FavoritesRouter: FavoritesRouterInput {
         let router = FavoritesRouter(
             networkClient: networkClient,
             favoriteStorage: favoriteStorage,
-            authService: authService
+            authService: authService,
+            recentlyViewedStorage: recentlyViewedStorage
         )
 
         let presenter = FavoritesPresenter(
@@ -51,12 +56,13 @@ final class FavoritesRouter: FavoritesRouterInput {
         return view
     }
 
-
     func showUserDetail(username: String) {
         let detailViewController = UserDetailRouter.createModule(
             username: username,
             networkClient: networkClient,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            authService: authService,
+            recentlyViewedStorage: recentlyViewedStorage
         )
 
         viewController?.navigationController?.pushViewController(

@@ -13,7 +13,19 @@ final class HomeViewController: UIViewController, HomeViewInput {
         static let cornerRadius: CGFloat = 18
         static let spacing: CGFloat = 22
     }
+    private let recentlyViewedView = HomeRecentlyViewedView()
 
+    var onViewedProfileTapped: ((String) -> Void)? {
+        didSet {
+            recentlyViewedView.onProfileTapped = onViewedProfileTapped
+        }
+    }
+
+    var onSeeAllViewed: (() -> Void)? {
+        didSet {
+            recentlyViewedView.onSeeAllTapped = onSeeAllViewed
+        }
+    }
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView()
     private let avatarImageView = UIImageView()
@@ -34,7 +46,16 @@ final class HomeViewController: UIViewController, HomeViewInput {
             recentFavoritesView.onSeeAllTapped = onSeeAllFavorites
         }
     }
+    var onRecentFavoriteTapped: ((String) -> Void)? {
+        didSet {
+            recentFavoritesView.onFavoriteTapped = onRecentFavoriteTapped
+        }
+    }
+    var onOpenGitHubProfile: ((String) -> Void)?
+    var onLogoutRequested: (() -> Void)?
+    var onProfileTapped: ((HomeViewModel) -> Void)?
 
+    private var displayedProfile: HomeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,6 +108,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
         contentStack.addArrangedSubview(profileCard)
         contentStack.addArrangedSubview(statsStack)
         contentStack.addArrangedSubview(recentFavoritesView)
+        contentStack.addArrangedSubview(recentlyViewedView)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(
@@ -223,15 +245,31 @@ final class HomeViewController: UIViewController, HomeViewInput {
         detailsStack.axis = .vertical
         detailsStack.alignment = .fill
         detailsStack.spacing = 6
+        let chevronImageView = UIImageView(
+            image: UIImage(systemName: "chevron.right")
+        )
+        chevronImageView.tintColor = .tertiaryLabel
+        chevronImageView.contentMode = .scaleAspectFit
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            chevronImageView.widthAnchor.constraint(equalToConstant: 12),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 18)
+        ])
 
         let profileStack = UIStackView(arrangedSubviews: [
             avatarImageView,
-            detailsStack
+            detailsStack,
+            chevronImageView
         ])
         profileStack.axis = .horizontal
         profileStack.alignment = .center
         profileStack.spacing = 14
         profileStack.translatesAutoresizingMaskIntoConstraints = false
+        detailsStack.setContentCompressionResistancePriority(
+            .defaultLow,
+            for: .horizontal
+        )
 
         card.addSubview(profileStack)
 
@@ -259,6 +297,13 @@ final class HomeViewController: UIViewController, HomeViewInput {
                 constant: -16
             )
         ])
+        let profileTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(profileCardTapped)
+        )
+        card.addGestureRecognizer(profileTap)
+        card.isUserInteractionEnabled = true
+        card.accessibilityLabel = "Profile actions"
 
         return card
     }
@@ -408,6 +453,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
     }
 
     func displayProfile(_ model: HomeViewModel) {
+        displayedProfile = model
         activityIndicator.stopAnimating()
         errorStack.isHidden = true
         scrollView.isHidden = false
@@ -436,7 +482,16 @@ final class HomeViewController: UIViewController, HomeViewInput {
             users: model.recentUsers
         )
     }
+    func displayRecentlyViewed(_ users: [HomeRecentFavoriteViewModel]) {
+        recentlyViewedView.configure(users: users)
+    }
     @objc private func retryTapped() {
         presenter?.didTapRetry()
     }
-}
+    @objc private func profileCardTapped() {
+        guard let displayedProfile else { return }
+        onProfileTapped?(displayedProfile)
+    }
+
+
+    }
