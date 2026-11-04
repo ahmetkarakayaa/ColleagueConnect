@@ -28,8 +28,7 @@ final class WelcomeViewController: UIViewController {
         return imageView
     }()
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private lazy var titleLabel: UILabel = {        let label = UILabel()
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.65
@@ -52,12 +51,7 @@ final class WelcomeViewController: UIViewController {
             NSAttributedString(
                 string: "Connect",
                 attributes: [
-                    .foregroundColor: UIColor(
-                        red: 0.96,
-                        green: 0.04,
-                        blue: 0.62,
-                        alpha: 1
-                    ),
+                    .foregroundColor: self.magenta,
                     .font: UIFont.systemFont(ofSize: 34, weight: .bold)
                 ]
             )
@@ -171,6 +165,23 @@ final class WelcomeViewController: UIViewController {
         )
 
         topArc.path = path.cgPath
+    }
+    private func showAlert(title: String, message: String) {
+        guard presentedViewController == nil else {
+            return
+        }
+
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+
+        alert.addAction(
+            UIAlertAction(title: "OK", style: .default)
+        )
+
+        present(alert, animated: true)
     }
 
     private func setupUI() {
@@ -365,23 +376,9 @@ extension WelcomeViewController: WelcomeViewInput {
     }
 
     func displayError(_ message: String) {
-        guard presentedViewController == nil else {
-            return
-        }
-
-        let alert = UIAlertController(
+        showAlert(
             title: "Sign In Failed",
-            message: message,
-            preferredStyle: .alert
+            message: message
         )
-
-        alert.addAction(
-            UIAlertAction(
-                title: "OK",
-                style: .default
-            )
-        )
-
-        present(alert, animated: true)
     }
 }
