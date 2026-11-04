@@ -16,7 +16,9 @@ final class SearchRouter: SearchRouterInput {
 
     static func createModule(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) -> UIViewController {
 
         let view = SearchViewController()
@@ -29,7 +31,9 @@ final class SearchRouter: SearchRouterInput {
             UserDetailRouter.createModule(
                 username: username,
                 networkClient: networkClient,
-                favoriteStorage: favoriteStorage
+                favoriteStorage: favoriteStorage,
+                authService: authService,
+                recentlyViewedStorage: recentlyViewedStorage
             )
         })
 

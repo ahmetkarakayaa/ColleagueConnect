@@ -10,6 +10,8 @@ final class HomeRecentFavoritesView: UIView {
             seeAllButton.isHidden = onSeeAllTapped == nil
         }
     }
+    var onFavoriteTapped: ((String) -> Void)?
+
 
     private let rowsStack = UIStackView()
 
@@ -50,6 +52,7 @@ final class HomeRecentFavoritesView: UIView {
             titleLabel,
             seeAllButton
         ])
+
         headerStack.axis = .horizontal
         headerStack.alignment = .center
         headerStack.distribution = .equalSpacing
@@ -211,10 +214,30 @@ final class HomeRecentFavoritesView: UIView {
             trailing: 0
         )
 
-        return row
-    }
+        let tapButton = UIButton(type: .custom)
+        tapButton.translatesAutoresizingMaskIntoConstraints = false
+        tapButton.accessibilityLabel = "View \(user.name) profile"
 
-    @objc private func seeAllTapped() {
-        onSeeAllTapped?()
-    }
+        tapButton.addAction(
+            UIAction { [weak self] _ in
+                self?.onFavoriteTapped?(user.username)
+            },
+            for: .touchUpInside
+        )
+
+        row.addSubview(tapButton)
+
+        NSLayoutConstraint.activate([
+            tapButton.topAnchor.constraint(equalTo: row.topAnchor),
+            tapButton.bottomAnchor.constraint(equalTo: row.bottomAnchor),
+            tapButton.leadingAnchor.constraint(equalTo: row.leadingAnchor),
+            tapButton.trailingAnchor.constraint(equalTo: row.trailingAnchor)
+        ])
+
+        return row
+        }
+
+        @objc private func seeAllTapped() {
+            onSeeAllTapped?()
+        }
 }

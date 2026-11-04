@@ -8,11 +8,14 @@ final class UserDetailRouter: UserDetailRouterInput {
     static func createModule(
         username: String,
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) -> UIViewController {
         let interactor = UserDetailInteractor(
             networkClient: networkClient,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            authService: authService
         )
 
         let router = UserDetailRouter()
@@ -28,6 +31,7 @@ final class UserDetailRouter: UserDetailRouterInput {
 
         presenter.view = viewController
         router.viewController = viewController
+        recentlyViewedStorage.recordVisit(username: username)
 
         return viewController
     }

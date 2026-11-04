@@ -7,15 +7,18 @@ final class HomeInteractor: HomeInteractorInput {
     private let authService: AuthServiceProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
     private let profileCache = HomeFavoriteProfileCache()
+    private let recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
 
     init(
         networkClient: NetworkClientProtocol,
         authService: AuthServiceProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) {
         self.networkClient = networkClient
         self.authService = authService
         self.favoriteStorage = favoriteStorage
+        self.recentlyViewedStorage = recentlyViewedStorage
     }
 
     func fetchCurrentUser() async throws -> UserDetailEntity {
@@ -85,6 +88,52 @@ final class HomeInteractor: HomeInteractorInput {
             totalCount: favorites.count,
             recentUsers: recentUsers
         )
+    }
+    func fetchRecentlyViewed() async throws -> [FavoriteUserProfile] {
+        let usernames = recentlyViewedStorage.getRecentlyViewed(limit: 3)
+
+        guard !usernames.isEmpty else {
+            return []
+        }
+
+        guard let token = try authService.accessToken(),
+              !token.isEmpty else {
+            throw AuthError.missingAccessToken
+        }
+
+        var profiles: [FavoriteUserProfile] = []
+
+        for username in usernames {
+            try Task.checkCancellation()
+
+            do {
+                let dto: UserDetailDTO = try await networkClient.request(
+                    endpoint: GitHubEndpoint.authenticatedUserDetail(
+                        username: username,
+                        token: token
+                    )
+                )
+
+                try Task.checkCancellation()
+
+                let user = dto.toEntity()
+
+                profiles.append(
+                    FavoriteUserProfile(
+                        username: user.login,
+                        avatarURL: user.avatarURL,
+                        name: user.name,
+                        bio: user.bio
+                    )
+                )
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                continue
+            }
+        }
+
+        return profiles
     }
 
     private actor HomeFavoriteProfileCache {

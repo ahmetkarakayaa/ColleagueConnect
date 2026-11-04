@@ -4,7 +4,7 @@ import XCTest
 @testable import ColleagueConnect
 
 final class HomeInteractorTests: XCTestCase {
-    
+
     func testRemovedFavoriteIsEvictedFromCache() async throws {
         let networkClient = HomeNetworkClientSpy()
         let favoriteStorage = HomeFavoriteStorageMock()
@@ -15,7 +15,8 @@ final class HomeInteractorTests: XCTestCase {
         let interactor = HomeInteractor(
             networkClient: networkClient,
             authService: HomeAuthServiceMock(),
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
         )
 
         _ = try await interactor.fetchFavorites()
@@ -33,17 +34,18 @@ final class HomeInteractorTests: XCTestCase {
         XCTAssertEqual(networkClient.requestCount, 2)
     }
 
-
     func testMissingTokenDoesNotSendRequest() async throws {
         let authService = HomeAuthServiceMock()
-        authService.token = "test-access-token"
+        authService.token = nil
+
         let networkClient = HomeNetworkClientSpy()
         let favoriteStorage = HomeFavoriteStorageMock()
 
         let interactor = HomeInteractor(
             networkClient: networkClient,
             authService: authService,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
         )
 
         do {
@@ -52,52 +54,54 @@ final class HomeInteractorTests: XCTestCase {
         } catch AuthError.missingAccessToken {
             XCTAssertEqual(networkClient.requestCount, 0)
         }
+    }
 
-        func testFavoritesCacheAvoidsDuplicateRequests() async throws {
-            let authService = HomeAuthServiceMock()
-            let networkClient = HomeNetworkClientSpy()
-            let favoriteStorage = HomeFavoriteStorageMock()
+    func testFavoritesCacheAvoidsDuplicateRequests() async throws {
+        let authService = HomeAuthServiceMock()
+        let networkClient = HomeNetworkClientSpy()
+        let favoriteStorage = HomeFavoriteStorageMock()
 
-            favoriteStorage.usernames = ["testuser"]
-            favoriteStorage.recentUsernames = ["testuser"]
+        favoriteStorage.usernames = ["testuser"]
+        favoriteStorage.recentUsernames = ["testuser"]
 
-            let interactor = HomeInteractor(
-                networkClient: networkClient,
-                authService: authService,
-                favoriteStorage: favoriteStorage
-            )
+        let interactor = HomeInteractor(
+            networkClient: networkClient,
+            authService: authService,
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
+        )
 
-            let first = try await interactor.fetchFavorites()
-            let second = try await interactor.fetchFavorites()
+        let first = try await interactor.fetchFavorites()
+        let second = try await interactor.fetchFavorites()
 
-            XCTAssertEqual(first.recentUsers.count, 1)
-            XCTAssertEqual(second.recentUsers.count, 1)
-            XCTAssertEqual(networkClient.requestCount, 1)
-        }
-        
-        func testFavoritesContinuesWhenOneProfileFails() async throws {
-            let networkClient = HomeNetworkClientSpy()
-            let favoriteStorage = HomeFavoriteStorageMock()
+        XCTAssertEqual(first.recentUsers.count, 1)
+        XCTAssertEqual(second.recentUsers.count, 1)
+        XCTAssertEqual(networkClient.requestCount, 1)
+    }
 
-            favoriteStorage.usernames = ["missing", "testuser"]
-            favoriteStorage.recentUsernames = ["missing", "testuser"]
+    func testFavoritesContinuesWhenOneProfileFails() async throws {
+        let networkClient = HomeNetworkClientSpy()
+        let favoriteStorage = HomeFavoriteStorageMock()
 
-            networkClient.failingUsername = "missing"
+        favoriteStorage.usernames = ["missing", "testuser"]
+        favoriteStorage.recentUsernames = ["missing", "testuser"]
+        networkClient.failingUsername = "missing"
 
-            let interactor = HomeInteractor(
-                networkClient: networkClient,
-                authService: HomeAuthServiceMock(),
-                favoriteStorage: favoriteStorage
-            )
+        let interactor = HomeInteractor(
+            networkClient: networkClient,
+            authService: HomeAuthServiceMock(),
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
+        )
 
-            let snapshot = try await interactor.fetchFavorites()
+        let snapshot = try await interactor.fetchFavorites()
 
-            XCTAssertEqual(snapshot.totalCount, 2)
-            XCTAssertEqual(snapshot.recentUsers.count, 1)
-            XCTAssertEqual(snapshot.recentUsers.first?.username, "testuser")
-        }
-
-
+        XCTAssertEqual(snapshot.totalCount, 2)
+        XCTAssertEqual(snapshot.recentUsers.count, 1)
+        XCTAssertEqual(
+            snapshot.recentUsers.first?.username,
+            "testuser"
+        )
     }
 
     func testValidTokenFetchesAuthenticatedUser() async throws {
@@ -110,16 +114,19 @@ final class HomeInteractorTests: XCTestCase {
         let interactor = HomeInteractor(
             networkClient: networkClient,
             authService: authService,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
         )
 
         let user = try await interactor.fetchCurrentUser()
 
         XCTAssertEqual(networkClient.requestCount, 1)
+
         XCTAssertEqual(
             networkClient.lastRequest?.url?.absoluteString,
             "https://api.github.com/user"
         )
+
         XCTAssertEqual(
             networkClient.lastRequest?.value(
                 forHTTPHeaderField: "Authorization"
@@ -139,22 +146,27 @@ final class HomeInteractorTests: XCTestCase {
         let favoriteStorage = HomeFavoriteStorageMock()
 
         favoriteStorage.usernames = [
-            "ali", "mehmet", "testuser"
+            "ali",
+            "mehmet",
+            "testuser"
         ]
-
         favoriteStorage.recentUsernames = ["testuser"]
 
         let interactor = HomeInteractor(
             networkClient: networkClient,
             authService: authService,
-            favoriteStorage: favoriteStorage
+            favoriteStorage: favoriteStorage,
+            recentlyViewedStorage: RecentlyViewedStorageMock()
         )
 
         let snapshot = try await interactor.fetchFavorites()
 
         XCTAssertEqual(snapshot.totalCount, 3)
         XCTAssertEqual(snapshot.recentUsers.count, 1)
-        XCTAssertEqual(snapshot.recentUsers.first?.username, "testuser")
+        XCTAssertEqual(
+            snapshot.recentUsers.first?.username,
+            "testuser"
+        )
         XCTAssertEqual(networkClient.requestCount, 1)
     }
 
@@ -162,7 +174,8 @@ final class HomeInteractorTests: XCTestCase {
         let interactor = HomeInteractor(
             networkClient: HomeNetworkClientSpy(),
             authService: HomeAuthServiceMock(),
-            favoriteStorage: HomeFavoriteStorageMock()
+            favoriteStorage: HomeFavoriteStorageMock(),
+            recentlyViewedStorage: RecentlyViewedStorageMock()
         )
 
         let snapshot = try await interactor.fetchFavorites()
@@ -207,6 +220,7 @@ private final class HomeFavoriteStorageMock: FavoriteStorageServiceProtocol {
 
     func addFavorite(username: String) {
         guard !usernames.contains(username) else { return }
+
         usernames.append(username)
         recentUsernames.insert(username, at: 0)
     }
@@ -225,10 +239,22 @@ private final class HomeFavoriteStorageMock: FavoriteStorageServiceProtocol {
     }
 }
 
+private final class RecentlyViewedStorageMock: RecentlyViewedStorageServiceProtocol {
+
+    func recordVisit(username: String) {}
+
+    func getRecentlyViewed(limit: Int?) -> [String] {
+        []
+    }
+
+    func clearHistory() {}
+}
+
 private final class HomeNetworkClientSpy: NetworkClientProtocol {
 
     private(set) var requestCount = 0
     private(set) var lastRequest: URLRequest?
+
     var failingUsername: String?
 
     func request<T: Decodable>(
@@ -236,6 +262,7 @@ private final class HomeNetworkClientSpy: NetworkClientProtocol {
     ) async throws -> T {
         requestCount += 1
         lastRequest = try endpoint.makeURLRequest()
+
         if lastRequest?.url?.lastPathComponent == failingUsername {
             throw NetworkError.httpError(statusCode: 404)
         }

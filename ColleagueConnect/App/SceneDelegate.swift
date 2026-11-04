@@ -38,25 +38,29 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let appRouter = AppRouter(
             networkClient: networkClient,
             favoriteStorage: FavoriteStorageService(),
-            authService: authService
+            authService: authService,
+            recentlyViewedStorage: RecentlyViewedStorageService()
         )
-
 
         do {
             if try authService.isLoggedIn() {
-                window.rootViewController = appRouter.makeMainViewController()
+                showMain(
+                    in: window,
+                    router: appRouter,
+                    authService: authService
+                )
             } else {
-                window.rootViewController = appRouter.makeInitialViewController(
-                    onSignInSucceeded: { [weak window] in
-                        window?.rootViewController = appRouter.makeMainViewController()
-                    }
+                showWelcome(
+                    in: window,
+                    router: appRouter,
+                    authService: authService
                 )
             }
         } catch {
-            window.rootViewController = appRouter.makeInitialViewController(
-                onSignInSucceeded: { [weak window] in
-                    window?.rootViewController = appRouter.makeMainViewController()
-                }
+            showWelcome(
+                in: window,
+                router: appRouter,
+                authService: authService
             )
         }
 
@@ -64,4 +68,87 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
     }
+
+    private func showMain(
+        in window: UIWindow,
+        router: AppRouter,
+        authService: AuthServiceProtocol
+    ) {
+        window.rootViewController = router.makeMainViewController(
+            onLogoutRequested: { [weak self, weak window] in
+                guard let window else { return }
+
+                let confirmation = UIAlertController(
+                    title: "Log Out",
+                    message: "Are you sure you want to log out?",
+                    preferredStyle: .alert
+                )
+
+                confirmation.addAction(
+                    UIAlertAction(
+                        title: "Cancel",
+                        style: .cancel
+                    )
+                )
+
+                confirmation.addAction(
+                    UIAlertAction(
+                        title: "Log Out",
+                        style: .destructive
+                    ) { [weak self, weak window] _ in
+                        guard let self, let window else { return }
+
+                        do {
+                            try authService.signOut()
+
+                            self.showWelcome(
+                                in: window,
+                                router: router,
+                                authService: authService
+                            )
+                        } catch {
+                            let alert = UIAlertController(
+                                title: "Logout Failed",
+                                message: "Please try again.",
+                                preferredStyle: .alert
+                            )
+
+                            alert.addAction(
+                                UIAlertAction(title: "OK", style: .default)
+                            )
+
+                            window.rootViewController?.present(
+                                alert,
+                                animated: true
+                            )
+                        }
+                    }
+                )
+
+                window.rootViewController?.present(
+                    confirmation,
+                    animated: true
+                )
+            }
+        )
+    }
+
+    private func showWelcome(
+        in window: UIWindow,
+        router: AppRouter,
+        authService: AuthServiceProtocol
+    ) {
+        window.rootViewController = router.makeInitialViewController(
+            onSignInSucceeded: { [weak self, weak window] in
+                guard let self, let window else { return }
+
+                self.showMain(
+                    in: window,
+                    router: router,
+                    authService: authService
+                )
+            }
+        )
+    }
+
 }
