@@ -55,6 +55,11 @@
 		E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */; };
 		E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */; };
 		E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B9307CFCFE002C66EB /* ModuleContracts.swift */; };
+		E795242A30986780006552E5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242730986780006552E5 /* AuthService.swift */; };
+		E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242830986780006552E5 /* OAuthConfiguration.swift */; };
+		E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242930986780006552E5 /* OAuthCallbackParser.swift */; };
+		E795242E3098681F006552E5 /* OAuthWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242D3098681F006552E5 /* OAuthWebViewController.swift */; };
+		E795243030986964006552E5 /* GitHubAuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +131,11 @@
 		E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeEntity.swift; sourceTree = "<group>"; };
 		E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeRouter.swift; sourceTree = "<group>"; };
 		E76171B9307CFCFE002C66EB /* ModuleContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleContracts.swift; sourceTree = "<group>"; };
+		E795242730986780006552E5 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = ColleagueConnect/Core/Services/AuthService.swift; sourceTree = SOURCE_ROOT; };
+		E795242830986780006552E5 /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthConfiguration.swift; path = ColleagueConnect/Core/Services/OAuthConfiguration.swift; sourceTree = SOURCE_ROOT; };
+		E795242930986780006552E5 /* OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthCallbackParser.swift; path = ColleagueConnect/Core/Services/OAuthCallbackParser.swift; sourceTree = SOURCE_ROOT; };
+		E795242D3098681F006552E5 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthWebViewController.swift; path = ColleagueConnect/Modules/Welcome/OAuthWebViewController.swift; sourceTree = "<group>"; };
+		E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GitHubAuthEndpoint.swift; path = ColleagueConnect/Core/Network/GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
 		E7A29A47308754FC0091655B /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		E7A29A48308756B30091655B /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 		E7A29A4930875DE10091655B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -265,6 +275,8 @@
 		E761716D307CEEE9002C66EB = {
 			isa = PBXGroup;
 			children = (
+				E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */,
+				E795242D3098681F006552E5 /* OAuthWebViewController.swift */,
 				E7617178307CEEE9002C66EB /* ColleagueConnect */,
 				E761718F307CEEEC002C66EB /* ColleagueConnectTests */,
 				E7617199307CEEEC002C66EB /* ColleagueConnectUITests */,
@@ -335,6 +347,9 @@
 		E76171AD307CFB55002C66EB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				E795242730986780006552E5 /* AuthService.swift */,
+				E795242930986780006552E5 /* OAuthCallbackParser.swift */,
+				E795242830986780006552E5 /* OAuthConfiguration.swift */,
 				E718C5E0307E368800F11C12 /* UserDetail */,
 				E718C5D3307E28BC00F11C12 /* Favorites */,
 				E718C5BB307E0D3300F11C12 /* Search */,
@@ -508,6 +523,7 @@
 				E718C5EA307E377C00F11C12 /* UserDetailRouter.swift in Sources */,
 				E718C5C3307E0D8700F11C12 /* SearchEntity.swift in Sources */,
 				E76171AB307CFA51002C66EB /* AppRouter.swift in Sources */,
+				E795242E3098681F006552E5 /* OAuthWebViewController.swift in Sources */,
 				E718C5B5307E070100F11C12 /* GitHubEndpoint.swift in Sources */,
 				E718C5DD307E293E00F11C12 /* FavoritesRouter.swift in Sources */,
 				E76171B2307CFCBC002C66EB /* WelcomePresenter.swift in Sources */,
@@ -518,6 +534,7 @@
 				E718C5CF307E1D3F00F11C12 /* SearchUserCell.swift in Sources */,
 				E7526F143082703700605B11 /* Optional+Extension.swift in Sources */,
 				E718C5E8307E376600F11C12 /* UserDetailPresenter.swift in Sources */,
+				E795243030986964006552E5 /* GitHubAuthEndpoint.swift in Sources */,
 				E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */,
 				E718C5DB307E292F00F11C12 /* FavoritesEntity.swift in Sources */,
 				E761717E307CEEE9002C66EB /* ViewController.swift in Sources */,
@@ -527,10 +544,13 @@
 				E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */,
 				E74B69A93094C3D0006065AF /* TokenStorageProtocol.swift in Sources */,
 				E74B69AA3094C3D0006065AF /* KeychainTokenStorage.swift in Sources */,
+				E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */,
 				E718C5E2307E36A100F11C12 /* UserDetailContracts.swift in Sources */,
 				E718C5BF307E0D6400F11C12 /* SearchPresenter.swift in Sources */,
 				E718C5D7307E28FB00F11C12 /* FavoritesPresenter.swift in Sources */,
 				E718C5D9307E292300F11C12 /* FavoritesInteractor.swift in Sources */,
+				E795242A30986780006552E5 /* AuthService.swift in Sources */,
+				E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */,
 				E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */,
 				E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,

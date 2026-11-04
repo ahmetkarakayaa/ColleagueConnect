@@ -1,3 +1,4 @@
+
 import Foundation
 
 protocol WelcomeViewInput: AnyObject {
@@ -8,8 +9,11 @@ protocol WelcomeViewInput: AnyObject {
 
 protocol WelcomeViewOutput: AnyObject {
     func viewDidLoad()
+    func didTapSignIn()
 }
 
 protocol WelcomeInteractorInput {
     func fetchWelcomeMessage() -> WelcomeMessage
+    func makeAuthorizationURL() throws -> URL
+    func handleCallback(_ url: URL) async throws
 }

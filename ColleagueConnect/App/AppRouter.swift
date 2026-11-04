@@ -4,20 +4,25 @@ import UIKit
 @MainActor
 final class AppRouter {
 
-
     private let networkClient: NetworkClientProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let authService: AuthServiceProtocol
 
     init(
         networkClient: NetworkClientProtocol,
-        favoriteStorage: FavoriteStorageServiceProtocol
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
+        self.authService = authService
     }
-
-
     func makeInitialViewController() -> UIViewController {
+        if ProcessInfo.processInfo.arguments.contains("-showLoginUI") {
+            return WelcomeRouter.createModule(
+                authService: authService
+            )
+        }
 
         let searchViewController = SearchRouter.createModule(
             networkClient: networkClient,
@@ -36,7 +41,6 @@ final class AppRouter {
         let favoritesNavigation = UINavigationController(
             rootViewController: favoritesViewController
         )
-
 
         let iconConfig = UIImage.SymbolConfiguration(
             pointSize: 19,
@@ -67,7 +71,6 @@ final class AppRouter {
             )
         )
 
-
         let tabBarController = UITabBarController()
 
         tabBarController.viewControllers = [
@@ -77,7 +80,6 @@ final class AppRouter {
 
         tabBarController.tabBar.tintColor = AppTheme.Colors.accent
         tabBarController.tabBar.unselectedItemTintColor = .secondaryLabel
-
 
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()

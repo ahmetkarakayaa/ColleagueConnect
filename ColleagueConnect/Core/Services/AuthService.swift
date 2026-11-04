@@ -32,11 +32,11 @@ final class AuthService: AuthServiceProtocol {
     init(
         configuration: OAuthConfiguration,
         tokenStorage: TokenStorageProtocol,
-        session: URLSession = .shared
+        networkClient: NetworkClientProtocol
     ) {
         self.configuration = configuration
         self.tokenStorage = tokenStorage
-        self.networkClient = NetworkClient(session: session)
+        self.networkClient = networkClient
         self.callbackParser = OAuthCallbackParser(
             redirectURI: configuration.redirectURI
         )
