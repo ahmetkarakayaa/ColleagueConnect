@@ -41,7 +41,6 @@
 		E75668D030810BD3007073A2 /* UserDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75668CF30810BD3007073A2 /* UserDetailDTO.swift */; };
 		E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7617179307CEEE9002C66EB /* AppDelegate.swift */; };
 		E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717B307CEEE9002C66EB /* SceneDelegate.swift */; };
-		E761717E307CEEE9002C66EB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E761717D307CEEE9002C66EB /* ViewController.swift */; };
 		E7617181307CEEE9002C66EB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E7617180307CEEE9002C66EB /* Base */; };
 		E7617183307CEEEC002C66EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7617182307CEEEC002C66EB /* Assets.xcassets */; };
 		E7617186307CEEEC002C66EB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E7617185307CEEEC002C66EB /* Base */; };
@@ -120,16 +119,15 @@
 		E718C5E7307E376600F11C12 /* UserDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailPresenter.swift; sourceTree = "<group>"; };
 		E718C5E9307E377C00F11C12 /* UserDetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailRouter.swift; sourceTree = "<group>"; };
 		E718C5EB307E378A00F11C12 /* UserDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
-		E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TokenStorageProtocol.swift; path = Core/Services/TokenStorageProtocol.swift; sourceTree = "<group>"; };
-		E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainTokenStorage.swift; path = Core/Services/KeychainTokenStorage.swift; sourceTree = "<group>"; };
+		E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenStorageProtocol.swift; sourceTree = "<group>"; };
+		E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainTokenStorage.swift; sourceTree = "<group>"; };
 		E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubSearchResponse.swift; sourceTree = "<group>"; };
 		E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubUserResponse.swift; sourceTree = "<group>"; };
 		E7526F133082703700605B11 /* Optional+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Optional+Extension.swift"; sourceTree = "<group>"; };
-		E75668CF30810BD3007073A2 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDetailDTO.swift; path = Modules/UserDetail/UserDetailDTO.swift; sourceTree = "<group>"; };
+		E75668CF30810BD3007073A2 /* UserDetailDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailDTO.swift; sourceTree = "<group>"; };
 		E7617176307CEEE9002C66EB /* ColleagueConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColleagueConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7617179307CEEE9002C66EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E761717B307CEEE9002C66EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E761717D307CEEE9002C66EB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E7617180307CEEE9002C66EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E7617182307CEEEC002C66EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7617185307CEEEC002C66EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -146,11 +144,12 @@
 		E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeEntity.swift; sourceTree = "<group>"; };
 		E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeRouter.swift; sourceTree = "<group>"; };
 		E76171B9307CFCFE002C66EB /* ModuleContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleContracts.swift; sourceTree = "<group>"; };
+		E7683A94309B814F00078EB7 /* ColleagueConnect.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ColleagueConnect.xctestplan; sourceTree = "<group>"; };
 		E795242730986780006552E5 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = ColleagueConnect/Core/Services/AuthService.swift; sourceTree = SOURCE_ROOT; };
 		E795242830986780006552E5 /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthConfiguration.swift; path = ColleagueConnect/Core/Services/OAuthConfiguration.swift; sourceTree = SOURCE_ROOT; };
 		E795242930986780006552E5 /* OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthCallbackParser.swift; path = ColleagueConnect/Core/Services/OAuthCallbackParser.swift; sourceTree = SOURCE_ROOT; };
-		E795242D3098681F006552E5 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthWebViewController.swift; path = ColleagueConnect/Modules/Welcome/OAuthWebViewController.swift; sourceTree = "<group>"; };
-		E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GitHubAuthEndpoint.swift; path = ColleagueConnect/Core/Network/GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
+		E795242D3098681F006552E5 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthWebViewController.swift; sourceTree = "<group>"; };
+		E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAuthEndpoint.swift; sourceTree = "<group>"; };
 		E79524323098CB58006552E5 /* HomeContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContracts.swift; sourceTree = "<group>"; };
 		E79524353098CB7E006552E5 /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		E79524373098CCB3006552E5 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -206,7 +205,6 @@
 				E7526F1030826EC200605B11 /* Models */,
 				E718C5D0307E1F3300F11C12 /* Services */,
 				E718C5C8307E1AD600F11C12 /* DesignSystem */,
-				E718C5B8307E090100F11C12 /* Models */,
 				E718C5B1307E05AD00F11C12 /* Network */,
 			);
 			path = Core;
@@ -215,18 +213,12 @@
 		E718C5B1307E05AD00F11C12 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */,
 				E718C5B2307E062A00F11C12 /* APIEndpoint.swift */,
 				E718C5B4307E070100F11C12 /* GitHubEndpoint.swift */,
 				E718C5B6307E075500F11C12 /* NetworkClient.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		E718C5B8307E090100F11C12 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		E718C5BB307E0D3300F11C12 /* Search */ = {
@@ -255,7 +247,12 @@
 			isa = PBXGroup;
 			children = (
 				E718C5D1307E1F6000F11C12 /* FavoriteStorageService.swift */,
+				E795242730986780006552E5 /* AuthService.swift */,
 				E7F03D7F309A02B500CE69F4 /* RecentlyViewedStorageService.swift */,
+				E795242930986780006552E5 /* OAuthCallbackParser.swift */,
+				E795242830986780006552E5 /* OAuthConfiguration.swift */,
+				E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */,
+				E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -297,6 +294,7 @@
 		E7526F1030826EC200605B11 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
 				E7526F0E30826EC200605B11 /* GitHubSearchResponse.swift */,
 				E7526F0F30826EC200605B11 /* GitHubUserResponse.swift */,
 			);
@@ -306,8 +304,6 @@
 		E761716D307CEEE9002C66EB = {
 			isa = PBXGroup;
 			children = (
-				E795242F30986964006552E5 /* GitHubAuthEndpoint.swift */,
-				E795242D3098681F006552E5 /* OAuthWebViewController.swift */,
 				E7617178307CEEE9002C66EB /* ColleagueConnect */,
 				E761718F307CEEEC002C66EB /* ColleagueConnectTests */,
 				E7617199307CEEEC002C66EB /* ColleagueConnectUITests */,
@@ -329,13 +325,9 @@
 		E7617178307CEEE9002C66EB /* ColleagueConnect */ = {
 			isa = PBXGroup;
 			children = (
-				E74B69A83094C3D0006065AF /* KeychainTokenStorage.swift */,
-				E74B69A73094C3D0006065AF /* TokenStorageProtocol.swift */,
-				E75668CF30810BD3007073A2 /* UserDetailDTO.swift */,
 				E718C5B0307E059300F11C12 /* Core */,
 				E76171AD307CFB55002C66EB /* Modules */,
 				E76171A9307CF8CD002C66EB /* App */,
-				E761717D307CEEE9002C66EB /* ViewController.swift */,
 				E761717F307CEEE9002C66EB /* Main.storyboard */,
 				E7617182307CEEEC002C66EB /* Assets.xcassets */,
 				E7617184307CEEEC002C66EB /* LaunchScreen.storyboard */,
@@ -351,6 +343,7 @@
 		E761718F307CEEEC002C66EB /* ColleagueConnectTests */ = {
 			isa = PBXGroup;
 			children = (
+				E7683A94309B814F00078EB7 /* ColleagueConnect.xctestplan */,
 				E7617190307CEEEC002C66EB /* ColleagueConnectTests.swift */,
 				E795243B3098D7E5006552E5 /* HomePresenterTests.swift */,
 				E795243D3098D86A006552E5 /* HomeInteractorTests.swift */,
@@ -384,9 +377,6 @@
 				E7F946AC309B4D7300C43D93 /* RecentlyViewed */,
 				E7F03D7C3099FC1C00CE69F4 /* MyProfile */,
 				E79524313098CB40006552E5 /* Home */,
-				E795242730986780006552E5 /* AuthService.swift */,
-				E795242930986780006552E5 /* OAuthCallbackParser.swift */,
-				E795242830986780006552E5 /* OAuthConfiguration.swift */,
 				E718C5E0307E368800F11C12 /* UserDetail */,
 				E718C5D3307E28BC00F11C12 /* Favorites */,
 				E718C5BB307E0D3300F11C12 /* Search */,
@@ -398,6 +388,7 @@
 		E76171AE307CFB6C002C66EB /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
+				E795242D3098681F006552E5 /* OAuthWebViewController.swift */,
 				E76171AF307CFC53002C66EB /* WelcomeViewController.swift */,
 				E76171B1307CFCBC002C66EB /* WelcomePresenter.swift */,
 				E76171B3307CFCCD002C66EB /* WelcomeInteractor.swift */,
@@ -616,7 +607,6 @@
 				E795243030986964006552E5 /* GitHubAuthEndpoint.swift in Sources */,
 				E718C5EC307E378A00F11C12 /* UserDetailViewController.swift in Sources */,
 				E718C5DB307E292F00F11C12 /* FavoritesEntity.swift in Sources */,
-				E761717E307CEEE9002C66EB /* ViewController.swift in Sources */,
 				E718C5B7307E075500F11C12 /* NetworkClient.swift in Sources */,
 				E761717A307CEEE9002C66EB /* AppDelegate.swift in Sources */,
 				E761717C307CEEE9002C66EB /* SceneDelegate.swift in Sources */,
