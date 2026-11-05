@@ -5,6 +5,7 @@ import Kingfisher
 final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
     var presenter: UserDetailViewOutput?
+    private let appBackgroundView = AppBackgroundView()
 
 
     private enum Layout {
@@ -181,9 +182,14 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
 
     private func setupHierarchy() {
+        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(appBackgroundView)
+
         view.addSubview(scrollView)
         view.addSubview(activityIndicator)
         view.addSubview(errorLabel)
+
+        scrollView.backgroundColor = .clear
 
         scrollView.addSubview(contentStack)
 
@@ -201,6 +207,10 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -253,8 +263,10 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
     private func makeStatCard(valueLabel: UILabel, title: String) -> UIView {
         let container = UIView()
-        container.backgroundColor = AppTheme.Colors.surface
+        container.backgroundColor = .white
         container.layer.cornerRadius = Layout.statCardCornerRadius
+        container.layer.borderWidth = 1
+        container.layer.borderColor = UIColor.systemGray5.cgColor
 
         let titleLabel = UILabel()
         titleLabel.text = title

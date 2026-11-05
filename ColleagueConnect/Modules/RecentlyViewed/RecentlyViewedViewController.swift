@@ -21,7 +21,7 @@ final class RecentlyViewedViewController: UIViewController {
     private var loadGeneration = 0
 
     private static var profileCache: [String: Profile] = [:]
-
+    private let appBackgroundView = AppBackgroundView()
     private let countLabel = UILabel()
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let clearButton = UIBarButtonItem(
@@ -81,11 +81,16 @@ final class RecentlyViewedViewController: UIViewController {
             forCellReuseIdentifier: RecentlyViewedCell.reuseID
         )
         tableView.translatesAutoresizingMaskIntoConstraints = false
-
+        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(appBackgroundView)
         view.addSubview(countLabel)
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
+            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             countLabel.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor,
                 constant: 20

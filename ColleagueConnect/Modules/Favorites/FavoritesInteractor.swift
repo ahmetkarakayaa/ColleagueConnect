@@ -16,11 +16,12 @@ final class FavoritesInteractor: FavoritesInteractorInput {
         self.networkClient = networkClient
         self.authService = authService
     }
-
     func getFavorites() -> [String] {
         favoriteService.getFavorites()
     }
-
+    func getRecentFavorites(limit: Int) -> [String] {
+        favoriteService.getRecentFavorites(limit: limit)
+    }
     func removeFavorite(username: String) {
         favoriteService.removeFavorite(username: username)
     }

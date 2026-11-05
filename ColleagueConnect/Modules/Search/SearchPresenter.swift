@@ -1,4 +1,3 @@
-
 import Foundation
 import OSLog
 
@@ -15,11 +14,9 @@ final class SearchPresenter: SearchViewOutput {
         category: "SearchPresenter"
     )
 
-
     private var searchTask: Task<Void, Never>?
-
+    private var lastSearchQuery = ""
     private var detailTasks: [String: Task<Void, Never>] = [:]
-
 
     private struct CachedProfile {
         let name: String?
@@ -28,7 +25,6 @@ final class SearchPresenter: SearchViewOutput {
 
     private var profileCache: [String: CachedProfile] = [:]
 
-    
     init(
         interactor: SearchInteractorInput,
         router: SearchRouterInput,
@@ -39,7 +35,7 @@ final class SearchPresenter: SearchViewOutput {
         self.favoriteService = favoriteService
     }
 
-
+    
     func searchUsers(query: String) {
         searchTask?.cancel()
 
@@ -49,6 +45,7 @@ final class SearchPresenter: SearchViewOutput {
         let trimmedQuery = query.trimmingCharacters(
             in: .whitespacesAndNewlines
         )
+        lastSearchQuery = trimmedQuery
 
         guard !trimmedQuery.isEmpty else {
             view?.displayEmpty()
@@ -57,20 +54,12 @@ final class SearchPresenter: SearchViewOutput {
 
         searchTask = Task {
             do {
-                try await Task.sleep(
-                    nanoseconds: 350_000_000
-                )
-
+                try await Task.sleep(nanoseconds: 350_000_000)
                 try Task.checkCancellation()
 
                 view?.displayLoading()
 
-                
-                
-                let response = try await interactor.searchUsers(
-                    query: trimmedQuery
-                )
-
+                let response = try await interactor.searchUsers(query: trimmedQuery)
                 try Task.checkCancellation()
 
                 let viewModels = response.items.map { user in
@@ -81,8 +70,6 @@ final class SearchPresenter: SearchViewOutput {
                     )
                 }
 
-
-
                 if viewModels.isEmpty {
                     view?.displayEmpty()
                 } else {
@@ -91,24 +78,28 @@ final class SearchPresenter: SearchViewOutput {
 
             } catch is CancellationError {
                 return
-
             } catch {
                 guard !Task.isCancelled else { return }
+                logger.error("Search failed: \(String(describing: error), privacy: .public)")
 
-                
-                if case NetworkError.offline = error {
+                switch error {
+                case NetworkError.offline:
                     view?.displayError(.offline)
-                } else {
+                case NetworkError.rateLimited:
+                    view?.displayError(.rateLimited)
+                default:
                     view?.displayError(.general)
                 }
-
             }
         }
     }
 
+    func retrySearch() {
+        guard !lastSearchQuery.isEmpty else { return }
+        searchUsers(query: lastSearchQuery)
+    }
 
     func loadUserDetails(username: String) {
-
         if let cached = profileCache[username] {
             view?.displayUserDetails(
                 username: username,
@@ -118,9 +109,7 @@ final class SearchPresenter: SearchViewOutput {
             return
         }
 
-        guard detailTasks[username] == nil else {
-            return
-        }
+        guard detailTasks[username] == nil else { return }
 
         detailTasks[username] = Task {
             defer {
@@ -128,17 +117,13 @@ final class SearchPresenter: SearchViewOutput {
             }
 
             do {
-                let detail = try await interactor.fetchUserDetails(
-                    username: username
-                )
-
+                let detail = try await interactor.fetchUserDetails(username: username)
                 try Task.checkCancellation()
 
                 let profile = CachedProfile(
                     name: detail.name,
                     bio: detail.bio
                 )
-
                 profileCache[username] = profile
 
                 view?.displayUserDetails(
@@ -146,29 +131,19 @@ final class SearchPresenter: SearchViewOutput {
                     name: detail.name,
                     bio: detail.bio
                 )
-
-            
             } catch is CancellationError {
                 return
             } catch {
                 guard !Task.isCancelled else { return }
-
-                logger.error(
-                    "Failed to load details for \(username): \(error.localizedDescription)"
-                )
+                logger.error("Failed to load details for \(username): \(error.localizedDescription)")
             }
-
+        }
     }
-}
 
-    func didSelectUser(
-        _ user: SearchUserViewModel
-    ) {
-        router.showUserDetail(
-            username: user.username
-        )
+    func didSelectUser(_ user: SearchUserViewModel) {
+        router.showUserDetail(username: user.username)
     }
-    
+
     func toggleFavorite(username: String) {
         if favoriteService.isFavorite(username: username) {
             favoriteService.removeFavorite(username: username)
@@ -180,8 +155,10 @@ final class SearchPresenter: SearchViewOutput {
     func isFavorite(username: String) -> Bool {
         favoriteService.isFavorite(username: username)
     }
-
-
-
     
+    deinit {
+        searchTask?.cancel()
+        detailTasks.values.forEach { $0.cancel() }
+    }
+
 }

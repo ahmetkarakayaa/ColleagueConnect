@@ -187,7 +187,8 @@ final class HomeInteractorTests: XCTestCase {
 
 private final class HomeAuthServiceMock: AuthServiceProtocol {
 
-    var token: String?
+
+    var token: String? = "test-access-token"
 
     func makeAuthorizationURL() throws -> URL {
         URL(string: "https://github.com/login/oauth/authorize")!

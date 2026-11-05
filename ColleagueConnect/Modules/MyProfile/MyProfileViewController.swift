@@ -9,6 +9,7 @@ final class MyProfileViewController: UIViewController {
     var onLogoutRequested: (() -> Void)?
 
     private let profile: HomeViewModel
+    private let appBackgroundView = AppBackgroundView()
 
     init(profile: HomeViewModel) {
         self.profile = profile
@@ -38,6 +39,8 @@ final class MyProfileViewController: UIViewController {
         avatarImageView.kf.setImage(with: profile.avatarURL)
 
         NSLayoutConstraint.activate([
+        
+        
             avatarImageView.widthAnchor.constraint(equalToConstant: 92),
             avatarImageView.heightAnchor.constraint(equalToConstant: 92)
         ])
@@ -150,11 +153,19 @@ final class MyProfileViewController: UIViewController {
 
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .clear
 
+        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(appBackgroundView)
         view.addSubview(scrollView)
         scrollView.addSubview(contentStack)
 
         NSLayoutConstraint.activate([
+            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
             scrollView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             ),

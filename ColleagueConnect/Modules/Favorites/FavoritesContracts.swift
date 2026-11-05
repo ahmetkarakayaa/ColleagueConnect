@@ -28,6 +28,7 @@ protocol FavoritesViewOutput: AnyObject {
 
 protocol FavoritesInteractorInput {
     func getFavorites() -> [String]
+    func getRecentFavorites(limit: Int) -> [String]
     func removeFavorite(username: String)
     func fetchFavoriteUser(username: String) async throws -> FavoriteUserProfile
 }
