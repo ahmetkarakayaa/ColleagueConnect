@@ -10,9 +10,21 @@ final class HomePresenter: HomeViewOutput {
     private var loadTask: Task<Void, Never>?
     private var favoritesTask: Task<Void, Never>?
     private var recentlyViewedTask: Task<Void, Never>?
+    private var retryObserver: NSObjectProtocol?
+    
 
+    
     init(interactor: HomeInteractorInput) {
         self.interactor = interactor
+
+        retryObserver = NotificationCenter.default.addObserver(
+            forName: AppInternetMonitor.retryNotification,            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.retryAll()
+            }
+        }
     }
 
 
@@ -24,9 +36,18 @@ final class HomePresenter: HomeViewOutput {
         loadFavorites()
         loadRecentlyViewed()
     }
+    
     func didTapRetry() {
         loadProfile()
     }
+
+    
+    private func retryAll() {
+        loadProfile()
+        loadFavorites()
+        loadRecentlyViewed()
+    }
+
 
     private func loadFavorites() {
         favoritesTask?.cancel()
@@ -132,9 +153,15 @@ final class HomePresenter: HomeViewOutput {
         }
     }
 
+    
     deinit {
+        if let retryObserver {
+            NotificationCenter.default.removeObserver(retryObserver)
+        }
+
         loadTask?.cancel()
         favoritesTask?.cancel()
         recentlyViewedTask?.cancel()
     }
+
 }

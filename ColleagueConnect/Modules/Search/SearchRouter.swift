@@ -1,17 +1,27 @@
-
 import UIKit
+
+
 
 @MainActor
 final class SearchRouter: SearchRouterInput {
 
     weak var viewController: UIViewController?
 
-    private let makeUserDetail: @MainActor (String) -> UIViewController
+    private let networkClient: NetworkClientProtocol
+    private let favoriteStorage: FavoriteStorageServiceProtocol
+    private let authService: AuthServiceProtocol
+    private let recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
 
     init(
-        makeUserDetail: @escaping @MainActor (String) -> UIViewController
+        networkClient: NetworkClientProtocol,
+        favoriteStorage: FavoriteStorageServiceProtocol,
+        authService: AuthServiceProtocol,
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
     ) {
-        self.makeUserDetail = makeUserDetail
+        self.networkClient = networkClient
+        self.favoriteStorage = favoriteStorage
+        self.authService = authService
+        self.recentlyViewedStorage = recentlyViewedStorage
     }
 
     static func createModule(
@@ -28,15 +38,12 @@ final class SearchRouter: SearchRouterInput {
             authService: authService
         )
 
-        let router = SearchRouter(makeUserDetail: { username in
-            UserDetailRouter.createModule(
-                username: username,
-                networkClient: networkClient,
-                favoriteStorage: favoriteStorage,
-                authService: authService,
-                recentlyViewedStorage: recentlyViewedStorage
-            )
-        })
+        let router = SearchRouter(
+            networkClient: networkClient,
+            favoriteStorage: favoriteStorage,
+            authService: authService,
+            recentlyViewedStorage: recentlyViewedStorage
+        )
 
         let presenter = SearchPresenter(
             interactor: interactor,
@@ -52,7 +59,13 @@ final class SearchRouter: SearchRouterInput {
     }
 
     func showUserDetail(username: String) {
-        let detailViewController = makeUserDetail(username)
+        let detailViewController = UserDetailRouter.createModule(
+            username: username,
+            networkClient: networkClient,
+            favoriteStorage: favoriteStorage,
+            authService: authService,
+            recentlyViewedStorage: recentlyViewedStorage
+        )
 
         viewController?.navigationController?.pushViewController(
             detailViewController,

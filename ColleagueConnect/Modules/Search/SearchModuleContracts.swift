@@ -2,6 +2,7 @@
 import Foundation
 enum SearchDisplayError {
     case offline
+    case rateLimited
     case general
 }
 

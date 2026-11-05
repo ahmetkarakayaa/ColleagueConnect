@@ -26,6 +26,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
             recentlyViewedView.onSeeAllTapped = onSeeAllViewed
         }
     }
+    private let appBackgroundView = AppBackgroundView()
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView()
     private let avatarImageView = UIImageView()
@@ -58,6 +59,15 @@ final class HomeViewController: UIViewController, HomeViewInput {
     private var displayedProfile: HomeViewModel?
     override func viewDidLoad() {
         super.viewDidLoad()
+        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(appBackgroundView, at: 0)
+
+        NSLayoutConstraint.activate([
+            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
 
         view.backgroundColor = AppTheme.Colors.background
 

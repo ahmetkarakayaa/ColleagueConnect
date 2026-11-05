@@ -54,6 +54,8 @@
 		E76171B6307CFCDD002C66EB /* WelcomeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B5307CFCDD002C66EB /* WelcomeEntity.swift */; };
 		E76171B8307CFCEE002C66EB /* WelcomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */; };
 		E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76171B9307CFCFE002C66EB /* ModuleContracts.swift */; };
+		E7683A96309C74A400078EB7 /* AppBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7683A95309C74A400078EB7 /* AppBackgroundView.swift */; };
+		E7683A99309CA9EE00078EB7 /* AppInternetMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7683A98309CA9EE00078EB7 /* AppInternetMonitor.swift */; };
 		E795242A30986780006552E5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242730986780006552E5 /* AuthService.swift */; };
 		E795242B30986780006552E5 /* OAuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242830986780006552E5 /* OAuthConfiguration.swift */; };
 		E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795242930986780006552E5 /* OAuthCallbackParser.swift */; };
@@ -145,6 +147,8 @@
 		E76171B7307CFCEE002C66EB /* WelcomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeRouter.swift; sourceTree = "<group>"; };
 		E76171B9307CFCFE002C66EB /* ModuleContracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleContracts.swift; sourceTree = "<group>"; };
 		E7683A94309B814F00078EB7 /* ColleagueConnect.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ColleagueConnect.xctestplan; sourceTree = "<group>"; };
+		E7683A95309C74A400078EB7 /* AppBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundView.swift; sourceTree = "<group>"; };
+		E7683A98309CA9EE00078EB7 /* AppInternetMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInternetMonitor.swift; sourceTree = "<group>"; };
 		E795242730986780006552E5 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AuthService.swift; path = ColleagueConnect/Core/Services/AuthService.swift; sourceTree = SOURCE_ROOT; };
 		E795242830986780006552E5 /* OAuthConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthConfiguration.swift; path = ColleagueConnect/Core/Services/OAuthConfiguration.swift; sourceTree = SOURCE_ROOT; };
 		E795242930986780006552E5 /* OAuthCallbackParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OAuthCallbackParser.swift; path = ColleagueConnect/Core/Services/OAuthCallbackParser.swift; sourceTree = SOURCE_ROOT; };
@@ -202,6 +206,7 @@
 		E718C5B0307E059300F11C12 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E7683A97309CA9CB00078EB7 /* Connectivity */,
 				E7526F1030826EC200605B11 /* Models */,
 				E718C5D0307E1F3300F11C12 /* Services */,
 				E718C5C8307E1AD600F11C12 /* DesignSystem */,
@@ -239,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				E718C5C9307E1AF600F11C12 /* AppTheme.swift */,
+				E7683A95309C74A400078EB7 /* AppBackgroundView.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -397,6 +403,14 @@
 				E76171B9307CFCFE002C66EB /* ModuleContracts.swift */,
 			);
 			path = Welcome;
+			sourceTree = "<group>";
+		};
+		E7683A97309CA9CB00078EB7 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				E7683A98309CA9EE00078EB7 /* AppInternetMonitor.swift */,
+			);
+			path = Connectivity;
 			sourceTree = "<group>";
 		};
 		E79524313098CB40006552E5 /* Home */ = {
@@ -575,6 +589,7 @@
 				E718C5CA307E1AF600F11C12 /* AppTheme.swift in Sources */,
 				E7F946AE309B4D8D00C43D93 /* RecentlyViewedViewController.swift in Sources */,
 				E79524333098CB58006552E5 /* HomeContracts.swift in Sources */,
+				E7683A96309C74A400078EB7 /* AppBackgroundView.swift in Sources */,
 				E718C5E6307E36C200F11C12 /* UserDetailInteractor.swift in Sources */,
 				E718C5C1307E0D7600F11C12 /* SearchInteractor.swift in Sources */,
 				E718C5BD307E0D5400F11C12 /* SearchViewController.swift in Sources */,
@@ -626,6 +641,7 @@
 				E795242C30986780006552E5 /* OAuthCallbackParser.swift in Sources */,
 				E718C5C5307E0D9A00F11C12 /* SearchRouter.swift in Sources */,
 				E7526F1130826EC200605B11 /* GitHubSearchResponse.swift in Sources */,
+				E7683A99309CA9EE00078EB7 /* AppInternetMonitor.swift in Sources */,
 				E76171BA307CFCFE002C66EB /* ModuleContracts.swift in Sources */,
 				E718C5C7307E0DAB00F11C12 /* SearchModuleContracts.swift in Sources */,
 			);

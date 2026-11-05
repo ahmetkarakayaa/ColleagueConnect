@@ -61,7 +61,7 @@ final class FavoritesPresenter: FavoritesViewOutput {
         if activeRequestID != nil {
             loadFavorites()
         } else {
-            lastRequestedUsernames = interactor.getFavorites()
+            lastRequestedUsernames = interactor.getRecentFavorites(limit: Int.max)
             displayFilteredFavorites()
         }
     }
@@ -75,8 +75,7 @@ final class FavoritesPresenter: FavoritesViewOutput {
     
     
     private func loadFavorites() {
-        let usernames = interactor.getFavorites()
-
+        let usernames = interactor.getRecentFavorites(limit: Int.max)
         if activeRequestID == nil,
            lastRequestedUsernames == usernames {
             if !allFavorites.isEmpty || usernames.isEmpty {
@@ -226,8 +225,13 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
 
     private func displayFilteredFavorites() {
-        guard !interactor.getFavorites().isEmpty else {
-            view?.displayEmpty()
+
+        if interactor.getFavorites().isEmpty {
+            if currentQuery.isEmpty {
+                view?.displayEmpty()
+            } else {
+                view?.displayNoResults()
+            }
             return
         }
 
