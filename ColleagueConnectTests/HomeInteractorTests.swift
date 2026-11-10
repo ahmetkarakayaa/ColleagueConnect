@@ -247,8 +247,10 @@ private final class RecentlyViewedStorageMock: RecentlyViewedStorageServiceProto
     func getRecentlyViewed(limit: Int?) -> [String] {
         []
     }
+    func removeVisit(username: String) {}
 
     func clearHistory() {}
+    
 }
 
 private final class HomeNetworkClientSpy: NetworkClientProtocol {

@@ -1,5 +1,3 @@
-
-
 import UIKit
 
 final class FavoritesViewController: UIViewController {
@@ -16,6 +14,8 @@ final class FavoritesViewController: UIViewController {
 
     private var isSearchActive = false
 
+    private weak var clearSearchButton: UIButton?
+
     private lazy var headerContainer = UIView()
 
     private lazy var searchBar = UISearchBar()
@@ -23,6 +23,7 @@ final class FavoritesViewController: UIViewController {
     private lazy var resultsRow = UIView()
 
     private var headerHeightConstraint: NSLayoutConstraint!
+
     private var resultsRowHeightConstraint: NSLayoutConstraint!
 
     private lazy var logoImageView: UIImageView = {
@@ -120,24 +121,33 @@ final class FavoritesViewController: UIViewController {
         return label
 
     }()
-
+    
+   
+    
     private lazy var sortButton: UIButton = {
-
         let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
 
-        button.setTitle("Sort: Newest", for: .normal)
-        button.titleLabel?.font = .systemFont(
+        button.setTitle("Sorting", for: .normal)
+        button.setTitleColor(AppTheme.Colors.accent, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
 
-            ofSize: 12,
-
+        let symbol = UIImage.SymbolConfiguration(
+            pointSize: 13,
             weight: .medium
-
         )
 
-        button.tintColor = .secondaryLabel
+        button.setImage(
+            UIImage(systemName: "arrow.up.arrow.down", withConfiguration: symbol),
+            for: .normal
+        )
+
+        button.tintColor = AppTheme.Colors.accent
+        button.semanticContentAttribute = .forceLeftToRight
+        button.backgroundColor = .clear
+        button.contentHorizontalAlignment = .trailing
 
         return button
-
     }()
 
     private lazy var activityIndicator = UIActivityIndicatorView(
@@ -147,11 +157,13 @@ final class FavoritesViewController: UIViewController {
     )
 
     private lazy var messageLabel = UILabel()
+
     private var messageCenterYConstraint: NSLayoutConstraint!
 
     private lazy var retryButton = UIButton(type: .system)
 
     private lazy var emptyStateImageView = UIImageView()
+
     private lazy var noResultsImageView = UIImageView()
 
     private let emptyTitleLabel: UILabel = {
@@ -211,12 +223,16 @@ final class FavoritesViewController: UIViewController {
         >!
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
 
         setupUI()
 
         setupSearchBar()
+
+
+        configureSearchClearButton()
 
         setupCollectionView()
 
@@ -228,9 +244,17 @@ final class FavoritesViewController: UIViewController {
 
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let button = clearSearchButton {
+            searchBar.bringSubviewToFront(button)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
 
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
 
         navigationController?.setNavigationBarHidden(
 
@@ -255,13 +279,16 @@ final class FavoritesViewController: UIViewController {
             animated: animated
 
         )
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
 
     }
 
     private func setupUI() {
 
         view.backgroundColor = AppTheme.Colors.background
+
         resultsLabel.isHidden = true
+
         subtitleLabel.isHidden = true
 
         appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -279,9 +306,13 @@ final class FavoritesViewController: UIViewController {
         messageLabel.textColor = AppTheme.Colors.secondaryText
 
         messageLabel.font = .systemFont(ofSize: 15)
+
         noResultsImageView.image = UIImage(named: "SearchNotFound")
+
         noResultsImageView.contentMode = .scaleAspectFit
+
         noResultsImageView.isHidden = true
+
         emptyStateImageView.image = UIImage(named: "favorites_empty_state")
 
         emptyStateImageView.alpha = 1
@@ -325,6 +356,7 @@ final class FavoritesViewController: UIViewController {
             collectionView,
 
             emptyStateImageView,
+
             noResultsImageView,
 
             emptyTitleLabel,
@@ -380,8 +412,11 @@ final class FavoritesViewController: UIViewController {
         )
 
         resultsRowHeightConstraint = resultsRow.heightAnchor.constraint(equalToConstant: 32)
+
         messageCenterYConstraint = messageLabel.centerYAnchor.constraint(
+
             equalTo: collectionView.centerYAnchor
+
         )
 
         NSLayoutConstraint.activate([
@@ -411,14 +446,23 @@ final class FavoritesViewController: UIViewController {
             emptyStateImageView.widthAnchor.constraint(equalToConstant: 300),
 
             emptyStateImageView.heightAnchor.constraint(equalToConstant: 300),
+
             noResultsImageView.centerXAnchor.constraint(
+
                 equalTo: collectionView.centerXAnchor
+
             ),
+
             noResultsImageView.centerYAnchor.constraint(
+
                 equalTo: collectionView.centerYAnchor,
+
                 constant: -65
+
             ),
+
             noResultsImageView.widthAnchor.constraint(equalToConstant: 230),
+
             noResultsImageView.heightAnchor.constraint(equalToConstant: 230),
 
             emptyTitleLabel.topAnchor.constraint(
@@ -636,9 +680,7 @@ final class FavoritesViewController: UIViewController {
             ),
 
             sortButton.trailingAnchor.constraint(
-
-                equalTo: resultsRow.trailingAnchor
-
+                equalTo: searchBar.searchTextField.trailingAnchor
             ),
 
             sortButton.centerYAnchor.constraint(
@@ -646,6 +688,8 @@ final class FavoritesViewController: UIViewController {
                 equalTo: resultsRow.centerYAnchor
 
             ),
+            sortButton.widthAnchor.constraint(equalToConstant: 110),
+            sortButton.heightAnchor.constraint(equalToConstant: 40),
 
             collectionView.topAnchor.constraint(
 
@@ -766,8 +810,11 @@ final class FavoritesViewController: UIViewController {
     }
 
     private func setResultsRowVisible(_ visible: Bool) {
+
         resultsRowHeightConstraint.constant = visible ? 32 : 0
+
         resultsRow.isHidden = !visible
+
     }
 
     private func setSearchActive(_ active: Bool) {
@@ -776,11 +823,11 @@ final class FavoritesViewController: UIViewController {
 
         isSearchActive = active
 
-        
         if active {
-            setResultsRowVisible(false)
-        }
 
+            setResultsRowVisible(false)
+
+        }
 
         headerHeightConstraint.constant = active ? 0 : 105
 
@@ -814,13 +861,8 @@ final class FavoritesViewController: UIViewController {
 
         }
 
-        searchBar.setShowsCancelButton(
-
-            active,
-
-            animated: true
-
-        )
+        searchBar.setShowsCancelButton(false, animated: false)
+        clearSearchButton?.alpha = active ? 1 : 0
 
     }
 
@@ -892,9 +934,36 @@ final class FavoritesViewController: UIViewController {
 
     }
 
+    private func configureSearchClearButton() {
+        let field = searchBar.searchTextField
+        field.clearButtonMode = .never
+        field.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 32))
+        field.rightViewMode = .always
+
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let symbol = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
+        button.setImage(UIImage(systemName: "xmark", withConfiguration: symbol), for: .normal)
+        button.tintColor = AppTheme.Colors.accent
+        button.accessibilityLabel = "Close search"
+        button.alpha = 0
+        button.addTarget(self, action: #selector(closeSearchTapped), for: .touchUpInside)
+        searchBar.addSubview(button)
+        NSLayoutConstraint.activate([
+            button.trailingAnchor.constraint(equalTo: field.trailingAnchor, constant: -7),
+            button.centerYAnchor.constraint(equalTo: field.centerYAnchor),
+            button.widthAnchor.constraint(equalToConstant: 32),
+            button.heightAnchor.constraint(equalToConstant: 32)
+        ])
+        searchBar.bringSubviewToFront(button)
+        clearSearchButton = button
+    }
+
     private func setupCollectionView() {
 
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        
 
         collectionView.keyboardDismissMode = .onDrag
 
@@ -974,7 +1043,7 @@ final class FavoritesViewController: UIViewController {
 
                 self?.presenter.sortFavorites(by: .newest)
 
-                self?.sortButton.setTitle("Sort: Newest", for: .normal)
+
 
             },
 
@@ -982,7 +1051,7 @@ final class FavoritesViewController: UIViewController {
 
                 self?.presenter.sortFavorites(by: .oldest)
 
-                self?.sortButton.setTitle("Sort: Oldest", for: .normal)
+        
 
             },
 
@@ -990,7 +1059,7 @@ final class FavoritesViewController: UIViewController {
 
                 self?.presenter.sortFavorites(by: .alphabetical)
 
-                self?.sortButton.setTitle("Sort: A–Z", for: .normal)
+      
 
             },
 
@@ -998,7 +1067,7 @@ final class FavoritesViewController: UIViewController {
 
                 self?.presenter.sortFavorites(by: .reverseAlphabetical)
 
-                self?.sortButton.setTitle("Sort: Z–A", for: .normal)
+      
 
             }
 
@@ -1032,6 +1101,12 @@ final class FavoritesViewController: UIViewController {
 
     }
 
+    @objc private func closeSearchTapped() {
+        searchBar.text = ""
+        clearSearchButton?.alpha = 0
+        searchBarCancelButtonClicked(searchBar)
+    }
+
     @objc private func retryTapped() {
 
         presenter.retryFavorites()
@@ -1043,12 +1118,18 @@ final class FavoritesViewController: UIViewController {
 extension FavoritesViewController: UISearchBarDelegate {
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+
         emptyStateImageView.isHidden = true
+
         emptyTitleLabel.isHidden = true
+
         emptySubtitleLabel.isHidden = true
 
         setSearchActive(true)
+        clearSearchButton?.alpha = 1
+
         setResultsRowVisible(false)
+
     }
 
     func searchBar(
@@ -1059,15 +1140,17 @@ extension FavoritesViewController: UISearchBarDelegate {
 
     ) {
 
+        clearSearchButton?.alpha = 1
+
         presenter.filterFavorites(query: searchText)
 
     }
 
-    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        presenter.filterFavorites(query: searchBar.text ?? "")
-    }
 
+        presenter.filterFavorites(query: searchBar.text ?? "")
+
+    }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
@@ -1075,12 +1158,16 @@ extension FavoritesViewController: UISearchBarDelegate {
 
     }
 
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+
         searchBar.text = ""
+
         searchBar.resignFirstResponder()
+
         setSearchActive(false)
+
         presenter.filterFavorites(query: "")
+
     }
 
 }
@@ -1116,10 +1203,13 @@ extension FavoritesViewController: UICollectionViewDelegate {
 extension FavoritesViewController: FavoritesViewInput {
 
     func displayFavorites(_ users: [FavoriteUserViewModel]) {
+
         noResultsImageView.isHidden = true
 
         setResultsRowVisible(
+
             !users.isEmpty && !searchBar.searchTextField.isFirstResponder
+
         )
 
         emptyTitleLabel.isHidden = true
@@ -1141,7 +1231,9 @@ extension FavoritesViewController: FavoritesViewInput {
         updateUsers(users)    }
 
     func displayLoading() {
+
         noResultsImageView.isHidden = true
+
         setResultsRowVisible(false)
 
         emptyTitleLabel.isHidden = true
@@ -1161,7 +1253,9 @@ extension FavoritesViewController: FavoritesViewInput {
     }
 
     func displayEmpty() {
+
         noResultsImageView.isHidden = true
+
         setResultsRowVisible(false)
 
         activityIndicator.stopAnimating()
@@ -1179,17 +1273,25 @@ extension FavoritesViewController: FavoritesViewInput {
         let showEmptyState = !searchBar.searchTextField.isFirstResponder
 
         emptyStateImageView.isHidden = !showEmptyState
+
         emptyTitleLabel.isHidden = !showEmptyState
+
         emptySubtitleLabel.isHidden = !showEmptyState
 
     }
 
     func displayNoResults() {
+
+        noResultsImageView.isHidden = true
+        messageLabel.isHidden = true
         messageCenterYConstraint.constant = 35
-        noResultsImageView.isHidden = false
+
         emptyStateImageView.isHidden = true
+
         emptyTitleLabel.isHidden = true
+
         emptySubtitleLabel.isHidden = true
+
         setResultsRowVisible(false)
 
         activityIndicator.stopAnimating()
@@ -1203,13 +1305,18 @@ extension FavoritesViewController: FavoritesViewInput {
         retryButton.isHidden = true
 
         messageLabel.text = "No matching favorites"
+        view.layoutIfNeeded()
+        noResultsImageView.isHidden = false
         messageLabel.isHidden = false
 
     }
 
     func displayError(_ message: String) {
+
         messageCenterYConstraint.constant = 0
+
         noResultsImageView.isHidden = true
+
         setResultsRowVisible(false)
 
         emptyTitleLabel.isHidden = true

@@ -56,11 +56,18 @@ final class RecentlyViewedViewController: UIViewController {
         setupUI()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        reloadHistory()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
+        reloadHistory()
+    }
     private func setupUI() {
         clearButton.target = self
         clearButton.action = #selector(clearTapped)
@@ -72,6 +79,7 @@ final class RecentlyViewedViewController: UIViewController {
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 
         tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
         tableView.separatorStyle = .singleLine
         tableView.rowHeight = 76
         tableView.dataSource = self
@@ -238,8 +246,10 @@ final class RecentlyViewedViewController: UIViewController {
     }
 
 
-    private func updateUI() {
+
+    private func updateHistoryState() {
         let count = profiles.count
+
         countLabel.text = "\(count) profiles viewed"
         clearButton.isEnabled = count > 0
 
@@ -252,9 +262,13 @@ final class RecentlyViewedViewController: UIViewController {
         } else {
             tableView.backgroundView = nil
         }
+    }
 
+    private func updateUI() {
+        updateHistoryState()
         tableView.reloadData()
     }
+
 
     @objc private func clearTapped() {
         let alert = UIAlertController(
@@ -289,14 +303,14 @@ final class RecentlyViewedViewController: UIViewController {
 }
 
 extension RecentlyViewedViewController: UITableViewDataSource, UITableViewDelegate {
-
+    
     func tableView(
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
         profiles.count
     }
-
+    
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -307,7 +321,7 @@ extension RecentlyViewedViewController: UITableViewDataSource, UITableViewDelega
         ) as? RecentlyViewedCell else {
             return UITableViewCell()
         }
-
+        
         let profile = profiles[indexPath.row]
         cell.configure(
             name: profile.name,
@@ -316,7 +330,7 @@ extension RecentlyViewedViewController: UITableViewDataSource, UITableViewDelega
         )
         return cell
     }
-
+    
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
@@ -324,82 +338,120 @@ extension RecentlyViewedViewController: UITableViewDataSource, UITableViewDelega
         tableView.deselectRow(at: indexPath, animated: true)
         onSelectProfile(profiles[indexPath.row].username)
     }
-}
-
-@MainActor
-private final class RecentlyViewedCell: UITableViewCell {
-
-    static let reuseID = "RecentlyViewedCell"
-
-    private let avatarView = UIImageView()
-    private let nameLabel = UILabel()
-    private let usernameLabel = UILabel()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        backgroundColor = .clear
-
-        avatarView.contentMode = .scaleAspectFill
-        avatarView.clipsToBounds = true
-        avatarView.layer.cornerRadius = 22
-        avatarView.backgroundColor = .systemGray6
-        avatarView.translatesAutoresizingMaskIntoConstraints = false
-
-        nameLabel.font = .systemFont(ofSize: 15, weight: .semibold)
-        nameLabel.textColor = AppTheme.Colors.primaryText
-        nameLabel.lineBreakMode = .byTruncatingTail
-
-        usernameLabel.font = .systemFont(ofSize: 13)
-        usernameLabel.textColor = AppTheme.Colors.secondaryText
-        usernameLabel.lineBreakMode = .byTruncatingMiddle
-
-        let labels = UIStackView(arrangedSubviews: [
-            nameLabel, usernameLabel
-        ])
-        labels.axis = .vertical
-        labels.spacing = 4
-
-        let stack = UIStackView(arrangedSubviews: [
-            avatarView, labels
-        ])
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.spacing = 12
-        stack.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(stack)
-        accessoryType = .disclosureIndicator
-
-        NSLayoutConstraint.activate([
-            avatarView.widthAnchor.constraint(equalToConstant: 44),
-            avatarView.heightAnchor.constraint(equalToConstant: 44),
-
-            stack.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor,
-                constant: 8
-            ),
-            stack.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor,
-                constant: -8
-            ),
-            stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
+    
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: "Delete"
+        ) { [weak self] _, _, completion in
+            guard let self,
+                  self.profiles.indices.contains(indexPath.row) else {
+                completion(false)
+                return
+            }
+            
+            let username = self.profiles[indexPath.row].username
+            
+            self.storage.removeVisit(username: username)
+            self.profiles.remove(at: indexPath.row)
+            self.updateHistoryState()
+            
+            tableView.deleteRows(
+                at: [indexPath],
+                with: .automatic
+            )
+            
+            completion(true)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(
+            actions: [deleteAction]
+        )
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
     }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        avatarView.kf.cancelDownloadTask()
-        avatarView.image = nil
-    }
-
-    func configure(name: String, username: String, avatarURL: URL?) {
-        nameLabel.text = name
-        usernameLabel.text = "@\(username)"
-        avatarView.kf.setImage(with: avatarURL)
+    
+    
+    @MainActor
+    private final class RecentlyViewedCell: UITableViewCell {
+        
+        static let reuseID = "RecentlyViewedCell"
+        
+        private let avatarView = UIImageView()
+        private let nameLabel = UILabel()
+        private let usernameLabel = UILabel()
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            
+            backgroundColor = .clear
+            
+            avatarView.contentMode = .scaleAspectFill
+            avatarView.clipsToBounds = true
+            avatarView.layer.cornerRadius = 22
+            avatarView.backgroundColor = .systemGray6
+            avatarView.translatesAutoresizingMaskIntoConstraints = false
+            
+            nameLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+            nameLabel.textColor = AppTheme.Colors.primaryText
+            nameLabel.lineBreakMode = .byTruncatingTail
+            
+            usernameLabel.font = .systemFont(ofSize: 13)
+            usernameLabel.textColor = AppTheme.Colors.secondaryText
+            usernameLabel.lineBreakMode = .byTruncatingMiddle
+            
+            let labels = UIStackView(arrangedSubviews: [
+                nameLabel, usernameLabel
+            ])
+            labels.axis = .vertical
+            labels.spacing = 4
+            
+            let stack = UIStackView(arrangedSubviews: [
+                avatarView, labels
+            ])
+            stack.axis = .horizontal
+            stack.alignment = .center
+            stack.spacing = 12
+            stack.translatesAutoresizingMaskIntoConstraints = false
+            
+            contentView.addSubview(stack)
+            accessoryType = .disclosureIndicator
+            
+            NSLayoutConstraint.activate([
+                avatarView.widthAnchor.constraint(equalToConstant: 44),
+                avatarView.heightAnchor.constraint(equalToConstant: 44),
+                
+                stack.leadingAnchor.constraint(
+                    equalTo: contentView.leadingAnchor,
+                    constant: 8
+                ),
+                stack.trailingAnchor.constraint(
+                    equalTo: contentView.trailingAnchor,
+                    constant: -8
+                ),
+                stack.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            ])
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func prepareForReuse() {
+            super.prepareForReuse()
+            avatarView.kf.cancelDownloadTask()
+            avatarView.image = nil
+        }
+        
+        func configure(name: String, username: String, avatarURL: URL?) {
+            nameLabel.text = name
+            usernameLabel.text = "@\(username)"
+            avatarView.kf.setImage(with: avatarURL)
+        }
     }
 }

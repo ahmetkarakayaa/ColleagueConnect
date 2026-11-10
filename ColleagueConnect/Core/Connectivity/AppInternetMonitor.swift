@@ -92,7 +92,6 @@ final class AppInternetMonitor {
         titleLabel.textAlignment = .center
 
         let descriptionLabel = UILabel()
-        descriptionLabel.text = "Please check your network settings and try again."
         descriptionLabel.font = .systemFont(ofSize: 15)
         descriptionLabel.textColor = .secondaryLabel
         descriptionLabel.textAlignment = .center
@@ -213,3 +212,4 @@ final class AppInternetMonitor {
         }
     }
 }
+

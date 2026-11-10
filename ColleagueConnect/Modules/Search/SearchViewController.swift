@@ -41,6 +41,7 @@ final class SearchViewController: UIViewController {
     private var cachedUserDetails: [String: CachedUserDetails] = [:]
 
     private var isSearchActive = false
+    private weak var clearSearchButton: UIButton?
 
     private lazy var headerContainer: UIView = {
 
@@ -212,16 +213,20 @@ final class SearchViewController: UIViewController {
     }()
 
     private lazy var sortButton: UIButton = {
-
+        
         let button = UIButton(type: .system)
 
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        button.setTitle("Sort: Default", for: .normal)
-
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-
-        button.tintColor = .secondaryLabel
+        button.setTitle("Sorting", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 10, weight: .semibold)
+        button.setTitleColor(AppTheme.Colors.accent, for: .normal)
+        button.setImage(
+            UIImage(systemName: "arrow.up.arrow.down"),
+            for: .normal
+        )
+        button.tintColor = AppTheme.Colors.accent
+        button.semanticContentAttribute = .forceLeftToRight
 
         button.menu = UIMenu(children: [
 
@@ -246,6 +251,7 @@ final class SearchViewController: UIViewController {
         ])
 
         button.showsMenuAsPrimaryAction = true
+        button.contentHorizontalAlignment = .trailing
 
         return button
 
@@ -519,6 +525,7 @@ final class SearchViewController: UIViewController {
         view.backgroundColor = AppTheme.Colors.background
 
         setupHierarchy()
+        configureSearchClearButton()
 
         subtitleLabel.isHidden = true
 
@@ -533,6 +540,13 @@ final class SearchViewController: UIViewController {
             name: AppInternetMonitor.retryNotification,            object: nil
         )
 
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if let button = clearSearchButton {
+            searchBar.bringSubviewToFront(button)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -818,15 +832,68 @@ final class SearchViewController: UIViewController {
 
         }
 
-        searchBar.setShowsCancelButton(active, animated: true)
-
+        searchBar.setShowsCancelButton(false, animated: false)
+        clearSearchButton?.alpha = active ? 1 : 0
     }
+    
+    private func configureSearchClearButton() {
+        let field = searchBar.searchTextField
+        field.clearButtonMode = .never
+        field.rightView = UIView(
+            frame: CGRect(x: 0, y: 0, width: 44, height: 32)
+        )
+        field.rightViewMode = .always
+
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        let symbol = UIImage.SymbolConfiguration(
+            pointSize: 12,
+            weight: .semibold
+        )
+
+        button.setImage(
+            UIImage(systemName: "xmark", withConfiguration: symbol),
+            for: .normal
+        )
+        button.tintColor = AppTheme.Colors.accent
+        button.accessibilityLabel = "Close search"
+        button.alpha = 0
+
+        button.addTarget(
+            self,
+            action: #selector(closeSearchTapped),
+            for: .touchUpInside
+        )
+
+        searchBar.addSubview(button)
+
+        NSLayoutConstraint.activate([
+            button.trailingAnchor.constraint(
+                equalTo: field.trailingAnchor,
+                constant: -7
+            ),
+            button.centerYAnchor.constraint(
+                equalTo: field.centerYAnchor
+            ),
+            button.widthAnchor.constraint(equalToConstant: 32),
+            button.heightAnchor.constraint(equalToConstant: 32)
+        ])
+
+        clearSearchButton = button
+    }
+
+    @objc private func closeSearchTapped() {
+        searchBar.text = ""
+        clearSearchButton?.alpha = 0
+        searchBarCancelButtonClicked(searchBar)
+    }
+
 
     private func applySort(_ option: SortOption, title: String) {
 
         sortOption = option
 
-        sortButton.setTitle(title, for: .normal)
 
         refreshSortedUsers()
 

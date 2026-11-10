@@ -1,13 +1,19 @@
-
 import Foundation
 
 final class HomeInteractor: HomeInteractorInput {
 
+
+    private enum Constants {
+        static let previewLimit = 3
+    }
+
+
     private let networkClient: NetworkClientProtocol
     private let authService: AuthServiceProtocol
     private let favoriteStorage: FavoriteStorageServiceProtocol
-    private let profileCache = HomeFavoriteProfileCache()
     private let recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
+    private let profileCache = HomeFavoriteProfileCache()
+
 
     init(
         networkClient: NetworkClientProtocol,
@@ -21,11 +27,10 @@ final class HomeInteractor: HomeInteractorInput {
         self.recentlyViewedStorage = recentlyViewedStorage
     }
 
+    // MARK: - HomeInteractorInput
+
     func fetchCurrentUser() async throws -> UserDetailEntity {
-        guard let token = try authService.accessToken(),
-              !token.isEmpty else {
-            throw AuthError.missingAccessToken
-        }
+        let token = try validAccessToken()
 
         let dto: UserDetailDTO = try await networkClient.request(
             endpoint: GitHubEndpoint.authenticatedUser(token: token)
@@ -34,107 +39,117 @@ final class HomeInteractor: HomeInteractorInput {
         return dto.toEntity()
     }
 
-
     func fetchFavorites() async throws -> HomeFavoritesSnapshot {
         let favorites = favoriteStorage.getFavorites()
-        let usernames = favoriteStorage.getRecentFavorites(limit: 3)
+        let usernames = favoriteStorage.getRecentFavorites(limit: Constants.previewLimit)
 
         await profileCache.retain(favorites)
 
-        var recentUsers: [FavoriteUserProfile] = []
+        var profilesByUsername: [String: FavoriteUserProfile] = [:]
+        var missingUsernames: [String] = []
 
         for username in usernames {
-            try Task.checkCancellation()
-
             if let cached = await profileCache.profile(for: username) {
-                recentUsers.append(cached)
-                continue
-            }
-
-            do {
-                guard let token = try authService.accessToken(),
-                      !token.isEmpty else {
-                    throw AuthError.missingAccessToken
-                }
-
-                let dto: UserDetailDTO = try await networkClient.request(
-                    endpoint: GitHubEndpoint.authenticatedUserDetail(
-                        username: username,
-                        token: token
-                    )
-                )
-
-                try Task.checkCancellation()
-
-                let user = dto.toEntity()
-
-                let profile = FavoriteUserProfile(
-                    username: user.login,
-                    avatarURL: user.avatarURL,
-                    name: user.name,
-                    bio: user.bio
-                )
-
-                recentUsers.append(profile)
-                await profileCache.save(profile, for: username)
-            } catch is CancellationError {
-                throw CancellationError()
-            } catch {
-                continue
+                profilesByUsername[username] = cached
+            } else {
+                missingUsernames.append(username)
             }
         }
+
+        if !missingUsernames.isEmpty {
+            let token = try validAccessToken()
+            let fetched = try await fetchProfiles(usernames: missingUsernames, token: token)
+
+            for (username, profile) in fetched {
+                await profileCache.save(profile, for: username)
+                profilesByUsername[username] = profile
+            }
+        }
+
+        // Storage'daki sıralamayı koru; çekilemeyen kullanıcılar atlanır.
+        let recentUsers = usernames.compactMap { profilesByUsername[$0] }
 
         return HomeFavoritesSnapshot(
             totalCount: favorites.count,
             recentUsers: recentUsers
         )
     }
+
     func fetchRecentlyViewed() async throws -> [FavoriteUserProfile] {
-        let usernames = recentlyViewedStorage.getRecentlyViewed(limit: 3)
+        let usernames = recentlyViewedStorage.getRecentlyViewed(limit: Constants.previewLimit)
 
         guard !usernames.isEmpty else {
             return []
         }
 
-        guard let token = try authService.accessToken(),
-              !token.isEmpty else {
+        let token = try validAccessToken()
+        let profilesByUsername = try await fetchProfiles(usernames: usernames, token: token)
+
+        return usernames.compactMap { profilesByUsername[$0] }
+    }
+
+
+    private func validAccessToken() throws -> String {
+        guard let token = try authService.accessToken(), !token.isEmpty else {
             throw AuthError.missingAccessToken
         }
-
-        var profiles: [FavoriteUserProfile] = []
-
-        for username in usernames {
-            try Task.checkCancellation()
-
-            do {
-                let dto: UserDetailDTO = try await networkClient.request(
-                    endpoint: GitHubEndpoint.authenticatedUserDetail(
-                        username: username,
-                        token: token
-                    )
-                )
-
-                try Task.checkCancellation()
-
-                let user = dto.toEntity()
-
-                profiles.append(
-                    FavoriteUserProfile(
-                        username: user.login,
-                        avatarURL: user.avatarURL,
-                        name: user.name,
-                        bio: user.bio
-                    )
-                )
-            } catch is CancellationError {
-                throw CancellationError()
-            } catch {
-                continue
-            }
-        }
-
-        return profiles
+        return token
     }
+
+    private func fetchProfile(
+        username: String,
+        token: String
+    ) async throws -> FavoriteUserProfile {
+        let dto: UserDetailDTO = try await networkClient.request(
+            endpoint: GitHubEndpoint.authenticatedUserDetail(
+                username: username,
+                token: token
+            )
+        )
+
+        try Task.checkCancellation()
+
+        let user = dto.toEntity()
+
+        return FavoriteUserProfile(
+            username: user.login,
+            avatarURL: user.avatarURL,
+            name: user.name,
+            bio: user.bio
+        )
+    }
+
+
+    private func fetchProfiles(
+        usernames: [String],
+        token: String
+    ) async throws -> [String: FavoriteUserProfile] {
+        try await withThrowingTaskGroup(of: (String, FavoriteUserProfile?).self) { group in
+            for username in usernames {
+                group.addTask { [self] in
+                    do {
+                        let profile = try await fetchProfile(username: username, token: token)
+                        return (username, profile)
+                    } catch {
+                        
+                        try Task.checkCancellation()
+                        return (username, nil)
+                    }
+                }
+            }
+
+            var result: [String: FavoriteUserProfile] = [:]
+
+            for try await (username, profile) in group {
+                if let profile {
+                    result[username] = profile
+                }
+            }
+
+            return result
+        }
+    }
+
 
     private actor HomeFavoriteProfileCache {
 
@@ -153,6 +168,4 @@ final class HomeInteractor: HomeInteractorInput {
             profiles = profiles.filter { allowed.contains($0.key) }
         }
     }
-
-
 }

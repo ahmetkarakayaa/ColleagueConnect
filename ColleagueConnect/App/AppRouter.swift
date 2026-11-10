@@ -62,6 +62,8 @@ final class AppRouter {
         let homeNavigation = UINavigationController(
             rootViewController: homeViewController
         )
+        homeViewController.navigationItem.backButtonDisplayMode = .minimal
+        homeNavigation.navigationBar.tintColor = AppTheme.Colors.accent
         homeViewController.onProfileTapped = {
             [weak homeNavigation, weak homeViewController] profile in
 
@@ -179,6 +181,8 @@ final class AppRouter {
                         authService: self.authService,
                         recentlyViewedStorage: self.recentlyViewedStorage
                     )
+                    homeViewController.navigationItem.backButtonDisplayMode = .minimal
+                    homeNavigation?.navigationBar.tintColor = AppTheme.Colors.accent
 
                     homeNavigation?.pushViewController(
                         detail,

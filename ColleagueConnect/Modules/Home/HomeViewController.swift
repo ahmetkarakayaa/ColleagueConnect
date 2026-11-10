@@ -1,136 +1,135 @@
-
 import UIKit
 import Kingfisher
 
 @MainActor
 final class HomeViewController: UIViewController, HomeViewInput {
 
+
     var presenter: HomeViewOutput?
+
+
+    var onProfileTapped: ((HomeViewModel) -> Void)?
+    var onSeeAllFavorites: (() -> Void)?
+    var onRecentFavoriteTapped: ((String) -> Void)?
+    var onSeeAllViewed: (() -> Void)?
+    var onViewedProfileTapped: ((String) -> Void)?
+    var onOpenGitHubProfile: ((String) -> Void)?
+    var onLogoutRequested: (() -> Void)?
+
 
     private enum Layout {
         static let horizontalInset: CGFloat = 22
-        static let avatarSize: CGFloat = 76
-        static let cornerRadius: CGFloat = 18
+        static let contentTop: CGFloat = 24
+        static let contentBottom: CGFloat = 32
         static let spacing: CGFloat = 22
-    }
-    private let recentlyViewedView = HomeRecentlyViewedView()
-
-    var onViewedProfileTapped: ((String) -> Void)? {
-        didSet {
-            recentlyViewedView.onProfileTapped = onViewedProfileTapped
-        }
+        static let cardCornerRadius: CGFloat = 18
+        static let avatarSize: CGFloat = 76
+        static let errorInset: CGFloat = 32
     }
 
-    var onSeeAllViewed: (() -> Void)? {
-        didSet {
-            recentlyViewedView.onSeeAllTapped = onSeeAllViewed
-        }
-    }
+
     private let appBackgroundView = AppBackgroundView()
     private let scrollView = UIScrollView()
     private let contentStack = UIStackView()
+
     private let avatarImageView = UIImageView()
     private let nameLabel = UILabel()
     private let usernameLabel = UILabel()
     private let bioLabel = UILabel()
-    private let followersLabel = UILabel()
-    private let followingLabel = UILabel()
-    private let favoritesLabel = UILabel()
+
+    private let followersCard = StatCardView(title: "Followers")
+    private let followingCard = StatCardView(title: "Following")
+    private let favoritesCard = StatCardView(title: "Favorites")
+
+    private let recentFavoritesView = HomeRecentFavoritesView()
+    private let recentlyViewedView = HomeRecentlyViewedView()
+
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     private let errorStack = UIStackView()
     private let errorLabel = UILabel()
     private let retryButton = UIButton(type: .system)
-    private let recentFavoritesView = HomeRecentFavoritesView()
 
-    var onSeeAllFavorites: (() -> Void)? {
-        didSet {
-            recentFavoritesView.onSeeAllTapped = onSeeAllFavorites
-        }
-    }
-    var onRecentFavoriteTapped: ((String) -> Void)? {
-        didSet {
-            recentFavoritesView.onFavoriteTapped = onRecentFavoriteTapped
-        }
-    }
-    var onOpenGitHubProfile: ((String) -> Void)?
-    var onLogoutRequested: (() -> Void)?
-    var onProfileTapped: ((HomeViewModel) -> Void)?
 
     private var displayedProfile: HomeViewModel?
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(appBackgroundView, at: 0)
-
-        NSLayoutConstraint.activate([
-            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
 
         view.backgroundColor = AppTheme.Colors.background
 
+        setupBackground()
         setupContent()
         setupLoadingAndError()
+        bindCallbacks()
 
         presenter?.viewDidLoad()
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(
-            true,
-            animated: false
-        )
-
+        navigationController?.setNavigationBarHidden(true, animated: false)
         presenter?.viewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        navigationController?.setNavigationBarHidden(
-            false,
-            animated: false
-        )
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
+    private func setupBackground() {
+        appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(appBackgroundView, at: 0)
+        appBackgroundView.pinEdges(to: view)
+    }
+
+    
+    private func bindCallbacks() {
+        recentFavoritesView.onSeeAllTapped = { [weak self] in
+            self?.onSeeAllFavorites?()
+        }
+        recentFavoritesView.onFavoriteTapped = { [weak self] username in
+            self?.onRecentFavoriteTapped?(username)
+        }
+        recentlyViewedView.onSeeAllTapped = { [weak self] in
+            self?.onSeeAllViewed?()
+        }
+        recentlyViewedView.onProfileTapped = { [weak self] username in
+            self?.onViewedProfileTapped?(username)
+        }
+    }
 
     private func setupContent() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.isHidden = true
-        scrollView.alwaysBounceVertical = true
-
-        view.addSubview(scrollView)
+        // İçerik ekrana sığıyorsa bounce yok, sığmıyorsa kayar.
+        scrollView.alwaysBounceVertical = false
+        scrollView.showsVerticalScrollIndicator = false
 
         contentStack.axis = .vertical
         contentStack.spacing = Layout.spacing
         contentStack.translatesAutoresizingMaskIntoConstraints = false
 
+        contentStack.addArrangedSubviews([
+            makeHeader(),
+            makeProfileCard(),
+            makeStatsStack(),
+            recentFavoritesView,
+            recentlyViewedView
+        ])
+
+        view.addSubview(scrollView)
         scrollView.addSubview(contentStack)
 
-        let header = makeHeader()
-        let profileCard = makeProfileCard()
-        let statsStack = makeStatsStack()
-
-        contentStack.addArrangedSubview(header)
-        contentStack.addArrangedSubview(profileCard)
-        contentStack.addArrangedSubview(statsStack)
-        contentStack.addArrangedSubview(recentFavoritesView)
-        contentStack.addArrangedSubview(recentlyViewedView)
-
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            ),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             contentStack.topAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.topAnchor,
-                constant: 24
+                constant: Layout.contentTop
             ),
             contentStack.leadingAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.leadingAnchor,
@@ -142,7 +141,7 @@ final class HomeViewController: UIViewController, HomeViewInput {
             ),
             contentStack.bottomAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor,
-                constant: -32
+                constant: -Layout.contentBottom
             ),
             contentStack.widthAnchor.constraint(
                 equalTo: scrollView.frameLayoutGuide.widthAnchor,
@@ -151,39 +150,73 @@ final class HomeViewController: UIViewController, HomeViewInput {
         ])
     }
 
+    private func setupLoadingAndError() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+
+        errorLabel.font = .systemFont(ofSize: 15)
+        errorLabel.textColor = AppTheme.Colors.secondaryText
+        errorLabel.textAlignment = .center
+        errorLabel.numberOfLines = 0
+
+        retryButton.setTitle("Try Again", for: .normal)
+        retryButton.tintColor = AppTheme.Colors.accent
+        retryButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        retryButton.addTarget(self, action: #selector(retryTapped), for: .touchUpInside)
+
+        errorStack.axis = .vertical
+        errorStack.alignment = .center
+        errorStack.spacing = 12
+        errorStack.isHidden = true
+        errorStack.translatesAutoresizingMaskIntoConstraints = false
+        errorStack.addArrangedSubviews([errorLabel, retryButton])
+
+        view.addSubview(activityIndicator)
+        view.addSubview(errorStack)
+
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+            errorStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            errorStack.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: Layout.errorInset
+            ),
+            errorStack.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -Layout.errorInset
+            )
+        ])
+    }
+
+
     private func makeHeader() -> UIView {
-        let logoImageView = UIImageView(
-            image: UIImage(systemName: "person.2.fill")
-        )
+        let logoImageView = UIImageView(image: UIImage(systemName: "person.2.fill"))
         logoImageView.tintColor = AppTheme.Colors.accent
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
 
+        let brandFont = UIFont.systemFont(ofSize: 19, weight: .bold)
         let brandText = NSMutableAttributedString(
             string: "Colleague",
             attributes: [
-                .font: UIFont.systemFont(ofSize: 19, weight: .bold),
+                .font: brandFont,
                 .foregroundColor: AppTheme.Colors.primaryText
             ]
         )
-
-        brandText.append(
-            NSAttributedString(
-                string: "Connect",
-                attributes: [
-                    .font: UIFont.systemFont(ofSize: 19, weight: .bold),
-                    .foregroundColor: AppTheme.Colors.accent
-                ]
-            )
-        )
+        brandText.append(NSAttributedString(
+            string: "Connect",
+            attributes: [
+                .font: brandFont,
+                .foregroundColor: AppTheme.Colors.accent
+            ]
+        ))
 
         let brandLabel = UILabel()
         brandLabel.attributedText = brandText
 
-        let brandStack = UIStackView(arrangedSubviews: [
-            logoImageView,
-            brandLabel
-        ])
+        let brandStack = UIStackView(arrangedSubviews: [logoImageView, brandLabel])
         brandStack.axis = .horizontal
         brandStack.alignment = .center
         brandStack.spacing = 10
@@ -204,30 +237,20 @@ final class HomeViewController: UIViewController, HomeViewInput {
         subtitleLabel.textColor = AppTheme.Colors.secondaryText
         subtitleLabel.numberOfLines = 0
 
-        let titleStack = UIStackView(arrangedSubviews: [
-            titleLabel,
-            subtitleLabel
-        ])
+        let titleStack = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         titleStack.axis = .vertical
         titleStack.spacing = 4
 
-        let headerStack = UIStackView(arrangedSubviews: [
-            brandStack,
-            titleStack
-        ])
+        let headerStack = UIStackView(arrangedSubviews: [brandStack, titleStack])
         headerStack.axis = .vertical
         headerStack.spacing = 24
 
         return headerStack
     }
 
-
     private func makeProfileCard() -> UIView {
         let card = UIView()
-        card.backgroundColor = .white
-        card.layer.cornerRadius = Layout.cornerRadius
-        card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.systemGray5.cgColor
+        card.applyCardStyle(cornerRadius: Layout.cardCornerRadius)
 
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.clipsToBounds = true
@@ -247,25 +270,16 @@ final class HomeViewController: UIViewController, HomeViewInput {
         bioLabel.textColor = AppTheme.Colors.secondaryText
         bioLabel.numberOfLines = 3
 
-        let detailsStack = UIStackView(arrangedSubviews: [
-            nameLabel,
-            usernameLabel,
-            bioLabel
-        ])
+        let detailsStack = UIStackView(arrangedSubviews: [nameLabel, usernameLabel, bioLabel])
         detailsStack.axis = .vertical
         detailsStack.alignment = .fill
         detailsStack.spacing = 6
-        let chevronImageView = UIImageView(
-            image: UIImage(systemName: "chevron.right")
-        )
+        detailsStack.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
         chevronImageView.tintColor = .tertiaryLabel
         chevronImageView.contentMode = .scaleAspectFit
         chevronImageView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            chevronImageView.widthAnchor.constraint(equalToConstant: 12),
-            chevronImageView.heightAnchor.constraint(equalToConstant: 18)
-        ])
 
         let profileStack = UIStackView(arrangedSubviews: [
             avatarImageView,
@@ -276,90 +290,107 @@ final class HomeViewController: UIViewController, HomeViewInput {
         profileStack.alignment = .center
         profileStack.spacing = 14
         profileStack.translatesAutoresizingMaskIntoConstraints = false
-        detailsStack.setContentCompressionResistancePriority(
-            .defaultLow,
-            for: .horizontal
-        )
 
         card.addSubview(profileStack)
+        profileStack.pinEdges(
+            to: card,
+            insets: UIEdgeInsets(top: 20, left: 16, bottom: 20, right: 16)
+        )
 
         NSLayoutConstraint.activate([
-            avatarImageView.widthAnchor.constraint(
-                equalToConstant: Layout.avatarSize
-            ),
-            avatarImageView.heightAnchor.constraint(
-                equalToConstant: Layout.avatarSize
-            ),
-            profileStack.topAnchor.constraint(
-                equalTo: card.topAnchor,
-                constant: 20
-            ),
-            profileStack.bottomAnchor.constraint(
-                equalTo: card.bottomAnchor,
-                constant: -20
-            ),
-            profileStack.leadingAnchor.constraint(
-                equalTo: card.leadingAnchor,
-                constant: 16
-            ),
-            profileStack.trailingAnchor.constraint(
-                equalTo: card.trailingAnchor,
-                constant: -16
-            )
+            avatarImageView.widthAnchor.constraint(equalToConstant: Layout.avatarSize),
+            avatarImageView.heightAnchor.constraint(equalToConstant: Layout.avatarSize),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 12),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 18)
         ])
-        let profileTap = UITapGestureRecognizer(
-            target: self,
-            action: #selector(profileCardTapped)
+
+        card.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(profileCardTapped))
         )
-        card.addGestureRecognizer(profileTap)
-        card.isUserInteractionEnabled = true
+        card.isAccessibilityElement = true
+        card.accessibilityTraits = .button
         card.accessibilityLabel = "Profile actions"
 
         return card
     }
 
-
-
-
     private func makeStatsStack() -> UIView {
-        let followersCard = makeStatCard(
-            title: "Followers",
-            valueLabel: followersLabel
-        )
-
-        let followingCard = makeStatCard(
-            title: "Following",
-            valueLabel: followingLabel
-        )
-
-        let favoritesCard = makeStatCard(
-            title: "Favorites",
-            valueLabel: favoritesLabel
-        )
-
         let stack = UIStackView(arrangedSubviews: [
             followersCard,
             followingCard,
             favoritesCard
         ])
-
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.spacing = 10
-
         return stack
     }
 
 
-    private func makeStatCard(
-        title: String,
-        valueLabel: UILabel
-    ) -> UIView {
-        let card = UIView()
-        card.backgroundColor = .white
-        card.layer.cornerRadius = 16
-        card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.systemGray5.cgColor
+    func displayLoading() {
+        errorStack.isHidden = true
+        scrollView.isHidden = displayedProfile == nil
+        activityIndicator.startAnimating()
+    }
+
+    func displayProfile(_ model: HomeViewModel) {
+        displayedProfile = model
+
+        activityIndicator.stopAnimating()
+        errorStack.isHidden = true
+        scrollView.isHidden = false
+
+        nameLabel.text = model.name
+        usernameLabel.text = model.username
+        bioLabel.text = model.bio
+        bioLabel.isHidden = model.bio?.isEmpty ?? true
+
+        followersCard.setValue(model.followers)
+        followingCard.setValue(model.following)
+
+        avatarImageView.kf.setImage(
+            with: model.avatarURL,
+            options: [.transition(.fade(0.2))]
+        )
+    }
+
+    func displayError(_ message: String) {
+        activityIndicator.stopAnimating()
+        scrollView.isHidden = true
+        errorLabel.text = message
+        errorStack.isHidden = false
+    }
+
+    func displayFavorites(_ model: HomeFavoritesViewModel) {
+        favoritesCard.setValue(model.totalCount)
+        recentFavoritesView.configure(users: model.recentUsers)
+    }
+
+    func displayRecentlyViewed(_ users: [HomeRecentFavoriteViewModel]) {
+        recentlyViewedView.configure(users: users)
+    }
+
+
+    @objc private func retryTapped() {
+        presenter?.didTapRetry()
+    }
+
+    @objc private func profileCardTapped() {
+        guard let displayedProfile else { return }
+        onProfileTapped?(displayedProfile)
+    }
+}
+
+
+private final class StatCardView: UIView {
+
+    private let valueLabel = UILabel()
+
+    init(title: String) {
+        super.init(frame: .zero)
+
+        applyCardStyle(cornerRadius: 16)
+
         valueLabel.font = .systemFont(ofSize: 22, weight: .bold)
         valueLabel.textColor = AppTheme.Colors.primaryText
         valueLabel.textAlignment = .center
@@ -370,138 +401,55 @@ final class HomeViewController: UIViewController, HomeViewInput {
         titleLabel.textColor = AppTheme.Colors.secondaryText
         titleLabel.textAlignment = .center
 
-        let stack = UIStackView(arrangedSubviews: [
-            valueLabel,
-            titleLabel
-        ])
-
+        let stack = UIStackView(arrangedSubviews: [valueLabel, titleLabel])
         stack.axis = .vertical
         stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        card.addSubview(stack)
+        addSubview(stack)
+        stack.pinEdges(
+            to: self,
+            insets: UIEdgeInsets(top: 20, left: 8, bottom: 20, right: 8)
+        )
 
-        NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(
-                equalTo: card.topAnchor,
-                constant: 20
-            ),
-            stack.bottomAnchor.constraint(
-                equalTo: card.bottomAnchor,
-                constant: -20
-            ),
-            stack.leadingAnchor.constraint(
-                equalTo: card.leadingAnchor,
-                constant: 8
-            ),
-            stack.trailingAnchor.constraint(
-                equalTo: card.trailingAnchor,
-                constant: -8
-            )
-        ])
-
-        return card
+        isAccessibilityElement = true
+        accessibilityLabel = title
     }
 
-    private func setupLoadingAndError() {
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
-        errorLabel.font = .systemFont(ofSize: 15)
-        errorLabel.textColor = AppTheme.Colors.secondaryText
-        errorLabel.textAlignment = .center
-        errorLabel.numberOfLines = 0
+    func setValue(_ text: String?) {
+        valueLabel.text = text
+        accessibilityValue = text
+    }
+}
 
-        retryButton.setTitle("Try Again", for: .normal)
-        retryButton.tintColor = AppTheme.Colors.accent
-        retryButton.titleLabel?.font = .systemFont(
-            ofSize: 15,
-            weight: .semibold
-        )
-        retryButton.addTarget(
-            self,
-            action: #selector(retryTapped),
-            for: .touchUpInside
-        )
 
-        errorStack.axis = .vertical
-        errorStack.alignment = .center
-        errorStack.spacing = 12
-        errorStack.isHidden = true
-        errorStack.translatesAutoresizingMaskIntoConstraints = false
-        errorStack.addArrangedSubview(errorLabel)
-        errorStack.addArrangedSubview(retryButton)
+private extension UIView {
 
-        view.addSubview(errorStack)
+    func applyCardStyle(cornerRadius: CGFloat) {
+        backgroundColor = .white
+        layer.cornerRadius = cornerRadius
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.systemGray5.cgColor
+    }
 
+    func pinEdges(to other: UIView, insets: UIEdgeInsets = .zero) {
         NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor
-            ),
-            activityIndicator.centerYAnchor.constraint(
-                equalTo: view.centerYAnchor
-            ),
-            errorStack.centerYAnchor.constraint(
-                equalTo: view.centerYAnchor
-            ),
-            errorStack.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
-                constant: 32
-            ),
-            errorStack.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -32
-            )
+            topAnchor.constraint(equalTo: other.topAnchor, constant: insets.top),
+            leadingAnchor.constraint(equalTo: other.leadingAnchor, constant: insets.left),
+            trailingAnchor.constraint(equalTo: other.trailingAnchor, constant: -insets.right),
+            bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: -insets.bottom)
         ])
     }
+}
 
-    func displayLoading() {
-        scrollView.isHidden = true
-        errorStack.isHidden = true
-        activityIndicator.startAnimating()
+private extension UIStackView {
+
+    func addArrangedSubviews(_ views: [UIView]) {
+        views.forEach(addArrangedSubview)
     }
-
-    func displayProfile(_ model: HomeViewModel) {
-        displayedProfile = model
-        activityIndicator.stopAnimating()
-        errorStack.isHidden = true
-        scrollView.isHidden = false
-
-        nameLabel.text = model.name
-        usernameLabel.text = model.username
-        bioLabel.text = model.bio
-        bioLabel.isHidden = model.bio?.isEmpty != false
-
-        followersLabel.text = model.followers
-        followingLabel.text = model.following
-
-        avatarImageView.kf.setImage(with: model.avatarURL)
-    }
-
-    func displayError(_ message: String) {
-        activityIndicator.stopAnimating()
-        scrollView.isHidden = true
-        errorLabel.text = message
-        errorStack.isHidden = false
-    }
-    func displayFavorites(_ model: HomeFavoritesViewModel) {
-        favoritesLabel.text = model.totalCount
-
-        recentFavoritesView.configure(
-            users: model.recentUsers
-        )
-    }
-    func displayRecentlyViewed(_ users: [HomeRecentFavoriteViewModel]) {
-        recentlyViewedView.configure(users: users)
-    }
-    @objc private func retryTapped() {
-        presenter?.didTapRetry()
-    }
-    @objc private func profileCardTapped() {
-        guard let displayedProfile else { return }
-        onProfileTapped?(displayedProfile)
-    }
-
-
-    }
+}
