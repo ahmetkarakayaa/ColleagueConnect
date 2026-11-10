@@ -521,6 +521,8 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.tintColor = AppTheme.Colors.accent
 
         view.backgroundColor = AppTheme.Colors.background
 
