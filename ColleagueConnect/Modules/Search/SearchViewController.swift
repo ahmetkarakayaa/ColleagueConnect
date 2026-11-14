@@ -213,7 +213,7 @@ final class SearchViewController: UIViewController {
     }()
 
     private lazy var sortButton: UIButton = {
-        
+
         let button = UIButton(type: .system)
 
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -275,7 +275,7 @@ final class SearchViewController: UIViewController {
 
         collectionView.alwaysBounceVertical = true
 
-        collectionView.showsVerticalScrollIndicator = true
+        collectionView.showsVerticalScrollIndicator = false
 
         collectionView.keyboardDismissMode = .interactive
 
@@ -551,13 +551,43 @@ final class SearchViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
 
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(
+            true,
+            animated: false
+        )
 
+        refreshVisibleFavoriteStates()
     }
+
+    private func refreshVisibleFavoriteStates() {
+        guard let presenter else { return }
+
+        for indexPath in collectionView.indexPathsForVisibleItems {
+            guard let user = dataSource.itemIdentifier(
+                for: indexPath
+            ),
+            let cell = collectionView.cellForItem(
+                at: indexPath
+            ) as? SearchUserCell else {
+                continue
+            }
+
+            let isFavorite = presenter.isFavorite(
+                username: user.username
+            )
+
+            cell.updateFavorite(
+                isFavorite: isFavorite,
+                animated: false
+            )
+        }
+    }
+
+
 
     override func viewWillDisappear(_ animated: Bool) {
 
@@ -783,7 +813,7 @@ final class SearchViewController: UIViewController {
 
     }
 
-    
+
     private func setResultsRowVisible(_ visible: Bool) {
         let shouldShow = visible && !currentUsers.isEmpty
 
@@ -837,7 +867,7 @@ final class SearchViewController: UIViewController {
         searchBar.setShowsCancelButton(false, animated: false)
         clearSearchButton?.alpha = active ? 1 : 0
     }
-    
+
     private func configureSearchClearButton() {
         let field = searchBar.searchTextField
         field.clearButtonMode = .never
@@ -1065,7 +1095,7 @@ final class SearchViewController: UIViewController {
         presenter?.searchUsers(query: searchBar.text ?? "")
 
     }
-    
+
     @objc private func handleInternetRetry() {
         guard isViewLoaded, view.window != nil else { return }
 
@@ -1110,7 +1140,7 @@ extension SearchViewController: UISearchBarDelegate {
 
     }
 
-    
+
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         setResultsRowVisible(!currentUsers.isEmpty)
     }
@@ -1204,7 +1234,7 @@ extension SearchViewController: SearchViewInput {
 
     }
 
- 
+
     func displayEmpty() {
         activityIndicator.stopAnimating()
         currentUsers = []
@@ -1242,7 +1272,7 @@ extension SearchViewController: SearchViewInput {
 
     }
 
-    
+
     func displayError(_ error: SearchDisplayError) {
         switch error {
         case .offline:

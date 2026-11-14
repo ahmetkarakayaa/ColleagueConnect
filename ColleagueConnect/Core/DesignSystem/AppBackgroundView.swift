@@ -7,6 +7,9 @@ final class AppBackgroundView: UIView {
     private let topHighlight = CAShapeLayer()
     private let bottomWave = CAShapeLayer()
     private let softGradient = CAGradientLayer()
+    private var lastLayoutSize: CGSize = .zero
+
+
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,11 +21,30 @@ final class AppBackgroundView: UIView {
         setupAppearance()
     }
 
+
+
     override func layoutSubviews() {
         super.layoutSubviews()
+
+        let newSize = bounds.size
+
+        guard newSize.width > 0,
+              newSize.height > 0,
+              newSize != lastLayoutSize else {
+            return
+        }
+
+        lastLayoutSize = newSize
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+
         softGradient.frame = bounds
         updateWaves()
+
+        CATransaction.commit()
     }
+
 
     private func setupAppearance() {
         isUserInteractionEnabled = false

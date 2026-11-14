@@ -250,7 +250,7 @@ private final class RecentlyViewedStorageMock: RecentlyViewedStorageServiceProto
     func removeVisit(username: String) {}
 
     func clearHistory() {}
-    
+
 }
 
 private final class HomeNetworkClientSpy: NetworkClientProtocol {
@@ -291,5 +291,13 @@ private final class HomeNetworkClientSpy: NetworkClientProtocol {
             T.self,
             from: Data(json.utf8)
         )
+    }
+    func requestStatus(
+        endpoint: APIEndpoint
+    ) async throws -> Int {
+        requestCount += 1
+        lastRequest = try endpoint.makeURLRequest()
+
+        return 204
     }
 }

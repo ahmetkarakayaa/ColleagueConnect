@@ -27,7 +27,6 @@ final class HomeInteractor: HomeInteractorInput {
         self.recentlyViewedStorage = recentlyViewedStorage
     }
 
-    // MARK: - HomeInteractorInput
 
     func fetchCurrentUser() async throws -> UserDetailEntity {
         let token = try validAccessToken()
@@ -131,7 +130,7 @@ final class HomeInteractor: HomeInteractorInput {
                         let profile = try await fetchProfile(username: username, token: token)
                         return (username, profile)
                     } catch {
-                        
+
                         try Task.checkCancellation()
                         return (username, nil)
                     }

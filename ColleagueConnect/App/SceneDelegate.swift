@@ -35,6 +35,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             networkClient: networkClient
         )
 
+
         let appRouter = AppRouter(
             networkClient: networkClient,
             favoriteStorage: FavoriteStorageService(),
@@ -99,15 +100,19 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     ) { [weak self, weak window] _ in
                         guard let self, let window else { return }
 
+
                         do {
                             try authService.signOut()
+
+                            router.clearFollowCache()
 
                             self.showWelcome(
                                 in: window,
                                 router: router,
                                 authService: authService
                             )
-                        } catch {
+                        }
+                        catch {
                             let alert = UIAlertController(
                                 title: "Logout Failed",
                                 message: "Please try again.",

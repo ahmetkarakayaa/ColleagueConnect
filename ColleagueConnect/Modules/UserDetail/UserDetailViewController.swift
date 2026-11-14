@@ -1,3 +1,4 @@
+
 import UIKit
 import Kingfisher
 
@@ -5,8 +6,12 @@ import Kingfisher
 final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
     var presenter: UserDetailViewOutput?
+
     private let appBackgroundView = AppBackgroundView()
 
+    private var isFollowing = false
+    private var isFollowAvailable = false
+    private var isFollowLoading = false
 
     private enum Layout {
         static let contentSpacing: CGFloat = 18
@@ -19,7 +24,6 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         static let statCardCornerRadius: CGFloat = 18
         static let statSpacing: CGFloat = 12
     }
-
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -37,7 +41,6 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         return stack
     }()
 
-
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,8 +50,12 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         imageView.backgroundColor = AppTheme.Colors.surface
 
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: Layout.avatarSize),
-            imageView.heightAnchor.constraint(equalToConstant: Layout.avatarSize)
+            imageView.widthAnchor.constraint(
+                equalToConstant: Layout.avatarSize
+            ),
+            imageView.heightAnchor.constraint(
+                equalToConstant: Layout.avatarSize
+            )
         ])
 
         return imageView
@@ -59,9 +66,15 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         container.addSubview(avatarImageView)
 
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: container.topAnchor),
-            avatarImageView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-            avatarImageView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+            avatarImageView.topAnchor.constraint(
+                equalTo: container.topAnchor
+            ),
+            avatarImageView.centerXAnchor.constraint(
+                equalTo: container.centerXAnchor
+            ),
+            avatarImageView.bottomAnchor.constraint(
+                equalTo: container.bottomAnchor
+            )
         ])
 
         return container
@@ -93,15 +106,21 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         return label
     }()
 
-
     private lazy var followersValueLabel = makeStatValueLabel()
     private lazy var followingValueLabel = makeStatValueLabel()
 
     private lazy var statsStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
-            makeStatCard(valueLabel: followersValueLabel, title: "Followers"),
-            makeStatCard(valueLabel: followingValueLabel, title: "Following")
+            makeStatCard(
+                valueLabel: followersValueLabel,
+                title: "Followers"
+            ),
+            makeStatCard(
+                valueLabel: followingValueLabel,
+                title: "Following"
+            )
         ])
+
         stack.axis = .horizontal
         stack.spacing = Layout.statSpacing
         stack.distribution = .fillEqually
@@ -123,31 +142,88 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         return formatter
     }()
 
-
-    private lazy var favoriteButton: UIButton = {
+    private lazy var followButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tintColor = AppTheme.Colors.accent
-        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+
+        button.titleLabel?.font = .systemFont(
+            ofSize: 15,
+            weight: .semibold
+        )
+
         button.layer.cornerRadius = Layout.buttonCornerRadius
         button.layer.borderWidth = 1
         button.layer.borderColor = AppTheme.Colors.accent.cgColor
-        button.heightAnchor.constraint(equalToConstant: Layout.buttonHeight).isActive = true
-        button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
+
+        button.heightAnchor.constraint(
+            equalToConstant: Layout.buttonHeight
+        ).isActive = true
+
+        button.addTarget(
+            self,
+            action: #selector(followTapped),
+            for: .touchUpInside
+        )
+
+        button.isEnabled = false
+        button.backgroundColor = .white
+
+        return button
+    }()
+
+    private lazy var favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+
+        button.titleLabel?.font = .systemFont(
+            ofSize: 15,
+            weight: .semibold
+        )
+
+        button.layer.cornerRadius = Layout.buttonCornerRadius
+        button.layer.borderWidth = 1
+        button.layer.borderColor = AppTheme.Colors.accent.cgColor
+
+        button.heightAnchor.constraint(
+            equalToConstant: Layout.buttonHeight
+        ).isActive = true
+
+        button.addTarget(
+            self,
+            action: #selector(favoriteTapped),
+            for: .touchUpInside
+        )
+
         return button
     }()
 
     private lazy var githubButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("View on GitHub ↗", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+
+        button.setTitle(
+            "View on GitHub ↗",
+            for: .normal
+        )
+
+        button.titleLabel?.font = .systemFont(
+            ofSize: 15,
+            weight: .semibold
+        )
+
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = AppTheme.Colors.accent
         button.layer.cornerRadius = Layout.buttonCornerRadius
-        button.heightAnchor.constraint(equalToConstant: Layout.buttonHeight).isActive = true
-        button.addTarget(self, action: #selector(githubTapped), for: .touchUpInside)
+
+        button.heightAnchor.constraint(
+            equalToConstant: Layout.buttonHeight
+        ).isActive = true
+
+        button.addTarget(
+            self,
+            action: #selector(githubTapped),
+            for: .touchUpInside
+        )
+
         return button
     }()
-
 
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
@@ -167,7 +243,6 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         return label
     }()
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -180,17 +255,15 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         presenter?.viewDidLoad()
     }
 
-
     private func setupHierarchy() {
         appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(appBackgroundView)
 
+        view.addSubview(appBackgroundView)
         view.addSubview(scrollView)
         view.addSubview(activityIndicator)
         view.addSubview(errorLabel)
 
         scrollView.backgroundColor = .clear
-
         scrollView.addSubview(contentStack)
 
         [
@@ -200,6 +273,7 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
             bioLabel,
             statsStack,
             joinedLabel,
+            followButton,
             favoriteButton,
             githubButton
         ].forEach(contentStack.addArrangedSubview)
@@ -207,14 +281,31 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            appBackgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-            appBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            appBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            appBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            appBackgroundView.topAnchor.constraint(
+                equalTo: view.topAnchor
+            ),
+            appBackgroundView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor
+            ),
+            appBackgroundView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
+            appBackgroundView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+
+            scrollView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor
+            ),
+            scrollView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor
+            ),
+            scrollView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor
+            ),
+            scrollView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor
+            ),
 
             contentStack.topAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.topAnchor,
@@ -237,10 +328,16 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
                 constant: -Layout.horizontalInset * 2
             ),
 
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(
+                equalTo: view.centerXAnchor
+            ),
+            activityIndicator.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor
+            ),
 
-            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            errorLabel.centerYAnchor.constraint(
+                equalTo: view.centerYAnchor
+            ),
             errorLabel.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Layout.horizontalInset
@@ -252,7 +349,6 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         ])
     }
 
-
     private func makeStatValueLabel() -> UILabel {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
@@ -261,7 +357,11 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         return label
     }
 
-    private func makeStatCard(valueLabel: UILabel, title: String) -> UIView {
+    private func makeStatCard(
+        valueLabel: UILabel,
+        title: String
+    ) -> UIView {
+
         let container = UIView()
         container.backgroundColor = .white
         container.layer.cornerRadius = Layout.statCardCornerRadius
@@ -274,7 +374,10 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         titleLabel.textColor = AppTheme.Colors.secondaryText
         titleLabel.textAlignment = .center
 
-        let stack = UIStackView(arrangedSubviews: [valueLabel, titleLabel])
+        let stack = UIStackView(
+            arrangedSubviews: [valueLabel, titleLabel]
+        )
+
         stack.axis = .vertical
         stack.spacing = 5
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -282,15 +385,26 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         container.addSubview(stack)
 
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: container.topAnchor, constant: 18),
-            stack.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -18),
-            stack.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8),
-            stack.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -8)
+            stack.topAnchor.constraint(
+                equalTo: container.topAnchor,
+                constant: 18
+            ),
+            stack.bottomAnchor.constraint(
+                equalTo: container.bottomAnchor,
+                constant: -18
+            ),
+            stack.leadingAnchor.constraint(
+                equalTo: container.leadingAnchor,
+                constant: 8
+            ),
+            stack.trailingAnchor.constraint(
+                equalTo: container.trailingAnchor,
+                constant: -8
+            )
         ])
 
         return container
     }
-
 
     func displayLoading() {
         scrollView.isHidden = true
@@ -298,7 +412,10 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         activityIndicator.startAnimating()
     }
 
-    func displayUser(_ user: UserDetailEntity, isFavorite: Bool) {
+    func displayUser(
+        _ user: UserDetailEntity,
+        isFavorite: Bool
+    ) {
         activityIndicator.stopAnimating()
         errorLabel.isHidden = true
         scrollView.isHidden = false
@@ -310,23 +427,212 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
         followersValueLabel.text = user.followers.formatted()
         followingValueLabel.text = user.following.formatted()
 
-        avatarImageView.kf.setImage(with: user.avatarURL)
+        avatarImageView.kf.setImage(
+            with: user.avatarURL
+        )
 
         joinedLabel.text = "Joined \(joinedDateFormatter.string(from: user.createdAt))"
 
-        let heartName = isFavorite ? "heart.fill" : "heart"
-        favoriteButton.setImage(UIImage(systemName: heartName), for: .normal)
-        favoriteButton.setTitle(
-            isFavorite ? "  Remove from Favorites" : "  Add to Favorites",
+        updateFavoriteButton(isFavorite: isFavorite)
+    }
+
+    private func updateFavoriteButton(
+        isFavorite: Bool
+    ) {
+        let heartName = isFavorite
+            ? "heart.fill"
+            : "heart"
+
+        favoriteButton.setImage(
+            UIImage(systemName: heartName),
             for: .normal
         )
+
+        favoriteButton.setTitle(
+            isFavorite
+                ? "  Remove from Favorites"
+                : "  Add to Favorites",
+            for: .normal
+        )
+
+        favoriteButton.backgroundColor = isFavorite
+            ? .white
+            : AppTheme.Colors.accent
+
+        favoriteButton.tintColor = isFavorite
+            ? AppTheme.Colors.accent
+            : .white
+
+        favoriteButton.setTitleColor(
+            isFavorite
+                ? AppTheme.Colors.accent
+                : .white,
+            for: .normal
+        )
+
+        favoriteButton.layer.borderColor = AppTheme.Colors.accent.cgColor
+    }
+
+    func displayFollowState(
+        isFollowing: Bool,
+        isLoading: Bool,
+        isAvailable: Bool
+    ) {
+        self.isFollowing = isFollowing
+        self.isFollowLoading = isLoading
+        self.isFollowAvailable = isAvailable
+
+        followButton.menu = nil
+        followButton.showsMenuAsPrimaryAction = false
+
+        followButton.isEnabled = isAvailable && !isLoading
+        followButton.alpha = 1
+
+        followButton.layer.borderWidth = 1
+        followButton.layer.borderColor = AppTheme.Colors.accent.cgColor
+
+
+        if isLoading && !isAvailable {
+            followButton.setImage(nil, for: .normal)
+
+            followButton.setTitle(
+                isAvailable ? "Updating..." : "Checking...",
+                for: .normal
+            )
+
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(
+                AppTheme.Colors.secondaryText,
+                for: .normal
+            )
+
+            return
+        }
+
+        if !isAvailable {
+            followButton.setImage(nil, for: .normal)
+            followButton.setTitle(
+                "Follow unavailable",
+                for: .normal
+            )
+
+            followButton.backgroundColor = .white
+            followButton.setTitleColor(
+                AppTheme.Colors.secondaryText,
+                for: .normal
+            )
+
+            return
+        }
+
+        if isFollowing {
+            followButton.setImage(
+                UIImage(
+                    systemName: "person.crop.circle.badge.checkmark"
+                ),
+                for: .normal
+            )
+
+            followButton.setTitle(
+                "  Following  ⌄",
+                for: .normal
+            )
+
+            followButton.backgroundColor = .white
+            followButton.tintColor = AppTheme.Colors.accent
+
+            followButton.setTitleColor(
+                AppTheme.Colors.accent,
+                for: .normal
+            )
+        } else {
+            followButton.setImage(
+                UIImage(systemName: "person.badge.plus"),
+                for: .normal
+            )
+
+            followButton.setTitle(
+                "  Follow on GitHub",
+                for: .normal
+            )
+
+            followButton.backgroundColor = AppTheme.Colors.accent
+            followButton.tintColor = .white
+
+            followButton.setTitleColor(
+                .white,
+                for: .normal
+            )
+        }
+    }
+
+    func displayFollowError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Follow Error",
+            message: message,
+            preferredStyle: .alert
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: "OK",
+                style: .default
+            )
+        )
+
+        present(alert, animated: true)
     }
 
     func displayError(_ message: String) {
         activityIndicator.stopAnimating()
         scrollView.isHidden = true
+
         errorLabel.text = message
         errorLabel.isHidden = false
+    }
+
+
+    @objc private func followTapped() {
+        guard isFollowAvailable,
+              !isFollowLoading,
+              followButton.isEnabled else {
+            return
+        }
+
+        followButton.isEnabled = false
+
+        if isFollowing {
+            followButton.isEnabled = true
+            showUnfollowMenu()
+        } else {
+            presenter?.didTapFollow()
+        }
+    }
+
+
+
+    private func showUnfollowMenu() {
+        let controller = UnfollowSheetViewController()
+
+        controller.onUnfollow = { [weak self] in
+            self?.presenter?.didTapUnfollow()
+        }
+
+        controller.modalPresentationStyle = .pageSheet
+
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [
+                .custom(identifier: .init("unfollow")) { _ in
+                    108
+                }
+            ]
+
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 24
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
+
+        present(controller, animated: true)
     }
 
 
@@ -337,4 +643,74 @@ final class UserDetailViewController: UIViewController, UserDetailViewInput {
     @objc private func githubTapped() {
         presenter?.didTapGitHub()
     }
+
+    @MainActor
+    private final class UnfollowSheetViewController: UIViewController {
+
+        var onUnfollow: (() -> Void)?
+
+        private let unfollowButton: UIButton = {
+            let button = UIButton(type: .system)
+
+            button.setTitle("  Unfollow", for: .normal)
+            button.setImage(
+                UIImage(systemName: "person.badge.minus"),
+                for: .normal
+            )
+
+            button.titleLabel?.font = .systemFont(
+                ofSize: 17,
+                weight: .semibold
+            )
+
+            button.tintColor = .systemRed
+            button.setTitleColor(.systemRed, for: .normal)
+            button.backgroundColor = .secondarySystemGroupedBackground
+            button.layer.cornerRadius = 16
+
+            return button
+        }()
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+
+            view.backgroundColor = .systemBackground
+
+            unfollowButton.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(unfollowButton)
+
+            NSLayoutConstraint.activate([
+                unfollowButton.leadingAnchor.constraint(
+                    equalTo: view.leadingAnchor,
+                    constant: 24
+                ),
+                unfollowButton.trailingAnchor.constraint(
+                    equalTo: view.trailingAnchor,
+                    constant: -24
+                ),
+                unfollowButton.heightAnchor.constraint(
+                    equalToConstant: 54
+                ),
+                unfollowButton.centerYAnchor.constraint(
+                    equalTo: view.centerYAnchor,
+                    constant: 10
+                )
+            ])
+
+            unfollowButton.addTarget(
+                self,
+                action: #selector(unfollowTapped),
+                for: .touchUpInside
+            )
+        }
+
+        @objc private func unfollowTapped() {
+            let action = onUnfollow
+
+            dismiss(animated: true) {
+                action?()
+            }
+        }
+    }
+
 }

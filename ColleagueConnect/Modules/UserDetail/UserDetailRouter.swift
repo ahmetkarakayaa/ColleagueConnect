@@ -1,3 +1,4 @@
+
 import UIKit
 
 @MainActor
@@ -10,12 +11,15 @@ final class UserDetailRouter: UserDetailRouterInput {
         networkClient: NetworkClientProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol,
         authService: AuthServiceProtocol,
-        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol,
+        followStatusStore: FollowStatusStoreProtocol
     ) -> UIViewController {
+
         let interactor = UserDetailInteractor(
             networkClient: networkClient,
             favoriteStorage: favoriteStorage,
-            authService: authService
+            authService: authService,
+            followStatusStore: followStatusStore
         )
 
         let router = UserDetailRouter()
@@ -27,11 +31,14 @@ final class UserDetailRouter: UserDetailRouterInput {
         )
 
         let viewController = UserDetailViewController()
-        viewController.presenter = presenter
 
+        viewController.presenter = presenter
         presenter.view = viewController
         router.viewController = viewController
-        recentlyViewedStorage.recordVisit(username: username)
+
+        recentlyViewedStorage.recordVisit(
+            username: username
+        )
 
         return viewController
     }

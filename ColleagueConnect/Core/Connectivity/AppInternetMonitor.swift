@@ -32,19 +32,24 @@ final class AppInternetMonitor {
         monitor.start(queue: monitorQueue)
     }
 
-    private func handleConnectionChange(isConnected: Bool) {
-        self.isConnected = isConnected
 
-        if !isConnected {
+    private func handleConnectionChange(isConnected connected: Bool) {
+        let wasConnected = isConnected
+        isConnected = connected
+
+        if !connected {
             showNoInternetOverlay()
             return
         }
 
-        guard overlayWindow != nil else { return }
+        guard wasConnected == false else {
+            return
+        }
 
         hideNoInternetOverlay()
         notifyRetry()
     }
+
 
     func showOffline() {
         guard monitor.currentPath.status == .unsatisfied else {

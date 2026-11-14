@@ -10,25 +10,30 @@ final class FavoritesRouter: FavoritesRouterInput {
     private let favoriteStorage: FavoriteStorageServiceProtocol
     private let authService: AuthServiceProtocol
     private let recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
+    private let followStatusStore: FollowStatusStoreProtocol
 
     init(
         networkClient: NetworkClientProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol,
         authService: AuthServiceProtocol,
-        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol,
+        followStatusStore: FollowStatusStoreProtocol
     ) {
         self.networkClient = networkClient
         self.favoriteStorage = favoriteStorage
         self.authService = authService
         self.recentlyViewedStorage = recentlyViewedStorage
+        self.followStatusStore = followStatusStore
     }
 
     static func createModule(
         networkClient: NetworkClientProtocol,
         favoriteStorage: FavoriteStorageServiceProtocol,
         authService: AuthServiceProtocol,
-        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol
+        recentlyViewedStorage: RecentlyViewedStorageServiceProtocol,
+        followStatusStore: FollowStatusStoreProtocol
     ) -> UIViewController {
+
         let view = FavoritesViewController()
 
         let interactor = FavoritesInteractor(
@@ -41,7 +46,8 @@ final class FavoritesRouter: FavoritesRouterInput {
             networkClient: networkClient,
             favoriteStorage: favoriteStorage,
             authService: authService,
-            recentlyViewedStorage: recentlyViewedStorage
+            recentlyViewedStorage: recentlyViewedStorage,
+            followStatusStore: followStatusStore
         )
 
         let presenter = FavoritesPresenter(
@@ -62,7 +68,8 @@ final class FavoritesRouter: FavoritesRouterInput {
             networkClient: networkClient,
             favoriteStorage: favoriteStorage,
             authService: authService,
-            recentlyViewedStorage: recentlyViewedStorage
+            recentlyViewedStorage: recentlyViewedStorage,
+            followStatusStore: followStatusStore
         )
 
         viewController?.navigationController?.pushViewController(

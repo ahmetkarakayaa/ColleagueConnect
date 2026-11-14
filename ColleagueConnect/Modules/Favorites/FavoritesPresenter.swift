@@ -1,3 +1,4 @@
+
 import Foundation
 
 @MainActor
@@ -10,8 +11,10 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
     private var allFavorites: [FavoriteUserViewModel] = []
     private var currentQuery = ""
+
     private var loadingTask: Task<Void, Never>?
     private var activeRequestID: UUID?
+
     private var sortOption: FavoritesSortOption = .newest
     private var lastRequestedUsernames: [String]?
 
@@ -30,57 +33,53 @@ final class FavoritesPresenter: FavoritesViewOutput {
     func viewWillAppear() {
         loadFavorites()
     }
+
     func retryFavorites() {
         lastRequestedUsernames = nil
         loadFavorites()
     }
 
     func filterFavorites(query: String) {
-        currentQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard activeRequestID == nil else { return }
+        currentQuery = query.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
 
         displayFilteredFavorites()
     }
+
     func sortFavorites(by option: FavoritesSortOption) {
         sortOption = option
-
-        guard activeRequestID == nil else { return }
-
         displayFilteredFavorites()
     }
 
-    
     func removeFavorite(username: String) {
         interactor.removeFavorite(username: username)
 
         allFavorites.removeAll {
-            $0.username.caseInsensitiveCompare(username) == .orderedSame
+            $0.username.caseInsensitiveCompare(
+                username
+            ) == .orderedSame
         }
 
-        if activeRequestID != nil {
-            loadFavorites()
-        } else {
-            lastRequestedUsernames = interactor.getRecentFavorites(limit: Int.max)
-            displayFilteredFavorites()
-        }
+        lastRequestedUsernames = nil
+
+        loadFavorites()
     }
-
 
     func didSelectUser(_ user: FavoriteUserViewModel) {
-        router.showUserDetail(username: user.username)
+        router.showUserDetail(
+            username: user.username
+        )
     }
 
-   
-    
-    
     private func loadFavorites() {
-        let usernames = interactor.getRecentFavorites(limit: Int.max)
+        let usernames = interactor.getRecentFavorites(
+            limit: Int.max
+        )
+
         if activeRequestID == nil,
            lastRequestedUsernames == usernames {
-            if !allFavorites.isEmpty || usernames.isEmpty {
-                displayFilteredFavorites()
-            }
+            displayFilteredFavorites()
             return
         }
 
@@ -96,66 +95,71 @@ final class FavoritesPresenter: FavoritesViewOutput {
             return
         }
 
-        let cachedUsers = Dictionary(
+        var cachedUsers = Dictionary(
             allFavorites.map {
                 ($0.username.lowercased(), $0)
             },
             uniquingKeysWith: { first, _ in first }
         )
 
-        let missingUsernames = usernames.enumerated().compactMap { index, username
-            -> (Int, String)? in
+        allFavorites = usernames.compactMap {
+            cachedUsers[$0.lowercased()]
+        }
 
-            cachedUsers[username.lowercased()] == nil
-                ? (index, username)
-                : nil
+        let missingUsernames = usernames.filter {
+            cachedUsers[$0.lowercased()] == nil
         }
 
         if missingUsernames.isEmpty {
-            allFavorites = usernames.compactMap {
-                cachedUsers[$0.lowercased()]
-            }
             displayFilteredFavorites()
             return
         }
 
+        if allFavorites.isEmpty {
+            view?.displayLoading()
+        } else {
+            displayFilteredFavorites()
+        }
+
         let requestID = UUID()
         activeRequestID = requestID
-        view?.displayLoading()
 
         loadingTask = Task { [weak self] in
             guard let self else { return }
 
             let interactor = self.interactor
-            var fetchedUsers: [FavoriteUserViewModel] = []
+            var hasFailedRequests = false
 
             for startIndex in stride(
                 from: 0,
                 to: missingUsernames.count,
                 by: 4
             ) {
-                guard !Task.isCancelled else { return }
+                guard !Task.isCancelled,
+                      activeRequestID == requestID else {
+                    return
+                }
 
                 let endIndex = min(
                     startIndex + 4,
                     missingUsernames.count
                 )
 
-                let batch = await withTaskGroup(
-                    of: FavoriteUserViewModel?.self,
-                    returning: [FavoriteUserViewModel].self
+                await withTaskGroup(
+                    of: FavoriteUserViewModel?.self
                 ) { group in
 
-                    for item in missingUsernames[startIndex..<endIndex] {
-                        let username = item.1
-
+                    for username in missingUsernames[
+                        startIndex..<endIndex
+                    ] {
                         group.addTask { @MainActor in
                             do {
                                 try Task.checkCancellation()
 
-                                let profile = try await interactor.fetchFavoriteUser(
-                                    username: username
-                                )
+                                let profile = try await interactor
+                                    .fetchFavoriteUser(
+                                        username: username
+                                    )
 
                                 try Task.checkCancellation()
 
@@ -165,28 +169,40 @@ final class FavoritesPresenter: FavoritesViewOutput {
                                     name: profile.name,
                                     bio: profile.bio
                                 )
-                            } catch is CancellationError {
-                                return nil
+
                             } catch {
-
                                 return nil
-                            }                        }
-                    }
-
-                    var successfulUsers: [FavoriteUserViewModel] = []
-
-                    for await user in group {
-                        if let user {
-                            successfulUsers.append(user)
+                            }
                         }
                     }
 
-                    return successfulUsers
+                    for await fetchedUser in group {
+                        guard !Task.isCancelled,
+                              activeRequestID == requestID else {
+                            continue
+                        }
+
+                        guard let fetchedUser else {
+                            hasFailedRequests = true
+                            continue
+                        }
+
+                        let key = fetchedUser.username.lowercased()
+
+                        cachedUsers[key] = fetchedUser
+
+                        let currentUsernames =
+                            interactor.getRecentFavorites(
+                                limit: Int.max
+                            )
+
+                        allFavorites = currentUsernames.compactMap {
+                            cachedUsers[$0.lowercased()]
+                        }
+
+                        displayFilteredFavorites()
+                    }
                 }
-
-                guard !Task.isCancelled else { return }
-
-                fetchedUsers.append(contentsOf: batch)
             }
 
             guard !Task.isCancelled,
@@ -197,36 +213,34 @@ final class FavoritesPresenter: FavoritesViewOutput {
             activeRequestID = nil
             loadingTask = nil
 
-            let combinedUsers = cachedUsers.merging(
-                Dictionary(
-                    fetchedUsers.map {
-                        ($0.username.lowercased(), $0)
-                    },
-                    uniquingKeysWith: { first, _ in first }
-                ),
-                uniquingKeysWith: { _, new in new }
+            let finalUsernames = interactor.getRecentFavorites(
+                limit: Int.max
             )
 
-            allFavorites = usernames.compactMap {
-                combinedUsers[$0.lowercased()]
+            allFavorites = finalUsernames.compactMap {
+                cachedUsers[$0.lowercased()]
             }
 
-            if allFavorites.isEmpty {
+            if allFavorites.isEmpty,
+               !finalUsernames.isEmpty,
+               hasFailedRequests {
                 view?.displayError(
                     "Couldn't load favorites. Please try again."
                 )
             } else {
                 displayFilteredFavorites()
             }
+
+            if hasFailedRequests {
+                lastRequestedUsernames = nil
+            }
         }
     }
 
-
-
-
     private func displayFilteredFavorites() {
+        let storedFavorites = interactor.getFavorites()
 
-        if interactor.getFavorites().isEmpty {
+        guard !storedFavorites.isEmpty else {
             if currentQuery.isEmpty {
                 view?.displayEmpty()
             } else {
@@ -237,7 +251,9 @@ final class FavoritesPresenter: FavoritesViewOutput {
 
         let filteredUsers = allFavorites.filter { user in
             currentQuery.isEmpty ||
-            user.username.localizedCaseInsensitiveContains(currentQuery)
+            user.username.localizedCaseInsensitiveContains(
+                currentQuery
+            )
         }
 
         let sortedUsers: [FavoriteUserViewModel]
@@ -247,7 +263,9 @@ final class FavoritesPresenter: FavoritesViewOutput {
             sortedUsers = filteredUsers
 
         case .oldest:
-            sortedUsers = Array(filteredUsers.reversed())
+            sortedUsers = Array(
+                filteredUsers.reversed()
+            )
 
         case .alphabetical:
             sortedUsers = filteredUsers.sorted {
@@ -265,8 +283,18 @@ final class FavoritesPresenter: FavoritesViewOutput {
         }
 
         if sortedUsers.isEmpty {
-            view?.displayNoResults()
+            if activeRequestID != nil,
+               currentQuery.isEmpty {
+                view?.displayLoading()
+            } else {
+                view?.displayNoResults()
+            }
         } else {
             view?.displayFavorites(sortedUsers)
         }
-    }}
+    }
+
+    deinit {
+        loadingTask?.cancel()
+    }
+}

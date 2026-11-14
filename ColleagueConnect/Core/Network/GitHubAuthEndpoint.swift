@@ -43,6 +43,7 @@ struct GitHubAuthEndpoint: APIEndpoint {
         }
 
         var components = URLComponents()
+
         components.queryItems = [
             URLQueryItem(
                 name: "client_id",
@@ -68,9 +69,11 @@ struct GitHubAuthEndpoint: APIEndpoint {
 
     func authorizationURL(state: String) throws -> URL {
         var components = URLComponents()
+
         components.scheme = "https"
         components.host = "github.com"
         components.path = "/login/oauth/authorize"
+
         components.queryItems = [
             URLQueryItem(
                 name: "client_id",
@@ -83,6 +86,10 @@ struct GitHubAuthEndpoint: APIEndpoint {
             URLQueryItem(
                 name: "state",
                 value: state
+            ),
+            URLQueryItem(
+                name: "scope",
+                value: "user:follow"
             )
         ]
 

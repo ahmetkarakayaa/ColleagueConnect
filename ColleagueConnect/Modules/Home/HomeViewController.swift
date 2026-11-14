@@ -15,6 +15,8 @@ final class HomeViewController: UIViewController, HomeViewInput {
     var onViewedProfileTapped: ((String) -> Void)?
     var onOpenGitHubProfile: ((String) -> Void)?
     var onLogoutRequested: (() -> Void)?
+    var onFollowersTapped: ((String) -> Void)?
+    var onFollowingTapped: ((String) -> Void)?
 
 
     private enum Layout {
@@ -77,27 +79,50 @@ final class HomeViewController: UIViewController, HomeViewInput {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
+
+
     private func setupBackground() {
         appBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(appBackgroundView, at: 0)
         appBackgroundView.pinEdges(to: view)
     }
 
-    
+
     private func bindCallbacks() {
         recentFavoritesView.onSeeAllTapped = { [weak self] in
             self?.onSeeAllFavorites?()
         }
+
         recentFavoritesView.onFavoriteTapped = { [weak self] username in
             self?.onRecentFavoriteTapped?(username)
         }
+
         recentlyViewedView.onSeeAllTapped = { [weak self] in
             self?.onSeeAllViewed?()
         }
+
         recentlyViewedView.onProfileTapped = { [weak self] username in
             self?.onViewedProfileTapped?(username)
         }
+
+        followersCard.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(followersTapped)
+            )
+        )
+
+        followingCard.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(followingTapped)
+            )
+        )
+
+        followersCard.accessibilityTraits.insert(.button)
+        followingCard.accessibilityTraits.insert(.button)
     }
+
 
     private func setupContent() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -379,6 +404,27 @@ final class HomeViewController: UIViewController, HomeViewInput {
         guard let displayedProfile else { return }
         onProfileTapped?(displayedProfile)
     }
+
+    @objc private func followersTapped() {
+        guard let username = displayedProfile?.username else {
+            return
+        }
+
+        onFollowersTapped?(
+            username.replacingOccurrences(of: "@", with: "")
+        )
+    }
+
+    @objc private func followingTapped() {
+        guard let username = displayedProfile?.username else {
+            return
+        }
+
+        onFollowingTapped?(
+            username.replacingOccurrences(of: "@", with: "")
+        )
+    }
+
 }
 
 
